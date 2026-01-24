@@ -37,40 +37,88 @@ if (!$success) {
     exit(0);
 }
 
-// 1. Fix Missing admin_users table
-echo "[Auto-Migrate] Checking 'admin_users' table...\n";
-try {
-    $stmt = $pdo->query("SHOW TABLES LIKE 'admin_users'");
-    if ($stmt->rowCount() == 0) {
-        echo "[Auto-Migrate] 'admin_users' table missing. Creating...\n";
-        $sql = "CREATE TABLE IF NOT EXISTS `admin_users` (
-          `id` int(11) NOT NULL AUTO_INCREMENT,
-          `username` varchar(50) NOT NULL,
-          `email` varchar(100) NOT NULL,
-          `password` varchar(255) NOT NULL,
-          `role` varchar(20) DEFAULT 'admin',
-          `is_active` tinyint(1) DEFAULT 1,
-          `last_login` datetime DEFAULT NULL,
-          `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
-          `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-          PRIMARY KEY (`id`),
-          UNIQUE KEY `username` (`username`),
-          UNIQUE KEY `email` (`email`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
-        $pdo->exec($sql);
-        
-        // Insert default admin
-        $passHash = password_hash('admin123', PASSWORD_DEFAULT);
-        $insert = "INSERT INTO `admin_users` (`username`, `email`, `password`, `role`) VALUES 
-                   ('admin', 'admin@thinqshopping.app', '$passHash', 'superadmin')";
-        $pdo->exec($insert);
-        echo "[Auto-Migrate] 'admin_users' table created and default admin added.\n";
-    } else {
-        echo "[Auto-Migrate] 'admin_users' table already exists. Skipping.\n";
-    }
-} catch (PDOException $e) {
-    echo "[Auto-Migrate] Error checking/creating admin_users: " . $e->getMessage() . "\n";
+// 1. Load SQL Dump
+$sqlFile = '/var/www/html/thinjupz_db.sql';
+if (!file_exists($sqlFile)) {
+    echo "[Auto-Migrate] Warning: SQL dump file not found at $sqlFile\n";
+    exit(0);
 }
 
+$sqlContent = file_get_contents($sqlFile);
+
+// 2. Extract Table definitions and Data
+// This is a simple regex parser for standard mysqldump output
+// It assumes specific formatting: "CREATE TABLE `name`" and "INSERT INTO `name`"
+
+// Find all CREATE TABLE statements to identify tables
+preg_match_all('/CREATE TABLE `(\w+)`/', $sqlContent, $matches);
+$tablesInDump = array_unique($matches[1]);
+
+echo "[Auto-Migrate] Found tables in dump: " . implode(', ', $tablesInDump) . "\n";
+
+foreach ($tablesInDump as $table) {
+    try {
+        // Check if table exists
+        $check = $pdo->query("SHOW TABLES LIKE '$table'");
+        if ($check->rowCount() > 0) {
+            echo "[Auto-Migrate] Table '$table' already exists. Skipping.\n";
+            continue;
+        }
+
+        echo "[Auto-Migrate] Table '$table' missing. Restoring...\n";
+
+        // Extract CREATE TABLE statement
+        // Look for "DROP TABLE IF EXISTS `table`;" followed by "CREATE TABLE `table` ... ;"
+        // We use a regex that captures from CREATE up to the closing semicolon matching the creation block
+        // Note: This regex is sensitive to formatting.
+        
+        $pattern = "/CREATE TABLE `$table` \(.*?\)( ENGINE=.*?)?;/s";
+        if (preg_match($pattern, $sqlContent, $createMatch)) {
+            $createSql = $createMatch[0];
+            $pdo->exec($createSql);
+            echo "[Auto-Migrate] Created table '$table'.\n";
+        } else {
+             echo "[Auto-Migrate] Warning: Could not parse CREATE statement for '$table'.\n";
+             continue;
+        }
+
+        // Extract INSERT statements
+        // Look for "INSERT INTO `$table` VALUES ..."
+        // Note: mysqldump often puts all data for a table in one huge INSERT or multiple.
+        // We find all occurrences.
+        
+        $insertPattern = "/INSERT INTO `$table` VALUES .*?;/s";
+        if (preg_match_all($insertPattern, $sqlContent, $insertMatches)) {
+            foreach ($insertMatches[0] as $insertSql) {
+                // Execute insert. Since table is fresh, no conflict.
+                // We might need to split extremely long lines if PDO complains, but for <10MB it's usually fine.
+                try {
+                    $pdo->exec($insertSql);
+                } catch (PDOException $e) {
+                     echo "[Auto-Migrate] Error inserting data for '$table': " . $e->getMessage() . "\n";
+                }
+            }
+            echo "[Auto-Migrate] Imported data for '$table'.\n";
+        }
+
+    } catch (PDOException $e) {
+        echo "[Auto-Migrate] Error processing '$table': " . $e->getMessage() . "\n";
+    }
+}
+
+// 3. Special check for admin_users (since it might have been created manually or by previous script but missing data)
+// If admin_users exists but is empty, seed it.
+try {
+   $chk = $pdo->query("SELECT COUNT(*) FROM admin_users");
+   if ($chk->fetchColumn() == 0) {
+       echo "[Auto-Migrate] Seeding default admin user...\n";
+       $passHash = password_hash('admin123', PASSWORD_DEFAULT);
+       $insert = "INSERT INTO `admin_users` (`username`, `email`, `password`, `role`) VALUES 
+                  ('admin', 'admin@thinqshopping.app', '$passHash', 'superadmin')";
+       $pdo->exec($insert);
+   }
+} catch (Exception $e) { /* Ignore if table doesn't exist yet (handled above) */ }
+
 echo "[Auto-Migrate] Migration checks complete.\n";
+exit(0);
 ?>
