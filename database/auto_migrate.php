@@ -1,22 +1,21 @@
 <?php
 /**
- * Auto-Migration Script
+ * Auto-Migration Script (Robust V3)
  * Runs on container startup to ensure database schema is correct.
+ * Handles Foreign Key constraints via ordering retries and explicit checks.
  */
 
-// Wait for MySQL to be ready
-$maxTries = 50; // Wait up to 50 seconds (MySQL container takes time to start)
+$maxTries = 50; 
 $success = false;
 
 echo "[Auto-Migrate] Waiting for Database connection...\n";
 
-// Manual connection params because env-loader might not be available in cli context properly if not careful, 
-// but we will try to use the configured classes if possible, or raw PDO.
 $host = getenv('DB_HOST') ?: 'mysql';
 $db   = getenv('DB_NAME') ?: 'thinjupz_db';
 $user = getenv('DB_USER') ?: 'thinquser';
 $pass = getenv('DB_PASS') ?: 'thinqpass';
 
+$pdo = null;
 for ($i = 0; $i < $maxTries; $i++) {
     try {
         $pdo = new PDO("mysql:host=$host;dbname=$db;charset=utf8mb4", $user, $pass);
@@ -32,8 +31,6 @@ for ($i = 0; $i < $maxTries; $i++) {
 
 if (!$success) {
     echo "[Auto-Migrate] ERROR: Could not connect to database after $maxTries attempts.\n";
-    // We don't exit/die here because we don't want to crash the container loop if it's just a transient issue, 
-    // but effectively we can't migrate.
     exit(0);
 }
 
@@ -44,98 +41,138 @@ if (!file_exists($sqlFile)) {
     exit(0);
 }
 
-// Read entire file (for 10MB it's fine, for larger need streams but this is sufficient)
+// Disable FK Checks explicitly and verify
+$pdo->exec("SET FOREIGN_KEY_CHECKS=0");
+$stmt = $pdo->query("SELECT @@FOREIGN_KEY_CHECKS");
+$fkStatus = $stmt->fetchColumn();
+echo "[Auto-Migrate] Foreign Key Checks status: $fkStatus (Should be 0)\n";
+
 $sqlContent = file_get_contents($sqlFile);
 
-// Find all CREATE TABLE statements to identify what tables we SHOULD have
-preg_match_all('/CREATE TABLE `(\w+)`/', $sqlContent, $matches);
+// 2. Identify Tables
+// Robust regex to handle 'CREATE TABLE `name`' or 'CREATE TABLE IF NOT EXISTS `name`' with varying whitespace
+preg_match_all('/CREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?`?(\w+)`?/i', $sqlContent, $matches);
 $tablesInDump = array_unique($matches[1]);
 
 echo "[Auto-Migrate] Found definition for tables: " . implode(', ', $tablesInDump) . "\n";
 
-foreach ($tablesInDump as $table) {
+$retryQueue = [];
+
+function createTable($pdo, $sqlContent, $table, &$retryQueue) {
     try {
-        // Check if table exists in DB
+        // Check if table exists
         $check = $pdo->query("SHOW TABLES LIKE '$table'");
         if ($check->rowCount() > 0) {
-            echo "[Auto-Migrate] Table '$table' already exists. Checking next.\n";
-            continue;
+            echo "[Auto-Migrate] Table '$table' already exists. Skipping.\n";
+            return true; 
         }
 
-        echo "[Auto-Migrate] Table '$table' is missing. Validating dump content...\n";
+        echo "[Auto-Migrate] Table '$table' is missing. extracting definition...\n";
 
-        // Find the start of CREATE TABLE statement
-        $searchStr = "CREATE TABLE `$table`";
-        $startPos = strpos($sqlContent, $searchStr);
-        
-        if ($startPos === false) {
-             echo "[Auto-Migrate] Error: Could not find definition for '$table'.\n";
-             continue;
+        // Find start: CREATE TABLE `table`
+        // We regex match the start to get the exact position
+        if (!preg_match("/CREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?`$table`\s*\(?/", $sqlContent, $m, PREG_OFFSET_CAPTURE)) {
+             echo "[Auto-Migrate] Error: Could not locate CREATE start for '$table'.\n";
+             return false;
         }
+        $startPos = $m[0][1];
 
-        // Find the end of the statement (semicolon)
-        // We look for the first semicolon AFTER the start position
+        // Find end: The first ';' after startPos
+        // NOTE: This assumes no ';' inside comments/strings in the CREATE block. 
+        // For schema dumps this is usually doing fine.
         $endPos = strpos($sqlContent, ";", $startPos);
-        
         if ($endPos === false) {
             echo "[Auto-Migrate] Error: Could not find end of definition for '$table'.\n";
-            continue;
+            return false;
         }
 
-        // Extract the CREATE SQL
         $createSql = substr($sqlContent, $startPos, $endPos - $startPos + 1);
         
-        // Execute CREATE
         $pdo->exec($createSql);
         echo "[Auto-Migrate] SUCCESS: Created table '$table'.\n";
-
-
-        // Now handle INSERTs
-        // We look for "INSERT INTO `$table`"
-        // Since there might be multiple INSERT statements, we loop
-        $offset = 0;
-        $insertCount = 0;
-        while (($insertStart = strpos($sqlContent, "INSERT INTO `$table`", $offset)) !== false) {
-            // Find end of this INSERT statement
-            $insertEnd = strpos($sqlContent, ";", $insertStart);
-            if ($insertEnd === false) break;
-
-            $insertSql = substr($sqlContent, $insertStart, $insertEnd - $insertStart + 1);
-            
-            try {
-                $pdo->exec($insertSql);
-                $insertCount++;
-            } catch (PDOException $e) {
-                 // Duplicate entry or other error? Just log
-                 echo "[Auto-Migrate] Insert error for '$table': " . $e->getMessage() . "\n";
-            }
-            
-            $offset = $insertEnd + 1;
-        }
-        
-        if ($insertCount > 0) {
-            echo "[Auto-Migrate] Imported $insertCount data batches for '$table'.\n";
-        }
+        return true;
 
     } catch (PDOException $e) {
-        echo "[Auto-Migrate] CRITICAL ERROR processing '$table': " . $e->getMessage() . "\n";
+        $msg = $e->getMessage();
+        // Check for Missing Table dependency errors (1215, 1824, etc)
+        if (strpos($msg, '1215') !== false || strpos($msg, '1824') !== false) {
+            echo "[Auto-Migrate] Dependency error for '$table'. Adding to retry queue.\n";
+            $retryQueue[] = $table;
+            return false;
+        } else {
+            echo "[Auto-Migrate] CRITICAL ERROR creating '$table': $msg\n";
+            return false;
+        }
     }
 }
 
+// First Pass
+foreach ($tablesInDump as $table) {
+    createTable($pdo, $sqlContent, $table, $retryQueue);
+}
 
-// 3. Special check for admin_users (since it might have been created manually or by previous script but missing data)
-// If admin_users exists but is empty, seed it.
+// Retry Pass (Handling dependencies)
+$maxRetries = 3; // Allow 3 loops to resolve deep chains
+for ($r = 1; $r <= $maxRetries; $r++) {
+    if (empty($retryQueue)) break;
+    
+    echo "[Auto-Migrate] Retry Loop #$r for " . count($retryQueue) . " tables...\n";
+    $currentQueue = $retryQueue;
+    $retryQueue = []; // Clear for next pass
+    
+    foreach ($currentQueue as $table) {
+        createTable($pdo, $sqlContent, $table, $retryQueue);
+    }
+}
+
+if (!empty($retryQueue)) {
+    echo "[Auto-Migrate] WARNING: Failed to create the following tables after retries: " . implode(', ', $retryQueue) . "\n";
+}
+
+// 3. Import Data (Only for tables we successfully created or exist)
+// We scan for INSERTs.
+foreach ($tablesInDump as $table) {
+    if (in_array($table, $retryQueue)) continue; // Skip failed tables
+
+    // Simple check if table is empty to avoid dups
+    try {
+        $count = $pdo->query("SELECT COUNT(*) FROM `$table`")->fetchColumn();
+        if ($count > 0) continue; // Skip data import if has data
+    } catch(Exception $e) { continue; }
+
+    echo "[Auto-Migrate] Importing data for '$table'...\n";
+    
+    // Find all inserts for this table
+    $offset = 0;
+    while (($insertStart = strpos($sqlContent, "INSERT INTO `$table`", $offset)) !== false) {
+        $insertEnd = strpos($sqlContent, ";", $insertStart);
+        if ($insertEnd === false) break;
+        
+        $insertSql = substr($sqlContent, $insertStart, $insertEnd - $insertStart + 1);
+        try {
+            $pdo->exec($insertSql);
+        } catch (Exception $e) {
+            // Ignore insert errors (dups usually)
+        }
+        $offset = $insertEnd + 1;
+    }
+}
+
+// 4. Default Admin Seed
 try {
-   $chk = $pdo->query("SELECT COUNT(*) FROM admin_users");
-   if ($chk->fetchColumn() == 0) {
-       echo "[Auto-Migrate] Seeding default admin user...\n";
-       $passHash = password_hash('admin123', PASSWORD_DEFAULT);
-       $insert = "INSERT INTO `admin_users` (`username`, `email`, `password`, `role`) VALUES 
-                  ('admin', 'admin@thinqshopping.app', '$passHash', 'superadmin')";
-       $pdo->exec($insert);
+   $adminCheck = $pdo->query("SHOW TABLES LIKE 'admin_users'");
+   if ($adminCheck->rowCount() > 0) {
+       $chk = $pdo->query("SELECT COUNT(*) FROM admin_users");
+       if ($chk->fetchColumn() == 0) {
+           echo "[Auto-Migrate] Seeding default admin user...\n";
+           $passHash = password_hash('admin123', PASSWORD_DEFAULT);
+           $insert = "INSERT INTO `admin_users` (`username`, `email`, `password`, `role`) VALUES 
+                      ('admin', 'admin@thinqshopping.app', '$passHash', 'superadmin')";
+           $pdo->exec($insert);
+       }
    }
-} catch (Exception $e) { /* Ignore if table doesn't exist yet (handled above) */ }
+} catch (Exception $e) {}
 
-echo "[Auto-Migrate] Migration checks complete.\n";
-exit(0);
+$pdo->exec("SET FOREIGN_KEY_CHECKS=1");
+echo "[Auto-Migrate] Migration complete.\n";
 ?>
