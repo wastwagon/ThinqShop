@@ -1,0 +1,114 @@
+/**
+ * Additional Compatibility Styles
+ * Product card details that were missing
+ */
+
+/* Product Details Container */
+.product-details {
+    padding: var(--card-padding);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Product Category Tag */
+.product-category-tag {
+    font-size: var(--card-category-size);
+    color: var(--color-gray-500);
+    text-transform: uppercase;
+    font-weight: var(--font-weight-bold);
+    letter-spacing: 0.5px;
+    margin-bottom: var(--spacing-xs);
+}
+
+/* Product Name */
+.product-name-text {
+    font-size: var(--card-name-size);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-gray-800);
+    line-height: var(--line-height-normal);
+    margin-bottom: var(--spacing-sm);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 2.8em;
+}
+
+/* Product Rating */
+.product-rating-row {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    margin-bottom: var(--spacing-md);
+    font-size: var(--font-size-sm);
+}
+
+.rating-stars {
+    color: var(--color-star);
+    letter-spacing: 1px;
+}
+
+.rating-value {
+    color: var(--color-gray-500);
+    font-weight: var(--font-weight-semibold);
+}
+
+/* Product Price Section */
+.product-price-section {
+    margin-top: auto;
+}
+
+.price-row {
+    display: flex;
+    align-items: baseline;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-xs);
+}
+
+.current-price {
+    font-size: var(--card-price-size);
+    font-weight: var(--font-weight-extrabold);
+    color: var(--color-primary);
+}
+
+.original-price {
+    font-size: var(--card-price-old-size);
+    color: var(--color-gray-400);
+    text-decoration: line-through;
+    font-weight: var(--font-weight-medium);
+}
+
+/* Stock Status */
+.stock-status {
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.stock-status.in-stock {
+    color: var(--color-success);
+}
+
+.stock-status.low-stock {
+    color: var(--color-warning);
+}
+
+.stock-status.out-of-stock {
+    color: var(--color-danger);
+}
+
+/* Product Discount Badge */
+.product-discount-badge {
+    position: absolute;
+    top: var(--spacing-sm);
+    left: var(--spacing-sm);
+    background: var(--color-danger);
+    color: var(--color-white);
+    padding: 4px 10px;
+    border-radius: var(--border-radius-sm);
+    font-size: var(--card-category-size);
+    font-weight: var(--font-weight-extrabold);
+    letter-spacing: 0.3px;
+}

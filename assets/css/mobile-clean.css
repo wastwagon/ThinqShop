@@ -1,0 +1,589 @@
+/**
+ * Mobile-First Clean Design System
+ * ThinQShopping - Apple App Store Compliant
+ * NO SHADOWS | NO GRADIENTS | CLEAN & FLAT
+ */
+
+:root {
+    /* Brand Colors - Clean Flat Design */
+    --primary: #0e2945;
+    --primary-light: #1a3a5a;
+    --primary-lighter: #e8eef5;
+    --primary-lightest: #f5f8fb;
+
+    /* Neutral Colors */
+    --neutral-900: #1a1a1a;
+    --neutral-800: #2d2d2d;
+    --neutral-700: #4a4a4a;
+    --neutral-600: #6b6b6b;
+    --neutral-500: #9ca3af;
+    --neutral-400: #b8b8b8;
+    --neutral-300: #d1d5db;
+    --neutral-200: #e5e7eb;
+    --neutral-100: #f3f4f6;
+    --neutral-50: #f9fafb;
+
+    /* Semantic Colors */
+    --white: #ffffff;
+    --success: #10b981;
+    --error: #ef4444;
+    --warning: #f59e0b;
+    --info: #3b82f6;
+
+    /* Spacing Scale */
+    --space-1: 0.25rem;
+    /* 4px */
+    --space-2: 0.5rem;
+    /* 8px */
+    --space-3: 0.75rem;
+    /* 12px */
+    --space-4: 1rem;
+    /* 16px */
+    --space-5: 1.5rem;
+    /* 24px */
+    --space-6: 2rem;
+    /* 32px */
+    --space-8: 3rem;
+    /* 48px */
+    --space-10: 4rem;
+    /* 64px */
+
+    /* Border Radius */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    --radius-full: 9999px;
+
+    /* Typography */
+    --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+    /* Touch Targets - iOS Standards */
+    --touch-target-min: 44px;
+    --touch-target-comfortable: 48px;
+
+    /* Transitions */
+    --transition-fast: 150ms ease;
+    --transition-base: 200ms ease;
+    --transition-slow: 300ms ease;
+}
+
+/* Reset & Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    width: 100%;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+}
+
+body {
+    font-family: var(--font-family);
+    color: var(--neutral-900);
+    line-height: 1.6;
+    background-color: var(--white);
+    width: 100%;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Mobile-First User Sidebar - COMPACT & FIXED */
+.user-sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: 280px;
+    background: #0e2945 !important;
+    z-index: 1000;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0;
+    padding-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    transition: transform var(--transition-base);
+    /* NO box-shadow */
+    /* NO gradient */
+    /* NO transparency */
+}
+
+/* Desktop: Sidebar always visible, full height */
+@media (min-width: 992px) {
+    .user-sidebar {
+        transform: translateX(0);
+        height: 100vh !important;
+    }
+}
+
+/* Mobile: Sidebar hidden by default, accessible via hamburger */
+@media (max-width: 991.98px) {
+        height: calc(100vh - 75px) !important; /* Account for bottom menu */
+        max-height: calc(100vh - 75px) !important;
+        /* Ensure it's accessible when toggled */
+    }
+
+    .user-sidebar.active {
+        transform: translateX(0);
+        /* NO box-shadow even when active */
+    }
+}
+
+/* Sidebar Scrollbar */
+.user-sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.user-sidebar::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.user-sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+}
+
+/* Logo Section */
+.user-sidebar .logo-section {
+    padding: var(--space-6) var(--space-5);
+    margin-bottom: var(--space-4);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--white);
+}
+
+.user-sidebar .logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: transform var(--transition-base);
+}
+
+.user-sidebar .logo:hover {
+    transform: scale(1.02);
+}
+
+.user-sidebar .logo img {
+    height: 50px;
+    width: auto;
+    max-width: 100%;
+}
+
+/* Menu Section */
+.user-sidebar .menu-section {
+    padding: var(--space-4) var(--space-3);
+    flex: 1;
+}
+
+.user-sidebar .section-title {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: var(--space-4);
+    padding: 0 var(--space-4);
+}
+
+/* Menu Items - Touch Optimized */
+.user-sidebar .menu-item {
+    display: flex;
+    align-items: center;
+    padding: var(--space-3) var(--space-4);
+    margin-bottom: var(--space-2);
+    border-radius: var(--radius-lg);
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    transition: all var(--transition-base);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    position: relative;
+    /* Minimum touch target */
+    min-height: var(--touch-target-min);
+    /* NO box-shadow */
+}
+
+/* Active indicator - simple border instead of shadow */
+.user-sidebar .menu-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--white);
+    transform: scaleY(0);
+    transition: transform var(--transition-base);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.user-sidebar .menu-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--white);
+}
+
+.user-sidebar .menu-item:hover::before {
+    transform: scaleY(1);
+}
+
+.user-sidebar .menu-item.active {
+    background: rgba(255, 255, 255, 0.15);
+    color: var(--white);
+    font-weight: 600;
+    /* NO box-shadow */
+}
+
+.user-sidebar .menu-item.active::before {
+    transform: scaleY(1);
+}
+
+.user-sidebar .menu-item i {
+    width: 24px;
+    margin-right: var(--space-3);
+    text-align: center;
+    font-size: 1.125rem;
+    transition: transform var(--transition-base);
+}
+
+.user-sidebar .menu-item:hover i,
+.user-sidebar .menu-item.active i {
+    transform: scale(1.1);
+}
+
+/* Profile Section */
+.user-sidebar .profile-section {
+    margin-top: auto;
+    padding: var(--space-5);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.user-sidebar .profile-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: var(--space-4);
+    padding: var(--space-4);
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-lg);
+    transition: background var(--transition-base);
+    /* NO backdrop-filter for better performance */
+}
+
+.user-sidebar .profile-info:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.user-sidebar .profile-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-full);
+    background: rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    font-weight: 700;
+    margin-right: var(--space-3);
+    flex-shrink: 0;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    font-size: 1.125rem;
+    /* NO box-shadow */
+}
+
+.user-sidebar .profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--radius-full);
+}
+
+.user-sidebar .profile-details {
+    flex: 1;
+    min-width: 0;
+}
+
+.user-sidebar .profile-name {
+    font-weight: 600;
+    color: var(--white);
+    margin: 0 0 var(--space-1) 0;
+    font-size: 0.9375rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user-sidebar .profile-role {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
+}
+
+/* Logout Button - Clean Flat Design with Brand Color */
+.user-sidebar .logout-btn {
+    width: 100%;
+    padding: var(--space-3);
+    background: rgba(14, 41, 69, 0.3);
+    color: var(--white);
+    border: 1px solid rgba(14, 41, 69, 0.5);
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    transition: all var(--transition-base);
+    text-decoration: none;
+    min-height: var(--touch-target-min);
+    /* NO box-shadow */
+    /* NO gradient */
+}
+
+.user-sidebar .logout-btn:hover {
+    background: var(--primary);
+    border-color: var(--primary);
+    /* NO box-shadow */
+}
+
+/* Sidebar Overlay */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    transition: opacity var(--transition-base);
+    /* NO backdrop-filter for better performance */
+}
+
+.sidebar-overlay.active {
+    display: block;
+}
+
+/* User Header - Clean Flat Design */
+.user-header {
+    position: fixed;
+    top: 0;
+    left: 280px;
+    right: 0;
+    height: 80px;
+    background: var(--white);
+    z-index: 998;
+    padding: 0 var(--space-6);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--neutral-200);
+    transition: left var(--transition-base);
+    /* NO box-shadow */
+    /* NO backdrop-filter */
+}
+
+@media (max-width: 991.98px) {
+    .user-header {
+        left: 0;
+        padding: 0 var(--space-4);
+    }
+}
+
+/* Hamburger Toggle - Touch Optimized */
+.user-header .sidebar-toggle {
+    display: none;
+    width: var(--touch-target-comfortable);
+    height: var(--touch-target-comfortable);
+    border: 1px solid var(--neutral-200);
+    background: var(--white);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    color: var(--neutral-700);
+    transition: all var(--transition-base);
+    /* NO box-shadow */
+}
+
+.user-header .sidebar-toggle:hover {
+    background: var(--neutral-50);
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.user-header .sidebar-toggle:active {
+    transform: scale(0.95);
+}
+
+@media (max-width: 991.98px) {
+    .user-header .sidebar-toggle {
+        display: flex;
+    }
+}
+
+/* Main Content Area */
+.user-main-content {
+    margin-left: 280px;
+    margin-top: 80px;
+    padding: var(--space-6);
+    min-height: calc(100vh - 80px);
+    transition: margin-left var(--transition-base);
+}
+
+@media (max-width: 991.98px) {
+    .user-main-content {
+        margin-left: 0;
+        padding: var(--space-4);
+        /* Add bottom padding for mobile bottom nav */
+        padding-bottom: calc(75px + var(--space-4) + env(safe-area-inset-bottom));
+    }
+}
+
+/* Mobile Bottom Navigation - Enhanced with Solid Background */
+.mobile-bottom-menu {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1030;
+    background: #0e2945 !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: var(--space-3) var(--space-2);
+    padding-bottom: calc(var(--space-3) + env(safe-area-inset-bottom));
+    /* NO box-shadow */
+    /* NO gradient */
+    /* NO transparency */
+}
+
+/* Hide on desktop */
+@media (min-width: 992px) {
+    .mobile-bottom-menu {
+        display: none !important;
+    }
+}
+
+.mobile-menu-container {
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.mobile-menu-items {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+/* Mobile Menu Item - Touch Optimized */
+.mobile-menu-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-2) var(--space-3);
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    border-radius: var(--radius-lg);
+    transition: all var(--transition-base);
+    flex: 1;
+    min-width: 0;
+    /* Minimum touch target */
+    min-height: var(--touch-target-comfortable);
+    -webkit-tap-highlight-color: transparent;
+}
+
+.mobile-menu-item:active {
+    transform: scale(0.95);
+}
+
+.menu-item-icon-wrapper {
+    width: var(--touch-target-comfortable);
+    height: var(--touch-target-comfortable);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-lg);
+    background: transparent;
+    transition: all var(--transition-base);
+    margin-bottom: var(--space-1);
+}
+
+.mobile-menu-item i {
+    font-size: 1.5rem;
+    transition: transform var(--transition-base);
+    color: inherit;
+}
+
+.menu-item-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: inherit;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+/* Active State - Clean Design */
+.mobile-menu-item.active {
+    color: var(--white);
+}
+
+.mobile-menu-item.active .menu-item-icon-wrapper {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.mobile-menu-item.active i {
+    transform: scale(1.1);
+}
+
+.mobile-menu-item.active .menu-item-label {
+    font-weight: 600;
+}
+
+/* Top indicator for active item */
+.menu-item-indicator {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%) scaleX(0);
+    width: 32px;
+    height: 3px;
+    background: var(--white);
+    border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+    transition: transform var(--transition-base);
+}
+
+.mobile-menu-item.active .menu-item-indicator {
+    transform: translateX(-50%) scaleX(1);
+}
+
+/* Smaller screens optimization */
+@media (max-width: 375px) {
+    .menu-item-icon-wrapper {
+        width: var(--touch-target-min);
+        height: var(--touch-target-min);
+    }
+
+    .mobile-menu-item i {
+        font-size: 1.35rem;
+    }
+
+    .menu-item-label {
+        font-size: 0.65rem;
+    }
+}
+
+/* Ensure body has bottom padding on mobile */
+@media (max-width: 991.98px) {
+    body {
+        padding-bottom: calc(75px + env(safe-area-inset-bottom));
+    }
+}

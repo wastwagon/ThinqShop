@@ -1,0 +1,206 @@
+/**
+ * Buttons Component
+ * ThinQShopping Platform
+ * All button styles in one place
+ */
+
+/* ===== BASE BUTTON ===== */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    padding: 4px 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: normal;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: var(--transition-base);
+    text-decoration: none;
+    white-space: nowrap;
+    line-height: 1.4;
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ===== BUTTON VARIANTS ===== */
+
+/* Primary Button */
+.btn--primary {
+    background: var(--color-primary);
+    color: var(--color-white);
+}
+
+.btn--primary:hover:not(:disabled) {
+    background: var(--color-primary-light);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Secondary Button */
+.btn--secondary {
+    background: var(--color-white);
+    color: var(--color-primary);
+    border: var(--border-width-medium) solid var(--color-primary);
+}
+
+.btn--secondary:hover:not(:disabled) {
+    background: var(--color-gray-50);
+}
+
+/* Success Button */
+.btn--success {
+    background: var(--color-success);
+    color: var(--color-white);
+}
+
+.btn--success:hover:not(:disabled) {
+    background: var(--color-success-dark);
+}
+
+/* Danger Button */
+.btn--danger {
+    background: var(--color-danger);
+    color: var(--color-white);
+}
+
+.btn--danger:hover:not(:disabled) {
+    background: var(--color-danger-dark);
+}
+
+/* Warning Button */
+.btn--warning {
+    background: var(--color-warning);
+    color: var(--color-white);
+}
+
+.btn--warning:hover:not(:disabled) {
+    background: var(--color-warning-dark);
+}
+
+/* Ghost Button */
+.btn--ghost {
+    background: transparent;
+    color: var(--color-primary);
+    border: var(--border-width-thin) solid var(--color-gray-200);
+}
+
+.btn--ghost:hover:not(:disabled) {
+    background: var(--color-gray-50);
+    border-color: var(--color-gray-300);
+}
+
+/* ===== BUTTON SIZES ===== */
+
+/* Small Button (Standard Mobile Size) */
+.btn--sm {
+    padding: 2px 8px;
+    font-size: 0.75rem;
+}
+
+/* Large Button */
+.btn--lg {
+    padding: 0.75rem 1.25rem;
+    font-size: var(--font-size-lg);
+}
+
+/* Full Width Button */
+.btn--block {
+    width: 100%;
+}
+
+/* ===== ICON BUTTONS ===== */
+.btn--icon {
+    padding: var(--spacing-sm);
+    aspect-ratio: 1/1;
+}
+
+.btn--icon-sm {
+    padding: var(--spacing-xs);
+    font-size: var(--font-size-sm);
+}
+
+/* ===== BUTTON GROUPS ===== */
+.btn-group {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+.btn-group--vertical {
+    flex-direction: column;
+}
+
+/* ===== QUANTITY BUTTONS ===== */
+.qty-btn {
+    width: var(--qty-btn-size);
+    height: var(--qty-btn-size);
+    border: var(--border-width-thin) solid var(--color-gray-200);
+    background: var(--color-white);
+    border-radius: var(--border-radius-sm);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-primary);
+    cursor: pointer;
+    transition: var(--transition-base);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.qty-btn:hover {
+    background: var(--color-gray-50);
+    border-color: var(--color-gray-300);
+}
+
+.qty-btn:active {
+    transform: scale(0.95);
+}
+
+/* ===== FILTER CHIPS ===== */
+.filter-chip {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    background: var(--color-gray-50);
+    border: var(--border-width-thin) solid var(--color-gray-200);
+    border-radius: var(--border-radius-full);
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-gray-600);
+    text-decoration: none;
+    transition: var(--transition-base);
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.filter-chip:hover,
+.filter-chip--active {
+    background: var(--color-primary);
+    color: var(--color-white);
+    border-color: var(--color-primary);
+}
+
+/* ===== CATEGORY PILLS ===== */
+.category-pill {
+    flex: 0 0 auto;
+    padding: var(--spacing-sm) 1.125rem;
+    background: var(--color-gray-100);
+    border: var(--border-width-thin) solid var(--color-gray-200);
+    border-radius: var(--border-radius-full);
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-gray-600);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: var(--transition-base);
+}
+
+.category-pill:hover {
+    background: var(--color-primary);
+    color: var(--color-white);
+    border-color: var(--color-primary);
+}

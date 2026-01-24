@@ -1,0 +1,44 @@
+# Ignore environment files
+.env
+.env*
+
+
+# Ignore Docker volumes
+mysql_data/
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Ignore IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Ignore logs
+*.log
+logs/
+
+# Ignore temporary files
+tmp/
+temp/
+cache/
+
+# Ignore uploaded files (keep structure, ignore content)
+# uploads/*
+# !uploads/.gitkeep
+# assets/uploads/*
+# !assets/uploads/.gitkeep
+
+# Ignore vendor directories
+vendor/
+node_modules/
+
+# Ignore backup files
+*.sql.backup
+*.bak
+backup_*.sql
+
+# Ignore large backup copies
+Copies/

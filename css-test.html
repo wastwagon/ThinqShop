@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Refactoring Test - ThinQShopping</title>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    
+    <!-- NEW CSS - Refactored -->
+    <link rel="stylesheet" href="assets/css/main-new.css">
+    
+    <style>
+        /* Test page specific styles */
+        .test-header {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .test-section {
+            margin-bottom: 3rem;
+        }
+        
+        .test-section-title {
+            background: #0e2945;
+            color: white;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+            font-weight: 800;
+        }
+        
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        @media (min-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        .comparison-label {
+            background: #f1f5f9;
+            padding: 0.5rem 1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Test Header -->
+    <div class="test-header">
+        <h1>🎨 CSS Refactoring Test Page</h1>
+        <p>Testing new organized CSS structure with BEM naming</p>
+        <p><strong>Status:</strong> Test Mode - Not affecting live site</p>
+    </div>
+
+    <div class="container">
+        <!-- Section 1: Product Cards -->
+        <div class="test-section">
+            <div class="test-section-title">
+                1. Product Cards (New BEM Structure)
+            </div>
+            
+            <div class="product-grid">
+                <!-- Product Card 1 -->
+                <a href="#" class="product-card">
+                    <div class="product-card__image">
+                        <img src="https://via.placeholder.com/300x300/0e2945/ffffff?text=Product+1" alt="Product 1">
+                        <div class="product-card__discount-badge">-20%</div>
+                    </div>
+                    <div class="product-card__content">
+                        <div class="product-card__category">Electronics</div>
+                        <div class="product-card__name">Wireless Headphones Premium Quality</div>
+                        <div class="product-card__rating">
+                            <span class="product-card__stars">★★★★★</span>
+                            <span class="product-card__rating-value">4.5</span>
+                        </div>
+                        <div class="product-card__price-section">
+                            <div class="product-card__price-row">
+                                <span class="product-card__price">₵118.29</span>
+                                <span class="product-card__price--old">₵129.00</span>
+                            </div>
+                            <div class="product-card__stock product-card__stock--in-stock">In Stock</div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Product Card 2 -->
+                <a href="#" class="product-card">
+                    <div class="product-card__image">
+                        <img src="https://via.placeholder.com/300x300/059669/ffffff?text=Product+2" alt="Product 2">
+                    </div>
+                    <div class="product-card__content">
+                        <div class="product-card__category">Fashion</div>
+                        <div class="product-card__name">Designer Sunglasses</div>
+                        <div class="product-card__rating">
+                            <span class="product-card__stars">★★★★☆</span>
+                            <span class="product-card__rating-value">4.0</span>
+                        </div>
+                        <div class="product-card__price-section">
+                            <div class="product-card__price-row">
+                                <span class="product-card__price">₵82.79</span>
+                            </div>
+                            <div class="product-card__stock product-card__stock--in-stock">In Stock</div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Product Card 3 -->
+                <a href="#" class="product-card">
+                    <div class="product-card__image">
+                        <img src="https://via.placeholder.com/300x300/d97706/ffffff?text=Product+3" alt="Product 3">
+                        <div class="product-card__discount-badge">-10%</div>
+                    </div>
+                    <div class="product-card__content">
+                        <div class="product-card__category">Health</div>
+                        <div class="product-card__name">Pill Organizer</div>
+                        <div class="product-card__price-section">
+                            <div class="product-card__price-row">
+                                <span class="product-card__price">₵8.99</span>
+                                <span class="product-card__price--old">₵9.99</span>
+                            </div>
+                            <div class="product-card__stock product-card__stock--low-stock">Low Stock</div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Product Card 4 -->
+                <a href="#" class="product-card">
+                    <div class="product-card__image">
+                        <img src="https://via.placeholder.com/300x300/dc2626/ffffff?text=Product+4" alt="Product 4">
+                    </div>
+                    <div class="product-card__content">
+                        <div class="product-card__category">Electronics</div>
+                        <div class="product-card__name">PS5 Slim - Digital Version</div>
+                        <div class="product-card__price-section">
+                            <div class="product-card__price-row">
+                                <span class="product-card__price">₵6,500.00</span>
+                            </div>
+                            <div class="product-card__stock product-card__stock--out-of-stock">Out of Stock</div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Section 2: Buttons -->
+        <div class="test-section">
+            <div class="test-section-title">
+                2. Buttons (All Variants)
+            </div>
+            
+            <div class="d-flex flex-wrap gap-md mb-lg">
+                <button class="btn btn--primary">
+                    <i class="fas fa-shopping-cart"></i> Add to Cart
+                </button>
+                <button class="btn btn--secondary">Buy Now</button>
+                <button class="btn btn--success">Confirm</button>
+                <button class="btn btn--danger">Delete</button>
+                <button class="btn btn--warning">Warning</button>
+                <button class="btn btn--ghost">Cancel</button>
+            </div>
+            
+            <div class="d-flex flex-wrap gap-md mb-lg">
+                <button class="btn btn--primary btn--sm">Small Button</button>
+                <button class="btn btn--primary">Regular Button</button>
+                <button class="btn btn--primary btn--lg">Large Button</button>
+            </div>
+            
+            <button class="btn btn--primary btn--block mb-md">Full Width Button</button>
+            
+            <div class="d-flex gap-md">
+                <button class="qty-btn">−</button>
+                <input type="number" class="qty-input" value="1">
+                <button class="qty-btn">+</button>
+            </div>
+        </div>
+
+        <!-- Section 3: Forms -->
+        <div class="test-section">
+            <div class="test-section-title">
+                3. Form Elements
+            </div>
+            
+            <div class="comparison">
+                <div>
+                    <div class="comparison-label">Text Input</div>
+                    <div class="form-group">
+                        <label class="form-label form-label--required">Email Address</label>
+                        <input type="email" class="form-input" placeholder="Enter your email">
+                        <span class="form-help">We'll never share your email</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="comparison-label">Select</div>
+                    <div class="form-group">
+                        <label class="form-label">Category</label>
+                        <select class="form-input form-select">
+                            <option>Electronics</option>
+                            <option>Fashion</option>
+                            <option>Health</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Message</label>
+                <textarea class="form-input form-textarea" placeholder="Enter your message"></textarea>
+            </div>
+            
+            <div class="search-input-group">
+                <input type="search" class="form-input" placeholder="Search products...">
+                <button class="btn btn--primary">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Section 4: Filter Chips & Category Pills -->
+        <div class="test-section">
+            <div class="test-section-title">
+                4. Filter Chips & Category Pills
+            </div>
+            
+            <div class="comparison-label">Filter Chips</div>
+            <div class="d-flex flex-wrap gap-sm mb-xl">
+                <a href="#" class="filter-chip filter-chip--active">All</a>
+                <a href="#" class="filter-chip">Electronics</a>
+                <a href="#" class="filter-chip">Fashion</a>
+                <a href="#" class="filter-chip">Health</a>
+                <a href="#" class="filter-chip">🔥 Deals</a>
+            </div>
+            
+            <div class="comparison-label">Category Pills</div>
+            <div class="category-scroll">
+                <a href="#" class="category-pill">Electronics (45)</a>
+                <a href="#" class="category-pill">Fashion (32)</a>
+                <a href="#" class="category-pill">Health & Wellness (28)</a>
+                <a href="#" class="category-pill">Photography (15)</a>
+                <a href="#" class="category-pill">Gaming (22)</a>
+            </div>
+        </div>
+
+        <!-- Section 5: Navigation Elements -->
+        <div class="test-section">
+            <div class="test-section-title">
+                5. Navigation Elements
+            </div>
+            
+            <div class="comparison-label">Breadcrumb</div>
+            <nav class="breadcrumb mb-lg">
+                <a href="#">Home</a>
+                <span class="breadcrumb__separator">›</span>
+                <a href="#">Shop</a>
+                <span class="breadcrumb__separator">›</span>
+                <span class="breadcrumb__current">Product Name</span>
+            </nav>
+            
+            <div class="comparison-label">Section Header</div>
+            <div class="section-header">
+                <h2 class="section-title">Trending Now</h2>
+                <a href="#" class="section-link">View All →</a>
+            </div>
+            
+            <div class="comparison-label">Pagination</div>
+            <div class="pagination">
+                <button class="pagination__btn" disabled>← Previous</button>
+                <span class="pagination__btn pagination__btn--active">Page 1 of 5</span>
+                <button class="pagination__btn">Next →</button>
+            </div>
+        </div>
+
+        <!-- Section 6: Utility Classes -->
+        <div class="test-section">
+            <div class="test-section-title">
+                6. Utility Classes
+            </div>
+            
+            <div class="comparison">
+                <div>
+                    <div class="comparison-label">Text Utilities</div>
+                    <p class="text-xs">Extra Small Text</p>
+                    <p class="text-sm">Small Text</p>
+                    <p class="text-base">Base Text</p>
+                    <p class="text-lg">Large Text</p>
+                    <p class="text-xl">Extra Large Text</p>
+                    <p class="text-2xl">2XL Text</p>
+                </div>
+                
+                <div>
+                    <div class="comparison-label">Color Utilities</div>
+                    <p class="text-primary">Primary Color</p>
+                    <p class="text-success">Success Color</p>
+                    <p class="text-warning">Warning Color</p>
+                    <p class="text-danger">Danger Color</p>
+                    <p class="text-muted">Muted Color</p>
+                </div>
+            </div>
+            
+            <div class="comparison">
+                <div>
+                    <div class="comparison-label">Spacing</div>
+                    <div class="bg-primary text-white p-xs mb-xs">Padding XS</div>
+                    <div class="bg-primary text-white p-sm mb-xs">Padding SM</div>
+                    <div class="bg-primary text-white p-md mb-xs">Padding MD</div>
+                    <div class="bg-primary text-white p-lg">Padding LG</div>
+                </div>
+                
+                <div>
+                    <div class="comparison-label">Borders & Shadows</div>
+                    <div class="border rounded-md p-md mb-md">Border + Rounded</div>
+                    <div class="shadow-md p-md mb-md">Shadow Medium</div>
+                    <div class="shadow-lg p-md">Shadow Large</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 7: Stock Badges -->
+        <div class="test-section">
+            <div class="test-section-title">
+                7. Stock Status Badges
+            </div>
+            
+            <div class="d-flex flex-wrap gap-md">
+                <span class="stock-badge stock-badge--in-stock">
+                    <i class="fas fa-check-circle"></i> In Stock
+                </span>
+                <span class="stock-badge stock-badge--low-stock">
+                    <i class="fas fa-exclamation-triangle"></i> Low Stock
+                </span>
+                <span class="stock-badge stock-badge--out-of-stock">
+                    <i class="fas fa-times-circle"></i> Out of Stock
+                </span>
+            </div>
+        </div>
+
+        <!-- Summary -->
+        <div class="test-section">
+            <div class="test-section-title">
+                ✅ Test Summary
+            </div>
+            
+            <div class="bg-white p-lg rounded-lg shadow-md">
+                <h3 class="text-2xl font-bold mb-md">What You're Seeing:</h3>
+                <ul style="list-style: disc; padding-left: 2rem; line-height: 1.8;">
+                    <li><strong>New CSS Structure:</strong> All styles from organized files (core/components/pages)</li>
+                    <li><strong>BEM Naming:</strong> product-card__image, btn--primary, etc.</li>
+                    <li><strong>Design System:</strong> Consistent colors, sizes, spacing from variables.css</li>
+                    <li><strong>Utility Classes:</strong> Reusable helpers (d-flex, gap-md, text-primary, etc.)</li>
+                    <li><strong>No Inline Styles:</strong> Everything in CSS files</li>
+                    <li><strong>Mobile-First:</strong> Responsive and optimized</li>
+                </ul>
+                
+                <h3 class="text-2xl font-bold mt-xl mb-md">Key Improvements:</h3>
+                <ul style="list-style: disc; padding-left: 2rem; line-height: 1.8;">
+                    <li>✅ Product card prices: <strong>12.25px</strong> (was 20px)</li>
+                    <li>✅ Buttons: <strong>0.5rem × 0.75rem padding</strong> (was 1rem)</li>
+                    <li>✅ Quantity controls: <strong>32px</strong> (was 44px)</li>
+                    <li>✅ All sizes consistent across pages</li>
+                    <li>✅ No conflicts or duplicates</li>
+                    <li>✅ Easy to maintain and extend</li>
+                </ul>
+                
+                <div class="mt-xl p-md bg-gray-50 rounded-md">
+                    <p class="font-bold mb-sm">📝 Next Steps:</p>
+                    <ol style="list-style: decimal; padding-left: 2rem; line-height: 1.8;">
+                        <li>Review this test page</li>
+                        <li>Compare with your current site</li>
+                        <li>Confirm sizes and styling</li>
+                        <li>Then we'll migrate your actual pages</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="height: 100px;"></div>
+</body>
+</html>

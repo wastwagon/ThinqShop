@@ -1,0 +1,57 @@
+/* User Procurement Quote View Page Styles */
+
+.quote-header-premium {
+    background: #fff;
+    border-radius: 24px;
+    padding: 2.5rem;
+    border: 1px solid #f1f5f9;
+    box-shadow: 0 4px 15px rgba(14, 41, 69, 0.03);
+}
+
+.valuation-card-premium {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #1a3a5a 100%);
+    border-radius: 20px;
+    padding: 2rem;
+    color: white;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.card-premium-view {
+    background: #fff;
+    border-radius: 20px;
+    border: 1px solid #f1f5f9;
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.meta-label-premium {
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #94a3b8;
+    letter-spacing: 1px;
+    margin-bottom: 0.25rem;
+    display: block;
+}
+
+.file-card-premium {
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+    transition: all 0.2s;
+}
+
+.file-card-premium:hover {
+    border-color: var(--primary-color);
+    box-shadow: 0 10px 25px rgba(14, 41, 69, 0.05);
+}
+
+.status-q-badge {
+    padding: 0.6rem 1.25rem;
+    border-radius: 30px;
+    font-weight: 800;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}

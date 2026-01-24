@@ -1,0 +1,284 @@
+/**
+ * PROFESSIONAL UI STANDARD (Global Desktop & Consistency)
+ * Designed for ThinQShopping Premium Aesthetic
+ * 
+ * CORE PRINCIPLES:
+ * 1. Ultra-Refined Typography (Compact & Elegant)
+ * 2. Standardized Button Metrics (Non-Bulky)
+ * 3. Consistent Brand Navy (#0e2945)
+ */
+
+/* ============================================
+   GLOBAL TYPOGRAPHY (Desktop min-width 992px)
+   ============================================ */
+@media (min-width: 992px) {
+    body {
+        font-size: 14px !important;
+        line-height: 1.5 !important;
+    }
+
+    h1,
+    .h1,
+    .page-title {
+        font-size: 22px !important;
+        font-weight: 700 !important;
+        letter-spacing: -0.02em !important;
+        margin-bottom: 1.5rem !important;
+    }
+
+    h2,
+    .h2,
+    .section-title,
+    .data-section-title {
+        font-size: 18px !important;
+        font-weight: 700 !important;
+        margin-bottom: 1.25rem !important;
+    }
+
+    h3,
+    .h3 {
+        font-size: 16px !important;
+        font-weight: 600 !important;
+    }
+
+    /* Dashboard Metrics Refinement */
+    .metric-value,
+    .count,
+    .metric-card .metric-value {
+        font-size: 22px !important;
+        font-weight: 800 !important;
+        color: #0e2945 !important;
+    }
+
+    .metric-title,
+    .label,
+    .metric-card .metric-title {
+        font-size: 11px !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.05em !important;
+        font-weight: 600 !important;
+        color: #64748b !important;
+    }
+
+    /* Product Grid Refinement */
+    .product-name,
+    .product-title-premium,
+    .deal-name a {
+        font-size: 14px !important;
+        font-weight: 600 !important;
+        line-height: 1.3 !important;
+    }
+
+    .product-price,
+    .deal-current-price {
+        font-size: 16px !important;
+        font-weight: 700 !important;
+        color: #0e2945 !important;
+    }
+
+    .deal-original-price {
+        font-size: 13px !important;
+    }
+}
+
+/* ============================================
+   GLOBAL BUTTON CONSISTENCY (All Sizes)
+   ============================================ */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700 !important;
+    border-radius: 4px !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    border-width: 1.5px !important;
+}
+
+/* Primary Button Standardization (Outline to Solid) */
+.btn-primary,
+.btn-main,
+.btn-submit,
+.btn-checkout,
+.btn-add-cart {
+    background: transparent !important;
+    color: #0e2945 !important;
+    border: 1.5px solid #0e2945 !important;
+}
+
+.btn-primary:hover,
+.btn-main:hover,
+.btn-submit:hover,
+.btn-checkout:hover,
+.btn-add-cart:hover {
+    background: #0e2945 !important;
+    color: #ffffff !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(14, 41, 69, 0.15) !important;
+}
+
+/* Secondary/Alternative Button Branding */
+.btn-secondary {
+    background: transparent !important;
+    color: #64748b !important;
+    border: 1.5px solid #e2e8f0 !important;
+}
+
+.btn-secondary:hover {
+    background: #f8fafc !important;
+    color: #0e2945 !important;
+    border-color: #0e2945 !important;
+}
+
+/* Desktop Standard Button Metrics */
+@media (min-width: 992px) {
+    .btn:not(.btn-sm):not(.carousel-nav-btn) {
+        height: 34px !important;
+        /* Compact Height */
+        padding: 0 1rem !important;
+        font-size: 12px !important;
+    }
+
+    .btn-lg {
+        height: 40px !important;
+        padding: 0 1.25rem !important;
+        font-size: 13px !important;
+    }
+
+    /* Special specific button overrides */
+    .btn-add-cart {
+        height: 34px !important;
+        min-width: 120px !important;
+        font-size: 12px !important;
+    }
+}
+
+/* Dashboard Sidebar Buttons */
+.user-sidebar .menu-item {
+    font-size: 13px !important;
+    min-height: 40px !important;
+    padding: 8px 12px !important;
+}
+
+/* ============================================
+   TABLES & DATA
+   ============================================ */
+.data-table th,
+.table th {
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    padding: 12px 10px !important;
+}
+
+.data-table td,
+.table td {
+    font-size: 13px !important;
+    padding: 10px !important;
+}
+
+/* ============================================
+   FORMS
+   ============================================ */
+.form-label {
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    margin-bottom: 0.5rem !important;
+}
+
+.form-control,
+.form-select {
+    font-size: 13px !important;
+    height: 38px !important;
+    border-radius: 6px !important;
+}
+
+/* ============================================
+   DASHBOARD COMPONENTS (Shared)
+   ============================================ */
+
+/* Metric Cards */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.metric-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid #f1f5f9;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.metric-card:hover {
+    transform: translateY(-3px);
+    border-color: #0e2945;
+}
+
+.metric-card .metric-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+/* Quick Action Cards */
+.quick-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.quick-action-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 1.25rem;
+    text-align: center;
+    text-decoration: none !important;
+    color: #0e2945 !important;
+    border: 1px solid #f1f5f9;
+    transition: all 0.2s ease;
+}
+
+.quick-action-card:hover {
+    background: #0e2945;
+    color: #ffffff !important;
+    transform: translateY(-2px);
+}
+
+.quick-action-card i {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+    display: block;
+}
+
+.quick-action-card .action-title {
+    font-size: 11px;
+    font-weight: 700;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Responsive Overrides within Dashboard */
+@media (max-width: 991.98px) {
+    .metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .quick-actions {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+}

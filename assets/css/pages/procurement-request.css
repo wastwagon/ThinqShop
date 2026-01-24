@@ -1,0 +1,23 @@
+/* Procurement Request Styles */
+
+.form-check-card {
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.form-check-card:hover {
+    background-color: #f8f9fa;
+    border-color: #0d6efd !important;
+}
+
+.form-check-input:checked~.form-check-label {
+    color: #0d6efd;
+}
+
+.product-item {
+    border: 1px solid #dee2e6;
+}
+
+.product-item .card-header {
+    background-color: #f8f9fa;
+}

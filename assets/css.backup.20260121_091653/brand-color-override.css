@@ -1,0 +1,351 @@
+/**
+ * Brand Color Override - #0e2945
+ * Clean, Centered Search Bar
+ * Mobile Bottom Menu Visibility Fix
+ */
+
+/* Override all primary colors to #0e2945 */
+:root {
+    --primary-color: #0e2945 !important;
+    --theme-dark: #0e2945 !important;
+    --bs-primary: #0e2945 !important;
+    --primary: #0e2945 !important;
+    --primary-dark: #0a1f35 !important;
+    --primary-light: #1a3a5a !important;
+}
+
+/* Clean, Centered, Appealing Search Bar */
+.search-form {
+    width: 100%;
+    max-width: 600px !important;
+    position: relative;
+    margin: 0 auto !important;
+    display: flex;
+    justify-content: center;
+    padding: 0 1rem;
+}
+
+.search-input-group {
+    border-radius: 50px !important;
+    overflow: hidden;
+    border: 2px solid #e5e7eb !important;
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    box-shadow: none !important;
+    transition: all 0.2s ease;
+    position: relative;
+    width: 100%;
+}
+
+.search-input-group:focus-within {
+    border-color: #0e2945 !important;
+    background: #ffffff;
+}
+
+.search-input {
+    border: none !important;
+    padding: 14px 24px;
+    font-size: 0.95rem;
+    outline: none;
+    flex: 1;
+    background: transparent;
+    color: #212529;
+    font-weight: 400;
+    border-radius: 50px 0 0 50px;
+}
+
+.search-input::placeholder {
+    color: #9ca3af;
+    font-weight: 400;
+}
+
+.btn-search {
+    background: #0e2945 !important;
+    color: #ffffff !important;
+    border: none !important;
+    padding: 14px 24px;
+    border-radius: 0 50px 50px 0 !important;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 60px;
+    cursor: pointer;
+}
+
+.btn-search:hover {
+    background: #0a1f35 !important;
+    color: #ffffff !important;
+}
+
+.btn-search i {
+    font-size: 1.1rem;
+    color: #ffffff !important;
+}
+
+/* Mobile Bottom Menu - Make Visible with Brand Color */
+.mobile-bottom-menu {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 1030 !important;
+    background: #0e2945 !important;
+    background-color: #0e2945 !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+    padding: 0.75rem 0.5rem !important;
+    padding-bottom: calc(0.75rem + env(safe-area-inset-bottom)) !important;
+    display: block !important;
+    opacity: 1 !important;
+}
+
+@media (min-width: 992px) {
+    .mobile-bottom-menu {
+        display: none !important;
+    }
+}
+
+/* Mobile Sidebar - Solid Background, No Transparency */
+.user-sidebar {
+    background: #0e2945 !important;
+    background-color: #0e2945 !important;
+    opacity: 1 !important;
+}
+
+/* Mobile menu container - ensure solid background */
+.mobile-menu-container {
+    background: transparent !important;
+}
+
+/* Ensure mobile menu backdrop is solid */
+.mobile-menu-backdrop {
+    background: #0e2945 !important;
+    background-color: #0e2945 !important;
+    opacity: 1 !important;
+}
+
+/* Ensure mobile menu items are visible */
+.mobile-menu-item {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.mobile-menu-item.active {
+    color: #ffffff !important;
+}
+
+.mobile-menu-item.active .menu-item-icon-wrapper {
+    background: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* All buttons use brand color */
+.btn-primary,
+.btn.btn-primary {
+    background-color: #0e2945 !important;
+    border-color: #0e2945 !important;
+    color: #ffffff !important;
+}
+
+.btn-primary:hover,
+.btn.btn-primary:hover {
+    background-color: #0a1f35 !important;
+    border-color: #0a1f35 !important;
+    color: #ffffff !important;
+}
+
+/* Main navbar brand color */
+.main-navbar {
+    background: #0e2945 !important;
+}
+
+/* Logout button - brand color instead of red */
+.user-sidebar .logout-btn,
+.logout-btn {
+    background: rgba(14, 41, 69, 0.3) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(14, 41, 69, 0.5) !important;
+}
+
+.user-sidebar .logout-btn:hover,
+.logout-btn:hover {
+    background: #0e2945 !important;
+    border-color: #0e2945 !important;
+    color: #ffffff !important;
+}
+
+/* Remove any blue (#007bff, #0d6efd) colors */
+.btn-info,
+.btn-primary.active,
+.btn-primary:active,
+.show>.btn-primary.dropdown-toggle {
+    color: #ffffff !important;
+    background-color: #0e2945 !important;
+    border-color: #0e2945 !important;
+}
+
+a.text-primary,
+.text-primary {
+    color: #0e2945 !important;
+    background-color: transparent !important;
+}
+
+.bg-primary,
+.badge-primary,
+.alert-primary {
+    background-color: #0e2945 !important;
+}
+
+.border-primary {
+    border-color: #0e2945 !important;
+}
+
+/* Active menu items - NO BLUE! */
+.menu-item.active,
+.nav-link.active,
+.sidebar-menu .active,
+.user-sidebar .menu-item.active,
+.nav-pills .nav-link.active,
+.nav-tabs .nav-link.active {
+    background: rgba(14, 41, 69, 0.15) !important;
+    background-color: rgba(14, 41, 69, 0.15) !important;
+    color: #ffffff !important;
+}
+
+/* Override Bootstrap blue */
+.btn-primary,
+.btn.btn-primary,
+button.btn-primary,
+a.btn-primary {
+    background-color: #0e2945 !important;
+    border-color: #0e2945 !important;
+    color: #ffffff !important;
+}
+
+/* Links */
+a {
+    color: #0e2945 !important;
+}
+
+a:hover {
+    color: #0a1f35 !important;
+}
+
+/* Focus states */
+.form-control:focus,
+.form-select:focus,
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #0e2945 !important;
+    box-shadow: 0 0 0 0.2rem rgba(14, 41, 69, 0.25) !important;
+}
+
+/* Checkboxes and radios */
+.form-check-input:checked {
+    background-color: #0e2945 !important;
+    border-color: #0e2945 !important;
+}
+
+/* Progress bars */
+.progress-bar {
+    background-color: #0e2945 !important;
+}
+
+/* Badges */
+.badge.bg-primary,
+.badge-primary {
+    background-color: #0e2945 !important;
+}
+
+/* Alerts */
+.alert-primary {
+    background-color: rgba(14, 41, 69, 0.1) !important;
+    border-color: #0e2945 !important;
+    color: #0e2945 !important;
+}
+
+/* List group */
+.list-group-item.active {
+    background-color: #0e2945 !important;
+    border-color: #0e2945 !important;
+}
+
+/* Dropdown */
+.dropdown-item.active,
+.dropdown-item:active {
+    background-color: #0e2945 !important;
+}
+
+/* Pagination */
+.page-item.active .page-link {
+    background-color: #0e2945 !important;
+    border-color: #0e2945 !important;
+}
+
+.page-link {
+    color: #0e2945 !important;
+}
+
+.page-link:hover {
+    color: #0a1f35 !important;
+    background-color: rgba(14, 41, 69, 0.1) !important;
+    border-color: #0e2945 !important;
+}
+
+/* Tables */
+.table-primary {
+    background-color: rgba(14, 41, 69, 0.1) !important;
+}
+
+/* Spinners */
+.spinner-border-primary,
+.spinner-grow-primary {
+    color: #0e2945 !important;
+}
+
+/* Text colors */
+.text-info,
+.text-primary {
+    color: #0e2945 !important;
+}
+
+/* Background colors */
+.bg-info,
+.bg-primary {
+    background-color: #0e2945 !important;
+}
+
+/* Border colors */
+.border-info,
+.border-primary {
+    border-color: #0e2945 !important;
+}
+
+/* Mobile responsive search */
+@media (max-width: 767px) {
+    .search-form {
+        max-width: 100% !important;
+        padding: 0 0.5rem;
+    }
+
+    .search-input {
+        padding: 12px 16px;
+        font-size: 0.9rem;
+    }
+
+    .btn-search {
+        padding: 12px 16px;
+        min-width: 50px;
+    }
+
+    .btn-search i {
+        font-size: 1rem;
+    }
+}
+
+/* Ensure body has padding for mobile bottom nav */
+@media (max-width: 991.98px) {
+    body {
+        padding-bottom: calc(75px + env(safe-area-inset-bottom)) !important;
+    }
+}

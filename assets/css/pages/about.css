@@ -1,0 +1,208 @@
+/**
+ * About Us Page Styles
+ * BEM Methodology & Global Tokens
+ */
+
+.about-hero-section {
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://www.bhphotovideo.com/images/aboutUs/top_background.jpg');
+    background-size: cover;
+    background-position: center;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-3xl) 0;
+    color: var(--color-white);
+    text-align: center;
+}
+
+.about-hero-section h1 {
+    font-size: var(--font-size-4xl);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--spacing-md);
+    letter-spacing: 1px;
+}
+
+.about-hero-section h2 {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-medium);
+    margin-bottom: var(--spacing-lg);
+    opacity: 0.9;
+}
+
+.about-hero-section p {
+    font-size: var(--font-size-md);
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.8;
+    opacity: 0.85;
+}
+
+/* Sections */
+.about-section {
+    padding: var(--spacing-3xl) 0;
+}
+
+.video-promo-section {
+    background-color: var(--color-success);
+    color: var(--color-white);
+    text-align: center;
+}
+
+.video-promo-section h2 {
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-amber-400);
+    margin-bottom: var(--spacing-md);
+}
+
+.video-embed-wrapper {
+    max-width: 800px;
+    margin: var(--spacing-xl) auto 0;
+    aspect-ratio: 16/9;
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-xl);
+}
+
+.video-embed-wrapper iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.principles-section {
+    background-color: var(--color-amber-400);
+}
+
+.principles-content {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3xl);
+}
+
+.principles-icon {
+    flex-shrink: 0;
+    width: 160px;
+    height: 160px;
+    background: var(--color-white);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 80px;
+    color: var(--color-gray-900);
+    border: 4px solid var(--color-gray-900);
+}
+
+.principles-text h2 {
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-red-600);
+    margin-bottom: var(--spacing-md);
+}
+
+.principles-text p {
+    font-size: var(--font-size-lg);
+    line-height: 1.8;
+    color: var(--color-gray-900);
+}
+
+/* Promo Cards */
+.promo-card {
+    height: 300px;
+    background-size: cover;
+    background-position: center;
+    border-radius: var(--border-radius-lg);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: var(--spacing-xl);
+    transition: var(--transition-base);
+}
+
+.promo-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.promo-card--overlay::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+    z-index: 1;
+}
+
+.promo-card-content {
+    position: relative;
+    z-index: 2;
+}
+
+.promo-card h3 {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--spacing-sm);
+}
+
+.promo-card p {
+    font-size: var(--font-size-sm);
+    opacity: 0.9;
+    line-height: 1.5;
+}
+
+/* Social */
+.social-icons-row {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-2xl);
+    flex-wrap: wrap;
+    margin-top: var(--spacing-2xl);
+}
+
+.social-icon-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: var(--color-gray-700);
+    transition: var(--transition-base);
+}
+
+.social-icon-item:hover {
+    color: var(--color-primary);
+    transform: translateY(-5px);
+}
+
+.social-icon-item i {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-xs);
+}
+
+.social-icon-item span {
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+    text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+    .about-hero-section h1 {
+        font-size: var(--font-size-3xl);
+    }
+
+    .principles-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .principles-icon {
+        width: 120px;
+        height: 120px;
+        font-size: 60px;
+    }
+}

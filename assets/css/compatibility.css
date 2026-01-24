@@ -1,0 +1,193 @@
+/**
+ * Compatibility Layer
+ * Maps old class names to new BEM styles
+ * This allows existing HTML to work with new CSS
+ */
+
+/* Homepage wrapper */
+.homepage-wrapper {
+    background: var(--color-gray-50);
+    min-height: 100vh;
+}
+
+/* Hero Section */
+.hero-modern {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+    padding: 2.5rem 1rem 2rem;
+    color: var(--color-white);
+}
+
+.hero-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.hero-title {
+    font-size: 1.75rem;
+    font-weight: var(--font-weight-extrabold);
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.5px;
+    color: var(--color-white);
+}
+
+.hero-subtitle {
+    font-size: var(--font-size-xl);
+    opacity: 0.9;
+    margin-bottom: var(--spacing-xl);
+}
+
+.hero-search-box {
+    max-width: 600px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.hero-search-box input {
+    width: 100%;
+    padding: 1rem 3rem 1rem 1.25rem;
+    border: none;
+    border-radius: var(--border-radius-lg);
+    font-size: var(--font-size-lg);
+    box-shadow: var(--shadow-md);
+}
+
+.hero-search-box button {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--color-primary);
+    color: var(--color-white);
+    border: none;
+    padding: var(--btn-padding-y) var(--btn-padding-x);
+    border-radius: var(--border-radius-md);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--btn-font-size);
+}
+
+/* Categories Bar */
+.categories-bar {
+    background: var(--color-white);
+    padding: var(--spacing-lg);
+    border-bottom: var(--border-width-thin) solid var(--color-gray-200);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.categories-scroll {
+    display: flex;
+    gap: var(--spacing-sm);
+    min-width: min-content;
+}
+
+/* Product Grid - Old Name */
+.product-grid-modern {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-2xl);
+}
+
+/* Product Card - Old Name */
+.product-card-premium {
+    background: var(--color-white);
+    border-radius: var(--card-border-radius);
+    overflow: hidden;
+    transition: var(--transition-base);
+    border: var(--border-width-thin) solid var(--card-border-color);
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+}
+
+.product-card-premium:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--color-gray-300);
+}
+
+.product-card-premium .product-image-container img {
+    transition: transform var(--transition-slow);
+}
+
+.product-card-premium:hover .product-image-container img {
+    transform: scale(1.05);
+}
+
+/* Deal Banner */
+.deal-banner-modern {
+    background: linear-gradient(135deg, var(--color-danger) 0%, #b91c1c 100%);
+    padding: 1.25rem;
+    margin: var(--spacing-xl) var(--spacing-lg);
+    border-radius: var(--border-radius-xl);
+    color: var(--color-white);
+    text-align: center;
+    box-shadow: var(--shadow-md);
+}
+
+.deal-banner-title {
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-extrabold);
+    margin-bottom: var(--spacing-xs);
+    letter-spacing: -0.5px;
+    color: var(--color-white);
+}
+
+.deal-banner-subtitle {
+    font-size: var(--font-size-base);
+    opacity: 0.95;
+}
+
+/* Empty State */
+.empty-state-modern {
+    text-align: center;
+    padding: 4rem 1rem;
+    color: var(--color-gray-400);
+}
+
+.empty-icon {
+    font-size: 4rem;
+    margin-bottom: var(--spacing-lg);
+    opacity: 0.4;
+}
+
+.empty-text {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-medium);
+}
+
+/* Responsive */
+@media (min-width: 640px) {
+    .product-grid-modern {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 768px) {
+    .hero-modern {
+        padding: 3.5rem 2rem 3rem;
+    }
+
+    .hero-title {
+        font-size: 2.25rem;
+    }
+
+    .product-grid-modern {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.25rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .product-grid-modern {
+        grid-template-columns: repeat(5, 1fr);
+    }
+}
+
+@media (min-width: 1280px) {
+    .product-grid-modern {
+        grid-template-columns: repeat(6, 1fr);
+    }
+}

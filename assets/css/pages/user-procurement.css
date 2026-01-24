@@ -1,0 +1,116 @@
+/**
+ * User Procurement Page Styles
+ * ThinQShopping Platform
+ */
+
+.procurement-card-premium {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    padding: 1.5rem;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    cursor: pointer;
+}
+
+.procurement-card-premium:hover {
+    border-color: var(--primary-color);
+    background: #fdfefe;
+}
+
+.request-id-badge {
+    background: #f8fafc;
+    color: #0e2945;
+    padding: 0.4rem 0.8rem;
+    border-radius: 8px;
+    font-weight: 800;
+    font-size: 0.7rem;
+    border: 1px solid #e2e8f0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-indicator-proc {
+    font-size: 0.65rem;
+    font-weight: 800;
+    padding: 0.4rem 0.8rem;
+    border-radius: 30px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.meta-label-premium {
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #94a3b8;
+    letter-spacing: 1px;
+    margin-bottom: 0.25rem;
+    display: block;
+}
+
+.filter-pills-container {
+    display: flex;
+    gap: 0.75rem;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+    scrollbar-width: none;
+}
+
+.filter-pills-container::-webkit-scrollbar {
+    display: none;
+}
+
+.filter-pill-proc {
+    padding: 0.6rem 1.25rem;
+    border-radius: 50px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    color: #64748b;
+    font-weight: 800;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none !important;
+}
+
+.filter-pill-proc:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.filter-pill-proc.active {
+    background: #0e2945;
+    color: white;
+    border-color: #0e2945;
+}
+
+.pagination-premium .page-link {
+    border: none;
+    color: #64748b;
+    font-weight: 700;
+    background: #f8fafc;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pagination-premium .page-item.active .page-link {
+    background: var(--primary-color);
+    color: white;
+    box-shadow: 0 4px 12px rgba(14, 41, 69, 0.2);
+}
+
+.pagination-premium .page-link.rounded-circle {
+    width: 44px;
+}
+
+@media (max-width: 767.98px) {
+    .procurement-card-premium {
+        padding: 1.25rem;
+    }
+}

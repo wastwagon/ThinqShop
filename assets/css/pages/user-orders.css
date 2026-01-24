@@ -1,0 +1,104 @@
+/* User Orders Page Styles - World Class Refinement */
+
+.filter-pills-container {
+    display: flex;
+    gap: 12px;
+    padding: 4px 4px 16px 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.filter-pills-container::-webkit-scrollbar {
+    display: none;
+}
+
+.filter-pill-premium {
+    padding: 10px 22px;
+    border-radius: 50px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    color: #64748b;
+    font-weight: 700;
+    font-size: 13px;
+    white-space: nowrap;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    text-decoration: none !important;
+    display: inline-block;
+}
+
+.filter-pill-premium:hover {
+    border-color: #0e2945;
+    color: #0e2945;
+    transform: translateY(-1px);
+}
+
+.filter-pill-premium.active {
+    background: #0e2945;
+    color: #ffffff;
+    border-color: #0e2945;
+    box-shadow: 0 4px 12px rgba(14, 41, 69, 0.2);
+}
+
+.order-card-premium {
+    background: #ffffff;
+    border-radius: 20px;
+    border: 1px solid rgba(14, 41, 69, 0.05);
+    padding: 1.5rem;
+    margin-bottom: 1.25rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.order-card-premium:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 24px rgba(14, 41, 69, 0.06);
+    border-color: rgba(14, 41, 69, 0.1);
+}
+
+.order-icon-premium {
+    width: 54px;
+    height: 54px;
+    background: #f8fafc;
+    color: #0e2945;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    border: 1px solid #edf2f7;
+}
+
+.order-ref-premium {
+    font-size: 1rem;
+    font-weight: 800;
+    color: #1e293b;
+    letter-spacing: -0.01em;
+}
+
+.meta-label-premium {
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #94a3b8;
+    letter-spacing: 1px;
+    display: block;
+    margin-bottom: 2px;
+}
+
+.price-premium {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #0e2945;
+}
+
+.status-indicator-premium {
+    padding: 6px 14px;
+    border-radius: 30px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}

@@ -1,0 +1,120 @@
+<?php
+/**
+ * Admin Dashboard Layout Wrapper
+ * Modern Premium Design - Reusable Layout
+ * ThinQShopping Platform
+ * 
+ * Usage:
+ * <?php
+ * $pageTitle = 'Page Title';
+ * $pageContent = 'path/to/content.php'; // or inline content
+ * include __DIR__ . '/../includes/layouts/admin-layout.php';
+ * ?>
+ * 
+ * OR use $content variable directly for inline content
+ */
+
+// Ensure admin is authenticated
+if (!isset($_SESSION['admin_id'])) {
+    require_once __DIR__ . '/../admin-auth-check.php';
+}
+
+// Get page title or use default
+$pageTitle = $pageTitle ?? 'Admin Panel - ' . APP_NAME;
+
+// If content is a file path, include it; otherwise use $content variable
+if (isset($pageContent) && is_string($pageContent) && file_exists($pageContent)) {
+    ob_start();
+    include $pageContent;
+    $content = ob_get_clean();
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?php echo htmlspecialchars($pageTitle); ?></title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Chart.js (optional - include only if needed) -->
+    <?php if (isset($includeCharts) && $includeCharts): ?>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <?php endif; ?>
+    
+    <!-- Admin Dashboard Styles -->
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/admin-dashboard.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/components/admin-sidebar.css">
+    
+    <?php if (isset($additionalCSS) && is_array($additionalCSS)): ?>
+        <?php foreach ($additionalCSS as $css): ?>
+            <link rel="stylesheet" href="<?php echo $css; ?>">
+        <?php endforeach; ?>
+    <?php endif; ?>
+    
+    <?php if (isset($inlineCSS)): ?>
+    <style>
+        <?php echo $inlineCSS; ?>
+    </style>
+    <?php endif; ?>
+</head>
+<body>
+    <?php include __DIR__ . '/../includes/admin-sidebar.php'; ?>
+    <?php include __DIR__ . '/../includes/admin-header.php'; ?>
+
+    <div class="admin-main-content">
+        <?php 
+        // Display flash messages
+        $flash = getFlashMessage();
+        if ($flash): 
+        ?>
+            <div class="alert alert-<?php echo $flash['type'] === 'success' ? 'success' : ($flash['type'] === 'danger' ? 'danger' : 'info'); ?> alert-dismissible fade show" role="alert">
+                <?php echo htmlspecialchars($flash['message']); ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif; ?>
+        
+        <?php 
+        // Display errors if any
+        if (isset($errors) && !empty($errors)): 
+        ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <ul class="mb-0">
+                    <?php foreach ($errors as $error): ?>
+                        <li><?php echo htmlspecialchars($error); ?></li>
+                    <?php endforeach; ?>
+                </ul>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif; ?>
+        
+        <?php 
+        // Display page content
+        if (isset($content)) {
+            echo $content;
+        }
+        ?>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <?php if (isset($additionalJS) && is_array($additionalJS)): ?>
+        <?php foreach ($additionalJS as $js): ?>
+            <script src="<?php echo $js; ?>"></script>
+        <?php endforeach; ?>
+    <?php endif; ?>
+    
+    <?php if (isset($inlineJS)): ?>
+    <script>
+        <?php echo $inlineJS; ?>
+    </script>
+    <?php endif; ?>
+</body>
+</html>
+

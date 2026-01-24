@@ -1,0 +1,966 @@
+<?php
+/**
+ * Admin Dashboard - Modern Premium Design
+ * ThinQShopping Platform
+ */
+
+// Enable error reporting for debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+require_once __DIR__ . '/../includes/admin-auth-check.php';
+require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../includes/functions.php';
+
+$db = new Database();
+$conn = $db->getConnection();
+
+// Get comprehensive statistics
+$stats = [];
+
+// Total users
+$stmt = $conn->query("SELECT COUNT(*) as count FROM users WHERE is_active = 1");
+$stats['total_users'] = $stmt->fetch()['count'];
+
+// Total revenue (all time)
+$stmt = $conn->query("
+    SELECT COALESCE(SUM(amount), 0) as total 
+    FROM payments 
+    WHERE status = 'success'
+");
+$stats['total_revenue'] = floatval($stmt->fetch()['total']);
+
+// Today's revenue
+$stmt = $conn->query("
+    SELECT COALESCE(SUM(amount), 0) as total 
+    FROM payments 
+    WHERE status = 'success' 
+    AND DATE(created_at) = CURDATE()
+");
+$stats['today_revenue'] = floatval($stmt->fetch()['total']);
+
+// Total orders
+$stmt = $conn->query("SELECT COUNT(*) as count FROM orders");
+$stats['total_orders'] = $stmt->fetch()['count'];
+
+// Products sold (sum of all order items)
+$stmt = $conn->query("SELECT COALESCE(SUM(quantity), 0) as count FROM order_items");
+$stats['products_sold'] = $stmt->fetch()['count'];
+
+// Visitors (using orders as proxy - can be enhanced with analytics)
+$stmt = $conn->query("SELECT COUNT(DISTINCT user_id) as count FROM orders");
+$stats['visitors'] = $stmt->fetch()['count'];
+
+// Pending orders
+$stmt = $conn->query("SELECT COUNT(*) as count FROM orders WHERE status IN ('pending', 'processing')");
+$stats['pending_orders'] = $stmt->fetch()['count'];
+
+// Pending transfers
+$stmt = $conn->query("SELECT COUNT(*) as count FROM money_transfers WHERE status IN ('payment_received', 'processing')");
+$stats['pending_transfers'] = $stmt->fetch()['count'];
+
+// Pending shipments
+$stmt = $conn->query("SELECT COUNT(*) as count FROM shipments WHERE status IN ('booked', 'pickup_scheduled', 'picked_up', 'in_transit')");
+$stats['pending_shipments'] = $stmt->fetch()['count'];
+
+// Pending procurement requests
+$stmt = $conn->query("SELECT COUNT(*) as count FROM procurement_requests WHERE status IN ('submitted', 'quote_provided')");
+$stats['pending_procurements'] = $stmt->fetch()['count'];
+
+// Low stock products
+$stmt = $conn->query("SELECT COUNT(*) as count FROM products WHERE stock_quantity <= low_stock_threshold AND is_active = 1");
+$stats['low_stock'] = $stmt->fetch()['count'];
+
+// Monthly sales data for chart (last 12 months)
+$stmt = $conn->query("
+    SELECT 
+        DATE_FORMAT(created_at, '%Y-%m') as month,
+        COALESCE(SUM(amount), 0) as total
+    FROM payments 
+    WHERE status = 'success' 
+    AND created_at >= DATE_SUB(NOW(), INTERVAL 12 MONTH)
+    GROUP BY DATE_FORMAT(created_at, '%Y-%m')
+    ORDER BY month ASC
+");
+$monthlySales = $stmt->fetchAll();
+
+// Sales by service type
+$stmt = $conn->query("
+    SELECT 
+        service_type,
+        COALESCE(SUM(amount), 0) as total
+    FROM payments 
+    WHERE status = 'success'
+    AND created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)
+    GROUP BY service_type
+");
+$salesByService = $stmt->fetchAll();
+
+// Recent customers
+$stmt = $conn->query("
+    SELECT u.*, up.first_name, up.last_name
+    FROM users u
+    LEFT JOIN user_profiles up ON u.id = up.user_id
+    WHERE u.is_active = 1
+    ORDER BY u.created_at DESC
+    LIMIT 5
+");
+$recentCustomers = $stmt->fetchAll();
+
+// Top selling products
+$stmt = $conn->query("
+    SELECT 
+        p.name,
+        p.sku,
+        COALESCE(SUM(oi.quantity), 0) as sales,
+        COALESCE(SUM(oi.total), 0) as amount,
+        p.stock_quantity
+    FROM products p
+    LEFT JOIN order_items oi ON p.id = oi.product_id
+    LEFT JOIN orders o ON oi.order_id = o.id
+    WHERE o.status != 'cancelled' OR o.status IS NULL
+    GROUP BY p.id, p.name, p.sku, p.stock_quantity
+    ORDER BY sales DESC
+    LIMIT 5
+");
+$topProducts = $stmt->fetchAll();
+
+// Recent orders
+$stmt = $conn->query("
+    SELECT o.*, u.email, u.phone 
+    FROM orders o 
+    LEFT JOIN users u ON o.user_id = u.id 
+    ORDER BY o.created_at DESC 
+    LIMIT 10
+");
+$recent_orders = $stmt->fetchAll();
+
+// Calculate growth percentages (simple - compare to previous period)
+$stmt = $conn->query("
+    SELECT COALESCE(SUM(amount), 0) as total 
+    FROM payments 
+    WHERE status = 'success' 
+    AND DATE(created_at) = DATE_SUB(CURDATE(), INTERVAL 1 DAY)
+");
+$yesterdayRevenue = floatval($stmt->fetch()['total']);
+$revenueGrowth = $yesterdayRevenue > 0 ? round((($stats['today_revenue'] - $yesterdayRevenue) / $yesterdayRevenue) * 100) : 0;
+
+$stmt = $conn->query("SELECT COUNT(*) as count FROM orders WHERE DATE(created_at) = DATE_SUB(CURDATE(), INTERVAL 1 DAY)");
+$yesterdayOrders = $stmt->fetch()['count'];
+$ordersGrowth = $yesterdayOrders > 0 ? round((($stats['pending_orders'] - $yesterdayOrders) / $yesterdayOrders) * 100) : 0;
+
+$pageTitle = 'Admin Dashboard - ' . APP_NAME;
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?php echo $pageTitle; ?></title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <style>
+    :root {
+        --dashboard-bg: #fdf2f8;
+        --card-bg: #ffffff;
+        --primary-color: #0d6efd;
+        --danger-color: #dc3545;
+        --success-color: #198754;
+        --warning-color: #ffc107;
+        --info-color: #0dcaf0;
+    }
+
+    body {
+        background: var(--dashboard-bg);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Admin Sidebar */
+    .admin-sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        height: 100vh;
+        width: 280px;
+        background: white;
+        box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        z-index: 1000;
+        overflow-y: auto;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .admin-sidebar .logo-section {
+        margin-bottom: 2rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    .admin-sidebar .logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .admin-sidebar .logo img {
+        height: 40px;
+        width: auto;
+    }
+
+    .admin-sidebar .search-section {
+        margin-bottom: 2rem;
+    }
+
+    .admin-sidebar .search-input {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        font-size: 0.9rem;
+    }
+
+    .admin-sidebar .menu-section {
+        flex: 1;
+        margin-bottom: 2rem;
+    }
+
+    .admin-sidebar .section-title {
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #6c757d;
+        margin-bottom: 1rem;
+        padding: 0 0.5rem;
+    }
+
+    .admin-sidebar .menu-item {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem 1rem;
+        margin-bottom: 0.5rem;
+        border-radius: 8px;
+        color: #495057;
+        text-decoration: none;
+        transition: all 0.2s;
+        font-size: 0.95rem;
+    }
+
+    .admin-sidebar .menu-item i {
+        width: 24px;
+        margin-right: 0.75rem;
+        text-align: center;
+    }
+
+    .admin-sidebar .menu-item:hover {
+        background: #f8f9fa;
+        color: var(--primary-color);
+    }
+
+    .admin-sidebar .menu-item.active {
+        background: var(--primary-color);
+        color: white;
+        font-weight: 500;
+    }
+
+    .admin-sidebar .profile-section {
+        padding-top: 1.5rem;
+        border-top: 1px solid #e9ecef;
+    }
+
+    .admin-sidebar .profile-info {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+        padding: 0.75rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+    }
+
+    .admin-sidebar .profile-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--primary-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 600;
+        margin-right: 0.75rem;
+        flex-shrink: 0;
+    }
+
+    .admin-sidebar .profile-details {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .admin-sidebar .profile-name {
+        font-weight: 600;
+        color: #212529;
+        margin: 0;
+        font-size: 0.9rem;
+    }
+
+    .admin-sidebar .profile-role {
+        font-size: 0.75rem;
+        color: #6c757d;
+        margin: 0;
+    }
+
+    .admin-sidebar .logout-btn {
+        width: 100%;
+        padding: 0.75rem;
+        background: var(--danger-color);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-weight: 500;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        transition: all 0.2s;
+        text-decoration: none;
+    }
+
+    .admin-sidebar .logout-btn:hover {
+        background: #c82333;
+        transform: translateY(-1px);
+    }
+
+    /* Admin Header */
+    .admin-header {
+        position: fixed;
+        top: 0;
+        left: 280px;
+        right: 0;
+        height: 80px;
+        background: white;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        z-index: 999;
+        padding: 1rem 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .admin-header .header-left {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .admin-header .welcome-text {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #212529;
+        margin: 0;
+    }
+
+    .admin-header .date-text {
+        font-size: 0.875rem;
+        color: #6c757d;
+        margin: 0;
+    }
+
+    .admin-header .header-right {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .admin-header .search-bar {
+        position: relative;
+        width: 300px;
+    }
+
+    .admin-header .search-bar input {
+        width: 100%;
+        padding: 0.5rem 1rem 0.5rem 2.5rem;
+        border: 1px solid #e9ecef;
+        border-radius: 20px;
+        font-size: 0.9rem;
+    }
+
+    .admin-header .search-bar i {
+        position: absolute;
+        left: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #6c757d;
+    }
+
+    .admin-header .notification-btn {
+        position: relative;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: none;
+        background: #f8f9fa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s;
+        color: #495057;
+    }
+
+    .admin-header .notification-btn:hover {
+        background: #e9ecef;
+    }
+
+    .admin-header .notification-badge {
+        position: absolute;
+        top: -2px;
+        right: -2px;
+        width: 18px;
+        height: 18px;
+        background: var(--danger-color);
+        color: white;
+        border-radius: 50%;
+        font-size: 0.7rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+    }
+
+    .admin-header .user-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--primary-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    /* Main Content */
+    .admin-main-content {
+        margin-left: 280px;
+        margin-top: 80px;
+        padding: 2rem;
+        min-height: calc(100vh - 80px);
+    }
+
+    .page-title-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+    }
+
+    .page-title {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: #212529;
+        margin: 0;
+    }
+
+    .download-report-btn {
+        padding: 0.75rem 1.5rem;
+        background: var(--danger-color);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-weight: 500;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.2s;
+        text-decoration: none;
+    }
+
+    .download-report-btn:hover {
+        background: #c82333;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+    }
+
+    /* Metrics Cards */
+    .metrics-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .metric-card {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        transition: all 0.3s;
+    }
+
+    .metric-card:hover {
+        box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+        transform: translateY(-4px);
+    }
+
+    .metric-card .metric-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .metric-card .metric-icon.revenue {
+        background: rgba(13, 110, 253, 0.1);
+        color: var(--primary-color);
+    }
+
+    .metric-card .metric-icon.orders {
+        background: rgba(255, 193, 7, 0.1);
+        color: var(--warning-color);
+    }
+
+    .metric-card .metric-icon.products {
+        background: rgba(25, 135, 84, 0.1);
+        color: var(--success-color);
+    }
+
+    .metric-card .metric-icon.visitors {
+        background: rgba(13, 202, 240, 0.1);
+        color: var(--info-color);
+    }
+
+    .metric-card .metric-title {
+        font-size: 0.875rem;
+        color: #6c757d;
+        margin-bottom: 0.5rem;
+    }
+
+    .metric-card .metric-value {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: #212529;
+        margin-bottom: 0.5rem;
+    }
+
+    .metric-card .metric-growth {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        font-size: 0.875rem;
+        color: var(--success-color);
+    }
+
+    /* Chart Section */
+    .chart-section {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        margin-bottom: 2rem;
+    }
+
+    .chart-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .chart-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #212529;
+        margin: 0;
+    }
+
+    .chart-legend {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+    }
+
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.875rem;
+    }
+
+    .legend-color {
+        width: 12px;
+        height: 12px;
+        border-radius: 3px;
+    }
+
+    /* Data Tables */
+    .data-section {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        margin-bottom: 2rem;
+    }
+
+    .data-section-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #212529;
+        margin-bottom: 1.5rem;
+    }
+
+    .data-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .data-table thead {
+        background: #f8f9fa;
+        border-bottom: 2px solid #e9ecef;
+    }
+
+    .data-table th {
+        padding: 0.75rem;
+        text-align: left;
+        font-weight: 600;
+        font-size: 0.875rem;
+        color: #6c757d;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .data-table td {
+        padding: 1rem 0.75rem;
+        border-bottom: 1px solid #e9ecef;
+        font-size: 0.9rem;
+    }
+
+    .data-table tbody tr:hover {
+        background: #f8f9fa;
+    }
+
+    .customer-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: var(--primary-color);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 600;
+        margin-right: 0.75rem;
+    }
+
+    .stock-badge {
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    .stock-badge.in-stock {
+        background: rgba(25, 135, 84, 0.1);
+        color: var(--success-color);
+    }
+
+    .stock-badge.out-of-stock {
+        background: rgba(220, 53, 69, 0.1);
+        color: var(--danger-color);
+    }
+
+    @media (max-width: 991.98px) {
+        .admin-sidebar {
+            transform: translateX(-100%);
+            transition: transform 0.3s;
+        }
+        
+        .admin-sidebar.active {
+            transform: translateX(0);
+        }
+        
+        .admin-header {
+            left: 0;
+        }
+        
+        .admin-main-content {
+            margin-left: 0;
+        }
+    }
+    </style>
+
+    <?php include __DIR__ . '/../includes/admin-sidebar.php'; ?>
+    <?php include __DIR__ . '/../includes/admin-header.php'; ?>
+
+    <div class="admin-main-content">
+        <div class="page-title-section">
+            <h1 class="page-title">Overview</h1>
+            <a href="#" class="download-report-btn" onclick="downloadReport()">
+                <i class="fas fa-download"></i>
+                <span>Download Report</span>
+            </a>
+        </div>
+
+        <!-- Metrics Cards -->
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-icon revenue">
+                    <i class="fas fa-dollar-sign"></i>
+                </div>
+                <div class="metric-title">Revenue</div>
+                <div class="metric-value"><?php echo formatCurrency($stats['total_revenue']); ?></div>
+                <div class="metric-growth">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>+<?php echo abs($revenueGrowth); ?>%</span>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-icon orders">
+                    <i class="fas fa-shopping-basket"></i>
+                </div>
+                <div class="metric-title">Total orders</div>
+                <div class="metric-value"><?php echo number_format($stats['total_orders']); ?></div>
+                <div class="metric-growth">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>+<?php echo abs($ordersGrowth); ?>%</span>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-icon products">
+                    <i class="fas fa-shopping-bag"></i>
+                </div>
+                <div class="metric-title">Product Sold</div>
+                <div class="metric-value"><?php echo number_format($stats['products_sold']); ?></div>
+                <div class="metric-growth">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>+3%</span>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-icon visitors">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="metric-title">Visitors</div>
+                <div class="metric-value"><?php echo number_format($stats['visitors']); ?></div>
+                <div class="metric-growth">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>+3%</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Sales Chart -->
+            <div class="col-lg-8 mb-4">
+                <div class="chart-section">
+                    <div class="chart-header">
+                        <h3 class="chart-title">Sales Figures</h3>
+                        <div class="chart-legend">
+                            <?php foreach ($salesByService as $service): ?>
+                                <div class="legend-item">
+                                    <span class="legend-color" style="background: <?php 
+                                        echo $service['service_type'] === 'ecommerce' ? '#dc3545' : '#fd7e14'; 
+                                    ?>;"></span>
+                                    <span><?php echo ucfirst(str_replace('_', ' ', $service['service_type'])); ?></span>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                    <canvas id="salesChart" height="80"></canvas>
+                </div>
+            </div>
+
+            <!-- Customer List -->
+            <div class="col-lg-4 mb-4">
+                <div class="data-section">
+                    <h3 class="data-section-title">Customer</h3>
+                    <div class="customer-list">
+                        <?php foreach ($recentCustomers as $customer): ?>
+                            <div class="d-flex align-items-center mb-3 pb-3 border-bottom">
+                                <div class="customer-avatar">
+                                    <?php 
+                                    $name = ($customer['first_name'] ?? '') . ' ' . ($customer['last_name'] ?? '');
+                                    $initials = !empty(trim($name)) ? strtoupper(substr(trim($name), 0, 1)) : strtoupper(substr($customer['email'] ?? 'U', 0, 1));
+                                    echo $initials;
+                                    ?>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="fw-semibold"><?php echo htmlspecialchars(trim($name) ?: $customer['email'] ?? 'User'); ?></div>
+                                    <div class="text-muted small"><?php echo htmlspecialchars($customer['email'] ?? ''); ?></div>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Sales Table -->
+        <div class="data-section">
+            <h3 class="data-section-title">Product Sale</h3>
+            <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Sales</th>
+                            <th>Amount</th>
+                            <th>Stock</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if (empty($topProducts)): ?>
+                            <tr>
+                                <td colspan="4" class="text-center text-muted">No product sales data yet.</td>
+                            </tr>
+                        <?php else: ?>
+                            <?php foreach ($topProducts as $product): ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($product['name']); ?></td>
+                                    <td><?php echo number_format($product['sales']); ?></td>
+                                    <td><?php echo formatCurrency($product['amount']); ?></td>
+                                    <td>
+                                        <span class="stock-badge <?php echo $product['stock_quantity'] > 0 ? 'in-stock' : 'out-of-stock'; ?>">
+                                            <?php echo $product['stock_quantity'] > 0 ? 'In Stock' : 'Out of Stock'; ?>
+                                        </span>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // Sales Chart
+    const salesCtx = document.getElementById('salesChart');
+    const monthlyData = <?php echo json_encode(array_column($monthlySales, 'total')); ?>;
+    const monthlyLabels = <?php echo json_encode(array_map(function($m) { 
+        return date('M', strtotime($m . '-01')); 
+    }, array_column($monthlySales, 'month'))); ?>;
+
+    new Chart(salesCtx, {
+        type: 'line',
+        data: {
+            labels: monthlyLabels,
+            datasets: [
+                <?php 
+                // E-commerce sales
+                $ecommerceData = [];
+                foreach ($monthlySales as $month) {
+                    $stmt = $conn->prepare("
+                        SELECT COALESCE(SUM(amount), 0) as total 
+                        FROM payments 
+                        WHERE service_type = 'ecommerce' 
+                        AND status = 'success'
+                        AND DATE_FORMAT(created_at, '%Y-%m') = ?
+                    ");
+                    $stmt->execute([$month['month']]);
+                    $ecommerceData[] = floatval($stmt->fetch()['total']);
+                }
+                ?>
+                {
+                    label: 'E-commerce',
+                    data: <?php echo json_encode($ecommerceData); ?>,
+                    borderColor: '#dc3545',
+                    backgroundColor: 'rgba(220, 53, 69, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                },
+                <?php 
+                // Money Transfer sales
+                $transferData = [];
+                foreach ($monthlySales as $month) {
+                    $stmt = $conn->prepare("
+                        SELECT COALESCE(SUM(amount), 0) as total 
+                        FROM payments 
+                        WHERE service_type = 'money_transfer' 
+                        AND status = 'success'
+                        AND DATE_FORMAT(created_at, '%Y-%m') = ?
+                    ");
+                    $stmt->execute([$month['month']]);
+                    $transferData[] = floatval($stmt->fetch()['total']);
+                }
+                ?>
+                {
+                    label: 'Money Transfer',
+                    data: <?php echo json_encode($transferData); ?>,
+                    borderColor: '#fd7e14',
+                    backgroundColor: 'rgba(253, 126, 20, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return '₵' + value.toLocaleString();
+                        }
+                    }
+                }
+            },
+            interaction: {
+                mode: 'nearest',
+                axis: 'x',
+                intersect: false
+            }
+        }
+    });
+
+    function downloadReport() {
+        alert('Report download feature will be implemented soon!');
+    }
+
+    function toggleAdminSidebar() {
+        const sidebar = document.getElementById('adminSidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        if (sidebar) sidebar.classList.toggle('active');
+        if (overlay) overlay.classList.toggle('active');
+    }
+    </script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

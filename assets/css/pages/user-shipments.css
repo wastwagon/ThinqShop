@@ -1,0 +1,67 @@
+/* User Shipments Page Styles */
+
+.shipment-card-premium {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    padding: 1.5rem;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    cursor: pointer;
+}
+
+.shipment-card-premium:hover {
+    border-color: var(--primary-color);
+    background: #fdfefe;
+}
+
+.tracking-pill-premium {
+    background: #f8fafc;
+    color: #0e2945;
+    padding: 0.4rem 0.8rem;
+    border-radius: 8px;
+    font-weight: 800;
+    font-size: 0.7rem;
+    border: 1px solid #e2e8f0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-indicator-ship {
+    font-size: 0.65rem;
+    font-weight: 800;
+    padding: 0.4rem 0.8rem;
+    border-radius: 30px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.meta-label-premium {
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #94a3b8;
+    letter-spacing: 1px;
+    margin-bottom: 0.25rem;
+    display: block;
+}
+
+.weight-badge {
+    background: #f1f5f9;
+    color: #475569;
+    font-weight: 800;
+    padding: 0.35rem 0.75rem;
+    border-radius: 50px;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+}
+
+@media (max-width: 767.98px) {
+    .shipment-card-premium {
+        padding: 1.25rem;
+    }
+
+    .status-indicator-ship {
+        margin-top: 1rem;
+    }
+}

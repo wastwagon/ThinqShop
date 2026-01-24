@@ -1,0 +1,357 @@
+<?php
+/**
+ * Checkout Page
+ * ThinQShopping Platform
+ */
+
+require_once __DIR__ .../../../includes/auth-check.php';
+require_once __DIR__ .../../../config/database.php';
+require_once __DIR__ .../../../includes/functions.php';
+
+$db = new Database();
+$conn = $db->getConnection();
+$userId = $_SESSION['user_id'];
+
+// Get cart items
+$stmt = $conn->prepare("
+    SELECT c.*, p.name, p.price, p.slug, p.stock_quantity, p.images,
+           pv.variant_type, pv.variant_value, pv.price_adjust, pv.stock_quantity as variant_stock
+    FROM cart c
+    LEFT JOIN products p ON c.product_id = p.id
+    LEFT JOIN product_variants pv ON c.variant_id = pv.id
+    WHERE c.user_id = ?
+");
+$stmt->execute([$userId]);
+$cartItems = $stmt->fetchAll();
+
+if (empty($cartItems)) {
+    redirect('/modules/ecommerce/cart/', 'Your cart is empty.', 'warning');
+}
+
+// Verify stock availability
+foreach ($cartItems as $item) {
+    $maxStock = $item['variant_id'] ? ($item['variant_stock'] ?? 0) : $item['stock_quantity'];
+    if ($item['quantity'] > $maxStock) {
+        redirect('/modules/ecommerce/cart/', 'Some items in your cart are out of stock. Please update your cart.', 'warning');
+    }
+}
+
+// Calculate totals
+$subtotal = 0;
+foreach ($cartItems as &$item) {
+    $itemPrice = $item['price'];
+    if ($item['price_adjust']) {
+        $itemPrice += floatval($item['price_adjust']);
+    }
+    $itemTotal = $itemPrice * $item['quantity'];
+    $item['item_price'] = $itemPrice;
+    $item['item_total'] = $itemTotal;
+    $subtotal += $itemTotal;
+    
+    $images = json_decode($item['images'] ?? '[]', true);
+    $item['image'] = !empty($images) ? $images[0] : 'assets/images/products/default.jpg';
+}
+
+$tax = $subtotal * (VAT_RATE / 100);
+$shippingFee = 0; // TODO: Calculate based on address
+$total = $subtotal + $tax + $shippingFee;
+
+// Get user addresses
+$stmt = $conn->prepare("SELECT * FROM addresses WHERE user_id = ? ORDER BY is_default DESC, created_at DESC");
+$stmt->execute([$userId]);
+$addresses = $stmt->fetchAll();
+
+// Get default address
+$defaultAddress = null;
+foreach ($addresses as $addr) {
+    if ($addr['is_default']) {
+        $defaultAddress = $addr;
+        break;
+    }
+}
+if (!$defaultAddress && !empty($addresses)) {
+    $defaultAddress = $addresses[0];
+}
+
+// Get user wallet balance
+$walletBalance = getUserWalletBalance($userId);
+
+$errors = [];
+
+// Process checkout form
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!isset($_POST['csrf_token']) || !verifyCSRFToken($_POST['csrf_token'])) {
+        $errors[] = 'Invalid security token.';
+    } else {
+        $shippingAddressId = intval($_POST['shipping_address_id'] ?? 0);
+        $paymentMethod = sanitize($_POST['payment_method'] ?? '');
+        $couponCode = sanitize($_POST['coupon_code'] ?? '');
+        
+        if ($shippingAddressId <= 0) {
+            $errors[] = 'Please select a shipping address.';
+        }
+        
+        if (!in_array($paymentMethod, ['card', 'mobile_money', 'bank_transfer', 'wallet', 'cod'])) {
+            $errors[] = 'Please select a valid payment method.';
+        }
+        
+        // Validate wallet balance if wallet payment
+        if ($paymentMethod === 'wallet' && $walletBalance < $total) {
+            $errors[] = 'Insufficient wallet balance. Please top up or choose another payment method.';
+        }
+        
+        // Validate coupon if provided
+        $discount = 0;
+        $couponId = null;
+        if ($couponCode) {
+            $stmt = $conn->prepare("
+                SELECT * FROM coupons 
+                WHERE code = ? AND is_active = 1 
+                AND valid_from <= NOW() AND valid_to >= NOW()
+                AND (usage_limit IS NULL OR used_count < usage_limit)
+            ");
+            $stmt->execute([$couponCode]);
+            $coupon = $stmt->fetch();
+            
+            if ($coupon) {
+                if ($coupon['min_purchase'] <= $subtotal) {
+                    if ($coupon['discount_type'] === 'percentage') {
+                        $discount = ($subtotal * $coupon['discount_value']) / 100;
+                        if ($coupon['max_discount']) {
+                            $discount = min($discount, $coupon['max_discount']);
+                        }
+                    } else {
+                        $discount = $coupon['discount_value'];
+                    }
+                    $couponId = $coupon['id'];
+                } else {
+                    $errors[] = 'Coupon requires minimum purchase of ' . formatCurrency($coupon['min_purchase']);
+                }
+            } else {
+                $errors[] = 'Invalid or expired coupon code.';
+            }
+        }
+        
+        if (empty($errors)) {
+            // Store checkout data in session for order placement
+            $_SESSION['checkout_data'] = [
+                'shipping_address_id' => $shippingAddressId,
+                'payment_method' => $paymentMethod,
+                'coupon_id' => $couponId,
+                'coupon_code' => $couponCode,
+                'discount' => $discount,
+                'subtotal' => $subtotal,
+                'tax' => $tax,
+                'shipping_fee' => $shippingFee,
+                'total' => $total - $discount
+            ];
+            
+            // Redirect based on payment method
+            if ($paymentMethod === 'wallet' || $paymentMethod === 'cod') {
+                redirect('/modules/ecommerce/checkout/process.php', '', '');
+            } else {
+                // Redirect to Paystack payment
+                redirect('/modules/ecommerce/checkout/payment.php', '', '');
+            }
+        }
+    }
+}
+
+$pageTitle = 'Checkout - ' . APP_NAME;
+include __DIR__ .../../../includes/header.php';
+?>
+
+<div class="container my-4">
+    <h2 class="mb-4">Checkout</h2>
+    
+    <?php if (!empty($errors)): ?>
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                <?php foreach ($errors as $error): ?>
+                    <li><?php echo htmlspecialchars($error); ?></li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+    <?php endif; ?>
+    
+    <form method="POST" action="" id="checkoutForm">
+        <div class="row">
+            <div class="col-lg-8 mb-4">
+                <!-- Shipping Address -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Shipping Address</h5>
+                    </div>
+                    <div class="card-body">
+                        <?php if (empty($addresses)): ?>
+                            <p class="text-muted">No saved addresses. <a href="<?php echo BASE_URL; ?>/user/profile.php?tab=addresses">Add address</a></p>
+                        <?php else: ?>
+                            <?php foreach ($addresses as $addr): ?>
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="radio" name="shipping_address_id" 
+                                           id="address_<?php echo $addr['id']; ?>" 
+                                           value="<?php echo $addr['id']; ?>" 
+                                           <?php echo ($defaultAddress && $addr['id'] == $defaultAddress['id']) ? 'checked' : ''; ?> required>
+                                    <label class="form-check-label" for="address_<?php echo $addr['id']; ?>">
+                                        <strong><?php echo htmlspecialchars($addr['full_name']); ?></strong><br>
+                                        <?php echo htmlspecialchars($addr['street']); ?><br>
+                                        <?php echo htmlspecialchars($addr['city'] . ', ' . $addr['region']); ?><br>
+                                        Phone: <?php echo htmlspecialchars($addr['phone']); ?>
+                                    </label>
+                                </div>
+                            <?php endforeach; ?>
+                            <a href="<?php echo BASE_URL; ?>/user/profile.php?tab=addresses" class="btn btn-sm btn-outline-primary">Manage Addresses</a>
+                        <?php endif; ?>
+                    </div>
+                </div>
+                
+                <!-- Payment Method -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Payment Method</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="radio" name="payment_method" 
+                                   id="payment_card" value="card" checked required>
+                            <label class="form-check-label" for="payment_card">
+                                <i class="fas fa-credit-card"></i> Card Payment (Visa, Mastercard, Verve)
+                            </label>
+                        </div>
+                        
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="radio" name="payment_method" 
+                                   id="payment_mobile" value="mobile_money" required>
+                            <label class="form-check-label" for="payment_mobile">
+                                <i class="fas fa-mobile-alt"></i> Mobile Money (MTN, Vodafone, AirtelTigo)
+                            </label>
+                        </div>
+                        
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="radio" name="payment_method" 
+                                   id="payment_bank" value="bank_transfer" required>
+                            <label class="form-check-label" for="payment_bank">
+                                <i class="fas fa-university"></i> Bank Transfer
+                            </label>
+                        </div>
+                        
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="radio" name="payment_method" 
+                                   id="payment_wallet" value="wallet" 
+                                   <?php echo $walletBalance >= $total ? '' : 'disabled'; ?> required>
+                            <label class="form-check-label" for="payment_wallet">
+                                <i class="fas fa-wallet"></i> Platform Wallet 
+                                <small class="text-muted">(Balance: <?php echo formatCurrency($walletBalance); ?>)</small>
+                                <?php if ($walletBalance < $total): ?>
+                                    <span class="badge bg-warning ms-2">Insufficient</span>
+                                <?php endif; ?>
+                            </label>
+                        </div>
+                        
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="payment_method" 
+                                   id="payment_cod" value="cod" required>
+                            <label class="form-check-label" for="payment_cod">
+                                <i class="fas fa-money-bill"></i> Cash on Delivery (COD)
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Coupon Code -->
+                <div class="card">
+                    <div class="card-body">
+                        <label class="form-label">Coupon Code (Optional)</label>
+                        <div class="input-group">
+                            <input type="text" name="coupon_code" class="form-control" 
+                                   placeholder="Enter coupon code" value="<?php echo htmlspecialchars($_POST['coupon_code'] ?? ''); ?>">
+                            <button type="button" class="btn btn-outline-secondary" onclick="applyCoupon()">Apply</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Order Summary -->
+            <div class="col-lg-4">
+                <div class="card sticky-top" style="top: 20px;">
+                    <div class="card-header">
+                        <h5 class="mb-0">Order Summary</h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Cart Items -->
+                        <div class="mb-3">
+                            <?php foreach ($cartItems as $item): ?>
+                                <div class="d-flex justify-content-between mb-2 small">
+                                    <div>
+                                        <?php echo htmlspecialchars($item['name']); ?> x <?php echo $item['quantity']; ?>
+                                        <?php if ($item['variant_value']): ?>
+                                            <br><small class="text-muted"><?php echo htmlspecialchars($item['variant_value']); ?></small>
+                                        <?php endif; ?>
+                                    </div>
+                                    <div><?php echo formatCurrency($item['item_total']); ?></div>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                        
+                        <hr>
+                        
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Subtotal</span>
+                            <strong><?php echo formatCurrency($subtotal); ?></strong>
+                        </div>
+                        
+                        <?php if (VAT_RATE > 0): ?>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>VAT (<?php echo VAT_RATE; ?>%)</span>
+                            <strong><?php echo formatCurrency($tax); ?></strong>
+                        </div>
+                        <?php endif; ?>
+                        
+                        <?php if ($shippingFee > 0): ?>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Shipping</span>
+                            <strong><?php echo formatCurrency($shippingFee); ?></strong>
+                        </div>
+                        <?php endif; ?>
+                        
+                        <div id="discountSection" class="d-none">
+                            <div class="d-flex justify-content-between mb-2 text-success">
+                                <span>Discount</span>
+                                <strong id="discountAmount">-<?php echo formatCurrency(0); ?></strong>
+                            </div>
+                        </div>
+                        
+                        <hr>
+                        
+                        <div class="d-flex justify-content-between mb-3">
+                            <strong>Total</strong>
+                            <strong class="text-primary" id="totalAmount"><?php echo formatCurrency($total); ?></strong>
+                        </div>
+                        
+                        <?php $csrfToken = generateCSRFToken(); ?>
+                        <input type="hidden" name="csrf_token" value="<?php echo $csrfToken; ?>">
+                        
+                        <button type="submit" class="btn btn-primary btn-lg w-100">
+                            Place Order
+                        </button>
+                        
+                        <a href="<?php echo BASE_URL; ?>/modules/ecommerce/cart/" class="btn btn-outline-secondary w-100 mt-2">
+                            Back to Cart
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+function applyCoupon() {
+    // This would typically be an AJAX call to validate the coupon
+    // For now, just submit the form
+    document.getElementById('checkoutForm').submit();
+}
+</script>
+
+<?php include __DIR__ .../../../includes/footer.php'; ?>
+

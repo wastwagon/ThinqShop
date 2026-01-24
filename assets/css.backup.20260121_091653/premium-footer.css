@@ -1,0 +1,210 @@
+/**
+ * Premium World-Class Footer Styling
+ * Brand Color: #0e2945
+ * Responsive: All Screen Sizes
+ */
+
+.premium-footer {
+    background: #ffffff;
+    border-top: 1px solid #e5e7eb;
+    padding: 4rem 0 2rem;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.premium-footer-top {
+    margin-bottom: 4rem;
+}
+
+/* Newsletter Section */
+.footer-newsletter-card {
+    background: #0e2945;
+    border-radius: 24px;
+    padding: 3rem;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.newsletter-text {
+    flex: 1;
+    min-width: 300px;
+}
+
+.newsletter-text h3 {
+    font-size: 1.75rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+}
+
+.newsletter-text p {
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0;
+}
+
+.newsletter-form-wrapper {
+    flex: 1;
+    min-width: 300px;
+    max-width: 500px;
+}
+
+.newsletter-form-premium {
+    display: flex;
+    gap: 0.75rem;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.5rem;
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.newsletter-input-premium {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    color: #ffffff;
+    outline: none;
+}
+
+.newsletter-input-premium::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.newsletter-submit-premium {
+    background: #ffffff;
+    color: #0e2945;
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 50px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.newsletter-submit-premium:hover {
+    background: #e5e7eb;
+    transform: scale(1.02);
+}
+
+/* Footer Link Columns */
+.footer-column-premium {
+    margin-bottom: 2rem;
+}
+
+.footer-heading-premium {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #0e2945;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.footer-links-premium {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links-premium li {
+    margin-bottom: 0.75rem;
+}
+
+.footer-links-premium a {
+    color: #4b5563;
+    text-decoration: none;
+    font-size: 0.9375rem;
+    transition: all 0.2s ease;
+    display: inline-block;
+}
+
+.footer-links-premium a:hover {
+    color: #0e2945;
+    transform: translateX(4px);
+}
+
+/* Footer Bottom Section */
+.footer-bottom-premium {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+.footer-copyright-premium {
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+.footer-social-wrapper {
+    display: flex;
+    gap: 1rem;
+}
+
+.social-icon-premium {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #f9fafb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0e2945;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: 1px solid #e5e7eb;
+}
+
+.social-icon-premium:hover {
+    background: #0e2945;
+    color: #ffffff;
+    transform: translateY(-4px);
+}
+
+/* Responsive Overrides */
+@media (max-width: 991.98px) {
+    .premium-footer {
+        padding: 3rem 0 7rem;
+        /* Added bottom padding for mobile menu space */
+    }
+
+    .footer-newsletter-card {
+        padding: 2rem;
+        text-align: center;
+    }
+
+    .newsletter-form-premium {
+        flex-direction: column;
+        background: transparent;
+        border: none;
+        padding: 0;
+        gap: 1rem;
+    }
+
+    .newsletter-input-premium {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 50px;
+    }
+
+    .footer-bottom-premium {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .footer-column-premium {
+        text-align: center;
+    }
+
+    .footer-links-premium a:hover {
+        transform: none;
+    }
+}

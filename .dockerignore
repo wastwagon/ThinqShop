@@ -1,0 +1,9 @@
+vendor/
+.git/
+.env
+.env.*
+*.md
+docker-compose.yml
+Dockerfile
+README.md
+Deploying.md

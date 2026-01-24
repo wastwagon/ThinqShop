@@ -1,0 +1,122 @@
+/* User Order View Page Styles */
+
+.order-header-premium {
+    background: #fff;
+    border-radius: 12px;
+    padding: 2rem;
+    border: 1px solid #e2e8f0;
+}
+
+.order-badge-premium {
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 0.7rem;
+    letter-spacing: 0.5px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-transform: uppercase;
+}
+
+.card-premium-view {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.timeline-premium {
+    position: relative;
+    padding-left: 2rem;
+}
+
+.timeline-premium::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 5px;
+    bottom: 5px;
+    width: 2px;
+    background: #f1f5f9;
+}
+
+.timeline-item-premium {
+    position: relative;
+    padding-bottom: 2rem;
+}
+
+.timeline-item-premium::before {
+    content: '';
+    position: absolute;
+    left: -2rem;
+    top: 5px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #fff;
+    border: 3px solid #e2e8f0;
+    transform: translateX(-50%);
+    z-index: 2;
+}
+
+.timeline-item-premium.active::before {
+    background: #0e2945;
+    border-color: #0e2945;
+}
+
+.product-thumb-premium {
+    width: 52px;
+    height: 52px;
+    border-radius: 8px;
+    background: #f8fafc;
+    border: 1px solid #f1f5f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.summary-item-premium {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+}
+
+.summary-total-premium {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px dashed #e2e8f0;
+}
+
+.action-center-premium {
+    background: #f8fafc;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    padding: 2rem;
+}
+
+@media (max-width: 767.98px) {
+    .order-header-premium {
+        padding: 1.5rem;
+    }
+
+    .card-premium-view {
+        padding: 1.5rem !important;
+    }
+
+    .timeline-premium {
+        padding-left: 1.5rem;
+    }
+
+    .timeline-item-premium::before {
+        left: -1.5rem;
+        width: 10px;
+        height: 10px;
+        top: 6px;
+    }
+}

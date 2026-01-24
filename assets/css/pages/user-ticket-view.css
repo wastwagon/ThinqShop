@@ -1,0 +1,103 @@
+/* User Ticket View Page Styles */
+
+.chat-canvas {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    padding: 2rem;
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.msg-bubble-p {
+    max-width: 85%;
+    padding: 1.25rem 1.5rem;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    position: relative;
+    border: 1px solid transparent;
+}
+
+.msg-user-p {
+    align-self: flex-end;
+    background: #fdfefe;
+    color: #0e2945;
+    border-color: #e2e8f0;
+    border-bottom-right-radius: 2px;
+}
+
+.msg-admin-p {
+    align-self: flex-start;
+    background: #0e2945;
+    color: white;
+    border-bottom-left-radius: 2px;
+}
+
+.meta-chat {
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #94a3b8;
+    margin-top: 0.75rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+.msg-admin-p .meta-chat {
+    color: rgba(255, 255, 255, 0.6) !important;
+    justify-content: flex-start;
+}
+
+.ticket-sidebar-card {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    padding: 1.5rem;
+}
+
+.reply-input-p {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    padding: 1rem;
+}
+
+.reply-textarea-p {
+    border: 1px solid #f1f5f9;
+    border-radius: 8px;
+    resize: none;
+    padding: 1rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    background: #fdfefe;
+    margin-bottom: 1rem;
+}
+
+.reply-textarea-p:focus {
+    border-color: var(--primary-color);
+    box-shadow: none;
+    background: #fff;
+}
+
+.status-p-pill {
+    padding: 0.4rem 1rem;
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+@media (max-width: 767.98px) {
+    .chat-canvas {
+        padding: 1.25rem;
+    }
+
+    .msg-bubble-p {
+        max-width: 95%;
+    }
+}

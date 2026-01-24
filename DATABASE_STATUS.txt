@@ -1,0 +1,12 @@
+✅ Database Setup Complete!
+
+Database: thinqshopping_db
+Character Set: utf8mb4
+Collation: utf8mb4_unicode_ci
+
+All tables imported successfully!
+The character set error has been resolved.
+
+You can now access the website at:
+http://localhost/ThinQShopping/
+

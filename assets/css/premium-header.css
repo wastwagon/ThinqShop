@@ -1,0 +1,481 @@
+/**
+ * Premium World-Class Header Design
+ * Responsive: Mobile, Tablet, Desktop
+ * Brand Color: #0e2945
+ * Clean, Modern, Professional
+ */
+
+/* ============================================
+   RESET & CLEAN HEADER
+   ============================================ */
+
+/* Remove old utility bar and clutter */
+.top-utility-bar,
+.utility-bar,
+.header-top,
+.accessibility-icon,
+.gift-guides-link,
+.gift-cards-link,
+.professional-source {
+    display: none !important;
+}
+
+/* ============================================
+   PREMIUM HEADER - MAIN CONTAINER
+   ============================================ */
+
+.main-header {
+    background: #ffffff !important;
+    border-bottom: 1px solid #e5e7eb !important;
+    padding: 0 !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 1000 !important;
+    box-shadow: none !important;
+}
+
+.header-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+/* ============================================
+   HEADER TOP ROW - Logo, Search, Actions
+   ============================================ */
+
+.header-top-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 0;
+    gap: 2rem;
+}
+
+/* Logo Section */
+.header-logo {
+    flex-shrink: 0;
+}
+
+.header-logo a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.header-logo img {
+    height: 45px;
+    width: auto;
+    max-width: 180px;
+}
+
+/* Search Section - Center */
+.header-search {
+    flex: 1;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.header-search-form {
+    position: relative;
+    width: 100%;
+}
+
+.header-search-input {
+    width: 100%;
+    padding: 0.75rem 3.5rem 0.75rem 1.25rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 50px;
+    font-size: 0.9375rem;
+    outline: none;
+    transition: all 0.2s ease;
+    background: #f9fafb;
+}
+
+.header-search-input:focus {
+    border-color: #0e2945;
+    background: #ffffff;
+}
+
+.header-search-input::placeholder {
+    color: #9ca3af;
+}
+
+.header-search-btn {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #0e2945;
+    color: #ffffff;
+    border: none;
+    border-radius: 50px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.header-search-btn:hover {
+    background: #0a1f35;
+}
+
+.header-search-btn i {
+    font-size: 1rem;
+}
+
+/* Actions Section - Right */
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-shrink: 0;
+}
+
+.header-action-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #374151;
+    transition: all 0.2s ease;
+    position: relative;
+    min-width: 60px;
+}
+
+.header-action-item:hover {
+    color: #0e2945;
+}
+
+.header-action-icon {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #f9fafb;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.header-action-item:hover .header-action-icon {
+    background: #e8eef5;
+}
+
+.header-action-icon i {
+    font-size: 1.25rem;
+}
+
+.header-action-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background: #ef4444;
+    color: #ffffff;
+    font-size: 0.625rem;
+    font-weight: 700;
+    padding: 0.125rem 0.375rem;
+    border-radius: 50px;
+    min-width: 18px;
+    text-align: center;
+}
+
+.header-action-label {
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+    font-weight: 500;
+}
+
+/* ============================================
+   HEADER BOTTOM ROW - Navigation
+   ============================================ */
+
+.header-bottom-row {
+    background: #0e2945;
+    padding: 0;
+}
+
+.header-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+}
+
+.header-nav-item {
+    position: relative;
+}
+
+.header-nav-link {
+    display: flex;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.header-nav-link:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+}
+
+.header-nav-link.active {
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+}
+
+/* ============================================
+   MOBILE HEADER (< 768px)
+   ============================================ */
+
+@media (max-width: 767px) {
+    .header-container {
+        padding: 0 1rem;
+    }
+
+    .header-top-row {
+        padding: 0.75rem 0;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    /* Logo - Full width on mobile */
+    .header-logo {
+        order: 1;
+        flex: 1;
+    }
+
+    .header-logo img {
+        height: 36px;
+    }
+
+    /* Actions - Right side */
+    .header-actions {
+        order: 2;
+        gap: 0.75rem;
+    }
+
+    .header-action-item {
+        min-width: auto;
+    }
+
+    .header-action-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .header-action-icon i {
+        font-size: 1.125rem;
+    }
+
+    .header-action-label {
+        display: none;
+    }
+
+    /* Search - Full width below */
+    .header-search {
+        order: 3;
+        flex: 1 1 100%;
+        max-width: 100%;
+        margin: 0;
+    }
+
+    .header-search-input {
+        padding: 0.625rem 3rem 0.625rem 1rem;
+        font-size: 0.875rem;
+    }
+
+    .header-search-btn {
+        width: 36px;
+        height: 36px;
+    }
+
+    /* Navigation - Hidden on mobile (use bottom nav) */
+    .header-bottom-row {
+        display: none;
+    }
+}
+
+/* ============================================
+   TABLET HEADER (768px - 991px)
+   ============================================ */
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .header-container {
+        padding: 0 1.25rem;
+    }
+
+    .header-top-row {
+        gap: 1.5rem;
+    }
+
+    .header-logo img {
+        height: 40px;
+    }
+
+    .header-search {
+        max-width: 400px;
+    }
+
+    .header-actions {
+        gap: 1rem;
+    }
+
+    .header-action-label {
+        font-size: 0.6875rem;
+    }
+
+    /* Navigation - Compact */
+    .header-nav-link {
+        padding: 0.875rem 1rem;
+        font-size: 0.875rem;
+    }
+}
+
+/* ============================================
+   DESKTOP HEADER (> 991px)
+   ============================================ */
+
+@media (min-width: 992px) {
+    .header-top-row {
+        padding: 1.25rem 0;
+    }
+
+    .header-logo img {
+        height: 50px;
+    }
+
+    .header-search {
+        max-width: 600px;
+    }
+}
+
+/* ============================================
+   HAMBURGER MENU (Mobile & Tablet)
+   ============================================ */
+
+.header-hamburger {
+    display: none;
+    width: 44px;
+    height: 44px;
+    background: #f9fafb;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    transition: all 0.2s ease;
+}
+
+.header-hamburger:hover {
+    background: #e8eef5;
+}
+
+.header-hamburger span {
+    width: 20px;
+    height: 2px;
+    background: #374151;
+    border-radius: 2px;
+    transition: all 0.2s ease;
+}
+
+@media (max-width: 991px) {
+    .header-hamburger {
+        display: flex;
+    }
+}
+
+/* ============================================
+   CONTACT INFO (Optional - Desktop Only)
+   ============================================ */
+
+.header-contact {
+    display: none;
+    align-items: center;
+    gap: 0.5rem;
+    color: #374151;
+    font-size: 0.875rem;
+    text-decoration: none;
+}
+
+.header-contact i {
+    color: #0e2945;
+}
+
+@media (min-width: 1200px) {
+    .header-contact {
+        display: flex;
+    }
+}
+
+/* ============================================
+   STICKY HEADER BEHAVIOR
+   ============================================ */
+
+.main-header.scrolled {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+}
+
+.main-header.scrolled .header-top-row {
+    padding: 0.75rem 0;
+}
+
+.main-header.scrolled .header-logo img {
+    height: 40px;
+}
+
+/* ============================================
+   ACCESSIBILITY & FOCUS STATES
+   ============================================ */
+
+.header-search-input:focus,
+.header-search-btn:focus,
+.header-action-item:focus,
+.header-nav-link:focus {
+    outline: 2px solid #0e2945;
+    outline-offset: 2px;
+}
+
+/* ============================================
+   LOADING STATE
+   ============================================ */
+
+.header-search-btn.loading {
+    pointer-events: none;
+}
+
+.header-search-btn.loading i {
+    animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+    .main-header {
+        position: static !important;
+    }
+
+    .header-bottom-row,
+    .header-actions,
+    .header-search {
+        display: none !important;
+    }
+}
