@@ -44,67 +44,84 @@ if (!file_exists($sqlFile)) {
     exit(0);
 }
 
+// Read entire file (for 10MB it's fine, for larger need streams but this is sufficient)
 $sqlContent = file_get_contents($sqlFile);
 
-// 2. Extract Table definitions and Data
-// This is a simple regex parser for standard mysqldump output
-// It assumes specific formatting: "CREATE TABLE `name`" and "INSERT INTO `name`"
-
-// Find all CREATE TABLE statements to identify tables
+// Find all CREATE TABLE statements to identify what tables we SHOULD have
 preg_match_all('/CREATE TABLE `(\w+)`/', $sqlContent, $matches);
 $tablesInDump = array_unique($matches[1]);
 
-echo "[Auto-Migrate] Found tables in dump: " . implode(', ', $tablesInDump) . "\n";
+echo "[Auto-Migrate] Found definition for tables: " . implode(', ', $tablesInDump) . "\n";
 
 foreach ($tablesInDump as $table) {
     try {
-        // Check if table exists
+        // Check if table exists in DB
         $check = $pdo->query("SHOW TABLES LIKE '$table'");
         if ($check->rowCount() > 0) {
-            echo "[Auto-Migrate] Table '$table' already exists. Skipping.\n";
+            echo "[Auto-Migrate] Table '$table' already exists. Checking next.\n";
             continue;
         }
 
-        echo "[Auto-Migrate] Table '$table' missing. Restoring...\n";
+        echo "[Auto-Migrate] Table '$table' is missing. Validating dump content...\n";
 
-        // Extract CREATE TABLE statement
-        // Look for "DROP TABLE IF EXISTS `table`;" followed by "CREATE TABLE `table` ... ;"
-        // We use a regex that captures from CREATE up to the closing semicolon matching the creation block
-        // Note: This regex is sensitive to formatting.
+        // Find the start of CREATE TABLE statement
+        $searchStr = "CREATE TABLE `$table`";
+        $startPos = strpos($sqlContent, $searchStr);
         
-        $pattern = "/CREATE TABLE `$table` \(.*?\)( ENGINE=.*?)?;/s";
-        if (preg_match($pattern, $sqlContent, $createMatch)) {
-            $createSql = $createMatch[0];
-            $pdo->exec($createSql);
-            echo "[Auto-Migrate] Created table '$table'.\n";
-        } else {
-             echo "[Auto-Migrate] Warning: Could not parse CREATE statement for '$table'.\n";
+        if ($startPos === false) {
+             echo "[Auto-Migrate] Error: Could not find definition for '$table'.\n";
              continue;
         }
 
-        // Extract INSERT statements
-        // Look for "INSERT INTO `$table` VALUES ..."
-        // Note: mysqldump often puts all data for a table in one huge INSERT or multiple.
-        // We find all occurrences.
+        // Find the end of the statement (semicolon)
+        // We look for the first semicolon AFTER the start position
+        $endPos = strpos($sqlContent, ";", $startPos);
         
-        $insertPattern = "/INSERT INTO `$table` VALUES .*?;/s";
-        if (preg_match_all($insertPattern, $sqlContent, $insertMatches)) {
-            foreach ($insertMatches[0] as $insertSql) {
-                // Execute insert. Since table is fresh, no conflict.
-                // We might need to split extremely long lines if PDO complains, but for <10MB it's usually fine.
-                try {
-                    $pdo->exec($insertSql);
-                } catch (PDOException $e) {
-                     echo "[Auto-Migrate] Error inserting data for '$table': " . $e->getMessage() . "\n";
-                }
+        if ($endPos === false) {
+            echo "[Auto-Migrate] Error: Could not find end of definition for '$table'.\n";
+            continue;
+        }
+
+        // Extract the CREATE SQL
+        $createSql = substr($sqlContent, $startPos, $endPos - $startPos + 1);
+        
+        // Execute CREATE
+        $pdo->exec($createSql);
+        echo "[Auto-Migrate] SUCCESS: Created table '$table'.\n";
+
+
+        // Now handle INSERTs
+        // We look for "INSERT INTO `$table`"
+        // Since there might be multiple INSERT statements, we loop
+        $offset = 0;
+        $insertCount = 0;
+        while (($insertStart = strpos($sqlContent, "INSERT INTO `$table`", $offset)) !== false) {
+            // Find end of this INSERT statement
+            $insertEnd = strpos($sqlContent, ";", $insertStart);
+            if ($insertEnd === false) break;
+
+            $insertSql = substr($sqlContent, $insertStart, $insertEnd - $insertStart + 1);
+            
+            try {
+                $pdo->exec($insertSql);
+                $insertCount++;
+            } catch (PDOException $e) {
+                 // Duplicate entry or other error? Just log
+                 echo "[Auto-Migrate] Insert error for '$table': " . $e->getMessage() . "\n";
             }
-            echo "[Auto-Migrate] Imported data for '$table'.\n";
+            
+            $offset = $insertEnd + 1;
+        }
+        
+        if ($insertCount > 0) {
+            echo "[Auto-Migrate] Imported $insertCount data batches for '$table'.\n";
         }
 
     } catch (PDOException $e) {
-        echo "[Auto-Migrate] Error processing '$table': " . $e->getMessage() . "\n";
+        echo "[Auto-Migrate] CRITICAL ERROR processing '$table': " . $e->getMessage() . "\n";
     }
 }
+
 
 // 3. Special check for admin_users (since it might have been created manually or by previous script but missing data)
 // If admin_users exists but is empty, seed it.
