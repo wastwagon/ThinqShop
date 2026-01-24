@@ -8,6 +8,10 @@ services:
     restart: always
     environment:
       - APACHE_DOCUMENT_ROOT=/var/www/html
+      - DB_HOST=mysql
+      - DB_NAME=thinjupz_db
+      - DB_USER=thinquser
+      - DB_PASS=thinqpass
     depends_on:
       - mysql
     networks:
