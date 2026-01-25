@@ -89,6 +89,12 @@ $additionalCSS = [
 ob_start();
 ?>
 
+<div class="page-title-section">
+    <h1 class="page-title">Money Transfers</h1>
+    <a href="<?php echo BASE_URL; ?>/modules/money-transfer/transfer-form/" class="btn btn-primary btn-premium">
+        <i class="fas fa-plus me-2"></i> New Transfer
+    </a>
+</div>
 
 
 

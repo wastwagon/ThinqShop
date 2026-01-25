@@ -49,8 +49,12 @@ $additionalCSS = [
 ob_start();
 ?>
 
-
-
+<div class="page-title-section">
+    <h1 class="page-title">Procurement Requests</h1>
+    <a href="<?php echo BASE_URL; ?>/modules/procurement/request/" class="btn btn-primary btn-premium">
+        <i class="fas fa-plus me-2"></i> New Request
+    </a>
+</div>
 
 
 <?php if (empty($requests)): ?>
@@ -99,7 +103,7 @@ ob_start();
                         <div class="small fw-800 text-dark text-truncate text-uppercase" style="max-width: 300px;">
                             <?php echo htmlspecialchars($request['description']); ?>
                         </div>
-                        <div class="x-small text-muted fw-800 text-uppercase"><?php echo str_remove_snake($request['category'] ?? 'General'); ?></div>
+                        <div class="x-small text-muted fw-800 text-uppercase"><?php echo str_replace('_', ' ', $request['category'] ?? 'General'); ?></div>
                     </div>
                     
                     <div class="col-md-2">
