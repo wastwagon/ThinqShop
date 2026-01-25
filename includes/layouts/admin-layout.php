@@ -61,7 +61,7 @@ if (isset($pageContent) && is_string($pageContent) && file_exists($pageContent))
     $adminCssFile = __DIR__ . '/../../assets/css/admin-dashboard.css';
     $adminCssVersion = file_exists($adminCssFile) ? md5_file($adminCssFile) : time();
     ?>
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/admin-dashboard.css?v=<?php echo time(); ?>&rev=<?php echo substr($adminCssVersion, 0, 8); ?>">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/layouts/admin-dashboard.css?v=<?php echo time(); ?>&rev=<?php echo substr($adminCssVersion, 0, 8); ?>">
     
     <!-- Global Modal Fix CSS - Must be after Bootstrap and dashboard CSS -->
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/modal-fix.css?v=<?php echo time(); ?>">

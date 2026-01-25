@@ -18,7 +18,7 @@
     --info-color: #0dcaf0;
     --sidebar-bg: linear-gradient(180deg, #05203e 0%, #1f3651 100%);
     --sidebar-width: 280px;
-    --header-height: 80px;
+    --header-height: 60px;
     --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.04);
     --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
     --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
@@ -47,7 +47,7 @@ body {
 .admin-main-content {
     margin-left: var(--sidebar-width);
     margin-top: var(--header-height);
-    padding: 2.5rem;
+    padding: 1.5rem;
     min-height: calc(100vh - var(--header-height));
     transition: var(--transition);
     position: relative;
@@ -58,8 +58,8 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 2.5rem;
-    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
     border-bottom: 2px solid rgba(5, 32, 62, 0.08);
     position: relative;
 }
@@ -131,7 +131,7 @@ body {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 1.75rem;
-    margin-bottom: 2.5rem;
+    margin-bottom: 1.5rem;
 }
 
 .metric-card {
