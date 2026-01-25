@@ -87,6 +87,7 @@ foreach ($tables as $table) {
             $pdo->exec($sql);
             $batches++;
         } catch (Exception $e) {
+            echo "\n      [SQL Error] " . $e->getMessage() . "\n";
             $errs++;
         }
         $offset = $end + 1;
