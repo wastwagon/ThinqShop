@@ -4,8 +4,8 @@
  * ThinQShopping Platform
  */
 
-require_once __DIR__ . '/../config/constants.php';
-require_once __DIR__ . '/../includes/functions.php';
+require_once __DIR__ . '/config/constants.php';
+require_once __DIR__ . '/includes/functions.php';
 
 // Start session
 if (session_status() === PHP_SESSION_NONE) {
