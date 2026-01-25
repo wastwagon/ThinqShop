@@ -21,13 +21,18 @@
 }
 
 .admin-sidebar .logo {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--primary-color);
-    text-decoration: none;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+    text-decoration: none;
+}
+
+.admin-sidebar .logo img {
+    max-width: 100%;
+    height: auto;
+    max-height: 50px;
+    object-fit: contain;
 }
 
 .admin-sidebar .menu-section {
