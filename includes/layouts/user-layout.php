@@ -59,6 +59,7 @@ if (isset($pageContent) && is_string($pageContent) && file_exists($pageContent))
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/professional-ui-standard.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/mobile-first-optimization.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/brand-color-override.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/components/navigation.css?v=<?php echo time(); ?>">
     
     <?php if (isset($additionalCSS) && is_array($additionalCSS)): ?>
         <?php foreach ($additionalCSS as $cssUrl): ?>

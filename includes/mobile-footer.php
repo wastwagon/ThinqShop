@@ -26,8 +26,8 @@ if (isLoggedIn() && isset($conn)) {
                     <ul class="mobile-footer__links">
                         <li><a href="<?php echo BASE_URL; ?>">Home</a></li>
                         <li><a href="<?php echo BASE_URL; ?>/shop.php">Shop</a></li>
-                        <li><a href="<?php echo BASE_URL; ?>/about.php">About Us</a></li>
-                        <li><a href="<?php echo BASE_URL; ?>/contact.php">Contact</a></li>
+                        <li><a href="<?php echo BASE_URL; ?>/privacy.php">Privacy Policy</a></li>
+                        <li><a href="<?php echo BASE_URL; ?>/terms.php">Terms & Conditions</a></li>
                     </ul>
                 </div>
                 
