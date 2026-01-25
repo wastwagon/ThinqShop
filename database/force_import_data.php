@@ -32,6 +32,12 @@ if (!file_exists($sqlFile)) {
 
 echo "[Force-Import] Reading $sqlFile...\n";
 $sqlContent = file_get_contents($sqlFile);
+echo "[Force-Import] File Size: " . strlen($sqlContent) . " bytes.\n";
+
+// Specially check 'products' pattern presence for debugging
+$chkPattern = "/INSERT INTO `?products`?/";
+preg_match_all($chkPattern, $sqlContent, $chkMatches);
+echo "[Force-Import] DEBUG CODE: Found " . count($chkMatches[0]) . " occurrences of 'INSERT INTO products' (regex).\n";
 
 // Identify tables to report progress
 preg_match_all('/CREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?`?(\w+)`?/i', $sqlContent, $matches);
