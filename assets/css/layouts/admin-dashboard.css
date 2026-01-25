@@ -87,35 +87,30 @@ body {
     background-clip: text;
 }
 
+/* Download Report Button - Clean White */
 .download-report-btn {
-    padding: 8px 24px;
-    background: var(--primary-gradient);
-    color: white;
-    border: none;
-    border-radius: 6px;
+    padding: 10px 24px;
+    background: #ffffff;
+    color: var(--primary-color);
+    border: 1px solid var(--border-color);
+    border-radius: 30px;
     font-weight: 700;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    transition: var(--transition);
+    gap: 0.75rem;
+    transition: all 0.3s;
     text-decoration: none;
-    box-shadow: var(--shadow-md);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    /* world-class soft lift */
     font-size: 0.9rem;
     position: relative;
     overflow: hidden;
 }
 
-.download-report-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.5s ease;
-}
+/* Removed hover shimmer */
+/* .download-report-btn::before { ... } */
+
 
 /* .download-report-btn:hover::before {
     left: 100%;
@@ -857,14 +852,16 @@ body {
     width: 44px;
     height: 44px;
     border-radius: 8px;
-    border: none;
-    background: #f8fafc;
+    border: 1px solid var(--border-color);
+    border-radius: 30px;
+    /* cute pill */
+    background: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.2s;
-    color: #495057;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    color: var(--primary-color);
 }
 
 /* .admin-header .notification-btn:hover {

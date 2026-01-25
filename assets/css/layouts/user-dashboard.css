@@ -169,16 +169,18 @@ body {
     margin: 0;
 }
 
-/* Clean Flat Logout Button */
+/* Clean Flat Logout Button (Premium Pill) */
 .user-sidebar .logout-btn {
     width: 100%;
-    padding: 0.8rem 1rem;
+    padding: 10px 24px;
     margin-top: 1rem;
     color: var(--danger-color);
-    background: transparent;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 30px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    /* world-class soft lift */
+    font-weight: 700;
     font-size: 0.85rem;
     cursor: pointer;
     display: flex;
