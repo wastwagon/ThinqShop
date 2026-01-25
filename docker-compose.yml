@@ -15,8 +15,6 @@ services:
       - DB_PASS=thinqpass
     depends_on:
       - mysql
-    ports:
-      - "8080:80"
     networks:
       - thinqshopping_network
 
