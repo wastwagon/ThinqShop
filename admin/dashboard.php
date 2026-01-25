@@ -319,51 +319,7 @@ ob_start();
             </div>
         </div>
         
-        <div class="row">
-            <!-- Sales Chart -->
-            <div class="col-lg-8 mb-4">
-                <div class="chart-section">
-                    <div class="chart-header">
-                        <h3 class="chart-title">Sales Figures</h3>
-                        <div class="chart-legend">
-                            <?php foreach ($salesByService as $service): ?>
-                                <div class="legend-item">
-                                    <span class="legend-color" style="background: <?php 
-                                        echo $service['service_type'] === 'ecommerce' ? '#dc3545' : '#fd7e14'; 
-                                    ?>;"></span>
-                                    <span><?php echo ucfirst(str_replace('_', ' ', $service['service_type'])); ?></span>
-                                </div>
-                            <?php endforeach; ?>
-                        </div>
-                    </div>
-                    <canvas id="salesChart" height="80"></canvas>
-                </div>
-            </div>
 
-            <!-- Customer List -->
-            <div class="col-lg-4 mb-4">
-                <div class="data-section">
-                    <h3 class="data-section-title">Customer</h3>
-                    <div class="customer-list">
-                        <?php foreach ($recentCustomers as $customer): ?>
-                            <div class="d-flex align-items-center mb-3 pb-3 border-bottom">
-                                <div class="customer-avatar">
-                                    <?php 
-                                    $name = ($customer['first_name'] ?? '') . ' ' . ($customer['last_name'] ?? '');
-                                    $initials = !empty(trim($name)) ? strtoupper(substr(trim($name), 0, 1)) : strtoupper(substr($customer['email'] ?? 'U', 0, 1));
-                                    echo $initials;
-                                    ?>
-                                </div>
-                                <div class="flex-grow-1">
-                                    <div class="fw-semibold"><?php echo htmlspecialchars(trim($name) ?: $customer['email'] ?? 'User'); ?></div>
-                                    <div class="text-muted small"><?php echo htmlspecialchars($customer['email'] ?? ''); ?></div>
-        </div>
-    </div>
-                        <?php endforeach; ?>
-    </div>
-                </div>
-            </div>
-        </div>
 
         <!-- Product Sales Table -->
         <div class="data-section">
