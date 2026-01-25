@@ -28,12 +28,12 @@
     <!-- GLightbox CSS (for image lightbox) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css">
     
-    <!-- Custom CSS - CONSOLIDATED FILE -->
+    <!-- Custom CSS - CONSOLIDATED FILE (Force Refresh) -->
     <?php 
-    $cssFile = __DIR__ . '/../assets/css/main-new.css';
+    $cssFile = __DIR__ . '/../assets/css/main-final.css';
     $cssVersion = file_exists($cssFile) ? md5_file($cssFile) : time();
     ?>
-    <link rel="stylesheet" href="<?php echo asset('assets/css/main-new.css'); ?>?v=<?php echo time(); ?>&rev=<?php echo substr($cssVersion, 0, 8); ?>">
+    <link rel="stylesheet" href="<?php echo asset('assets/css/main-final.css'); ?>?v=<?php echo $cssVersion; ?>">
     
     <!-- Temporary: Header Styles (Legacy) - REMOVED to fix conflicts -->
     <!-- <link rel="stylesheet" href="<?php echo asset('assets/css/premium-header.css'); ?>?v=<?php echo time(); ?>"> -->
