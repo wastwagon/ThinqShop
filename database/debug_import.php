@@ -55,11 +55,6 @@ preg_match_all('/CREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?`?(\w+)`?/i', $sqlCon
 $tables = array_unique($matches[1]);
 
 foreach ($tables as $table) {
-    // Only focus on tables we know are empty or important for now to save output noise
-    if (!in_array($table, ['products', 'orders', 'users', 'cart', 'categories'])) {
-        // continue; // Uncomment to speed up if needed, but let's try all
-    }
-
     $pattern = "INSERT INTO `$table`";
     if (strpos($sqlContent, $pattern) === false) {
         $pattern = "INSERT INTO $table";
@@ -73,17 +68,24 @@ foreach ($tables as $table) {
 
     echo "   -> Processing '$table': ";
     
+    // Clean-Slate: Truncate table first to avoid "Duplicate entry" errors
+    try {
+        $pdo->exec("TRUNCATE TABLE `$table` ");
+        echo " [Table Emptied] ";
+    } catch (Exception $e) {
+        // Silently fail if truncate doesn't work (e.g. view or missing table)
+    }
+
     // Execution Loop: Quote-aware statement extraction
     $len = strlen($sqlContent);
     $inSingleQuote = false;
     $inDoubleQuote = false;
     $escaped = false;
-    $start = 0;
     
     // Efficiency: Find the first occurrence of the pattern to jump there
     $offset = strpos($sqlContent, $pattern);
     if ($offset === false) {
-        echo "No inserts found.\n";
+        echo "No inserts found in SQL file.\n";
         continue;
     }
 
@@ -122,15 +124,15 @@ foreach ($tables as $table) {
                 }
             }
             
-            // Move to the next potential statement
+            // Move to the next potential statement for THIS table
             $nextOffset = strpos($sqlContent, $pattern, $i + 1);
             if ($nextOffset === false) break;
-            $i = $nextOffset - 1; // -1 because the loop does $i++
+            $i = $nextOffset - 1; 
             $offset = $nextOffset;
         }
     }
     
-    echo "Imported $batches batches. ($errs skipped)\n";
+    echo "Imported $batches batches. ($errs errors)\n";
 }
 
 $pdo->exec("SET FOREIGN_KEY_CHECKS=1");
