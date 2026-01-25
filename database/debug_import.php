@@ -120,6 +120,7 @@ foreach ($tables as $table) {
                     $batches++;
                 } catch (Exception $e) {
                     echo "\n      [SQL Error] " . $e->getMessage() . "\n";
+                    echo "      [Failing SQL Prefix]: " . substr($sql, 0, 200) . "...\n";
                     $errs++;
                 }
             }

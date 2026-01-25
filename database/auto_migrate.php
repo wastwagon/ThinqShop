@@ -150,19 +150,52 @@ foreach ($tablesInDump as $table) {
         $searchPattern = "INSERT INTO $table";
     }
     
+    // Execution Loop: Quote-aware statement extraction
+    $len = strlen($sqlContent);
+    $inSingleQuote = false;
+    $inDoubleQuote = false;
+    $escaped = false;
+    
     // Find all inserts for this table
-    $offset = 0;
-    while (($insertStart = strpos($sqlContent, $searchPattern, $offset)) !== false) {
-        $insertEnd = strpos($sqlContent, ";", $insertStart);
-        if ($insertEnd === false) break;
+    $offset = strpos($sqlContent, $searchPattern);
+    if ($offset === false) continue;
+
+    for ($i = $offset; $i < $len; $i++) {
+        $c = $sqlContent[$i];
         
-        $insertSql = substr($sqlContent, $insertStart, $insertEnd - $insertStart + 1);
-        try {
-            $pdo->exec($insertSql);
-        } catch (Exception $e) {
-            // Ignore insert errors (dups usually)
+        if ($escaped) {
+            $escaped = false;
+            continue;
         }
-        $offset = $insertEnd + 1;
+        
+        if ($c === "\\") {
+            $escaped = true;
+            continue;
+        }
+        
+        if ($c === "'" && !$inDoubleQuote) {
+            $inSingleQuote = !$inSingleQuote;
+        } elseif ($c === '"' && !$inSingleQuote) {
+            $inDoubleQuote = !$inDoubleQuote;
+        } elseif ($c === ';' && !$inSingleQuote && !$inDoubleQuote) {
+            // Found a real statement terminator!
+            $sql = substr($sqlContent, $offset, $i - $offset + 1);
+            
+            // Only execute if it matches our table pattern
+            if (strpos($sql, $searchPattern) === 0) {
+                try {
+                    $pdo->exec($sql);
+                } catch (Exception $e) {
+                    // echo "[Auto-Migrate] Warning for '$table': " . $e->getMessage() . "\n";
+                }
+            }
+            
+            // Move to the next potential statement for THIS table
+            $nextOffset = strpos($sqlContent, $searchPattern, $i + 1);
+            if ($nextOffset === false) break;
+            $i = $nextOffset - 1; 
+            $offset = $nextOffset;
+        }
     }
 }
 
