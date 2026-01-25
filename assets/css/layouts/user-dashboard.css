@@ -187,11 +187,11 @@ body {
     text-decoration: none;
 }
 
-.user-sidebar .logout-btn:hover {
+/* .user-sidebar .logout-btn:hover {
     background: #dc2626;
     color: white;
     border-color: #dc2626;
-}
+} */
 
 /* Clean Flat User Header - Premium Floating */
 .user-header {
@@ -292,10 +292,10 @@ body {
     color: #495057;
 }
 
-.user-header .notification-btn:hover {
+/* .user-header .notification-btn:hover {
     background: rgba(14, 41, 69, 0.1);
     color: var(--primary-color);
-}
+} */
 
 .user-header .notification-badge {
     position: absolute;
@@ -387,10 +387,10 @@ body {
     transition: all 0.2s;
 }
 
-.user-header .btn-mark-all:hover:not(:disabled) {
+/* .user-header .btn-mark-all:hover:not(:disabled) {
     background: var(--primary-color);
     color: #fff;
-}
+} */
 
 .user-header .btn-close-notifications {
     background: none;
@@ -403,9 +403,9 @@ body {
     transition: color 0.2s;
 }
 
-.user-header .btn-close-notifications:hover {
+/* .user-header .btn-close-notifications:hover {
     color: var(--primary-color);
-}
+} */
 
 .user-header .notification-list {
     max-height: 400px;
@@ -819,12 +819,10 @@ body {
     /* NO box-shadow */
 }
 
-.btn-primary:hover {
+/* .btn-primary:hover {
     background: var(--primary-light);
-    /* NO transform */
-    /* NO box-shadow */
     color: white;
-}
+} */
 
 /* Clean Flat Forms */
 .form-control,
@@ -1135,11 +1133,11 @@ body {
     transition: all 0.25s ease;
 }
 
-.action-btn-premium:hover {
+/* .action-btn-premium:hover {
     background: #f8fafc;
     border-color: #0e2945;
     transform: translateX(5px);
-}
+} */
 
 .icon-square-premium {
     width: 44px;
