@@ -107,7 +107,7 @@ ob_start();
 </div>
 
 <div class="row g-4">
-    <div class="col-lg-8">
+    <div class="col-lg-12">
         <!-- Recent Orders -->
         <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
             <div class="card-header bg-white border-bottom p-4 d-flex justify-content-between align-items-center">
@@ -162,40 +162,6 @@ ob_start();
                 <?php endif; ?>
             </div>
         </div>
-    </div>
-    
-    <div class="col-lg-4">
-        <!-- Quick Actions -->
-        <h6 class="fw-700 text-dark mb-3 px-1 small">Quick Actions</h6>
-        <div class="card border-0 shadow-sm rounded-4 mb-5 overflow-hidden">
-            <div class="card-body p-4">
-                <div class="d-grid gap-3">
-                    <a href="<?php echo BASE_URL; ?>/shop.php" class="action-btn-premium">
-                        <div class="icon-square-premium bg-primary-soft text-primary"><i class="fas fa-shopping-cart"></i></div>
-                        <div>
-                            <div class="fw-800 small text-dark">Marketplace</div>
-                            <div class="x-small text-muted fw-bold">BROWSE PRODUCTS</div>
-                        </div>
-                    </a>
-                    <a href="<?php echo BASE_URL; ?>/user/wallet.php" class="action-btn-premium">
-                        <div class="icon-square-premium text-success"><i class="fas fa-wallet"></i></div>
-                        <div>
-                            <div class="fw-700 small text-dark">Add Funds</div>
-                            <div class="x-small text-muted">TOP UP WALLET</div>
-                        </div>
-                    </a>
-                    <a href="<?php echo BASE_URL; ?>/user/tickets/index.php" class="action-btn-premium">
-                        <div class="icon-square-premium text-info"><i class="fas fa-headset"></i></div>
-                        <div>
-                            <div class="fw-700 small text-dark">Support</div>
-                            <div class="x-small text-muted">CONTACT US</div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </div>
-        
-
     </div>
 </div>
 
