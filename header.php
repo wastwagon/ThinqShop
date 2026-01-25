@@ -45,6 +45,11 @@
     <!-- Premium Header - World-Class Responsive Design -->
     <link rel="stylesheet" href="<?php echo asset('assets/css/premium-header.css'); ?>?v=<?php echo time(); ?>">
     
+    <!-- Modern Component System (BEM) -->
+    <link rel="stylesheet" href="<?php echo asset('assets/css/core/variables.css'); ?>?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="<?php echo asset('assets/css/components/buttons.css'); ?>?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="<?php echo asset('assets/css/components/cards.css'); ?>?v=<?php echo time(); ?>">
+    
     <?php if (isset($additionalCSS)): ?>
         <?php foreach ($additionalCSS as $css): ?>
             <link rel="stylesheet" href="<?php echo asset($css); ?>">
