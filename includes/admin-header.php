@@ -8,8 +8,6 @@ $currentDate = date('l, d F Y');
 $adminName = $_SESSION['admin_username'] ?? 'Admin';
 ?>
 
-<!-- Core Mobile Optimization -->
-<link rel="stylesheet" href="<?php echo asset('assets/css/mobile-first-optimization.css'); ?>?v=<?php echo time(); ?>">
 
 <!-- Admin Header Styles now in admin-dashboard.css -->
 

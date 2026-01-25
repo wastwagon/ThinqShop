@@ -47,7 +47,7 @@ body {
 .admin-main-content {
     margin-left: var(--sidebar-width);
     margin-top: var(--header-height);
-    padding: 1.5rem;
+    padding: 1rem;
     min-height: calc(100vh - var(--header-height));
     transition: var(--transition);
     position: relative;
@@ -58,8 +58,8 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.5rem;
-    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
     border-bottom: 2px solid rgba(5, 32, 62, 0.08);
     position: relative;
 }
@@ -751,10 +751,248 @@ body {
     text-decoration: none;
 }
 
-.admin-sidebar .logout-btn:hover {
-    background: #c82333;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+/* Admin Header Styles - Global Desktop Scope */
+.admin-header {
+    position: fixed;
+    top: 0;
+    left: var(--sidebar-width, 280px);
+    right: 0;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 999;
+    padding: 0 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(14, 41, 69, 0.08);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.admin-header .header-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.admin-header .header-right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.admin-header .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.admin-header .welcome-text {
+    font-size: 1.125rem;
+    /* Reduced for 60px header */
+    font-weight: 700;
+    color: #0e2945;
+    margin: 0;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+}
+
+.admin-header .date-text {
+    font-size: 0.75rem;
+    color: #64748b;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.admin-header .search-bar {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.admin-header .search-bar i {
+    position: absolute;
+    left: 1rem;
+    color: #94a3b8;
+}
+
+.admin-header .search-bar input {
+    width: 100%;
+    padding: 0.75rem 1.25rem 0.75rem 3rem;
+    border: 1.5px solid rgba(14, 41, 69, 0.1);
+    border-radius: 8px;
+    font-size: 0.9375rem;
+    transition: all 0.2s;
+    background: #f8fafc;
+}
+
+.admin-header .search-bar input:focus {
+    outline: none;
+    border-color: #0e2945;
+    background: white;
+}
+
+.admin-header .notification-btn {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    border: none;
+    background: #f8fafc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #495057;
+}
+
+.admin-header .notification-btn:hover {
+    background: #0e2945;
+    color: #ffffff;
+}
+
+.admin-header .user-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    background: #0e2945;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.admin-header .sidebar-toggle {
+    display: none;
+    width: 44px;
+    height: 44px;
+    border: none;
+    background: rgba(5, 32, 62, 0.05);
+    border-radius: 10px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    color: #495057;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Notification Dropdown Styles */
+.admin-header .notification-wrapper {
+    position: relative;
+}
+
+.admin-header .notification-dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: 380px;
+    max-height: 500px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid rgba(5, 32, 62, 0.1);
+}
+
+.admin-header .notification-dropdown.active {
+    display: flex;
+}
+
+.admin-header .notification-header {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid rgba(5, 32, 62, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(5, 32, 62, 0.02);
+}
+
+.admin-header .notification-header h6 {
+    margin: 0;
+    font-weight: 700;
+    color: #212529;
+    font-size: 1rem;
+}
+
+.admin-header .notification-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.admin-header .btn-mark-all {
+    border: none;
+    background: rgba(13, 110, 253, 0.1);
+    color: #0d6efd;
+    padding: 0.35rem 0.75rem;
+    border-radius: 30px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.admin-header .btn-close-notifications {
+    background: none;
+    border: none;
+    color: #6c757d;
+    cursor: pointer;
+    padding: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s;
+}
+
+.admin-header .notification-list {
+    max-height: 400px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.admin-header .notification-item {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid rgba(5, 32, 62, 0.05);
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    gap: 0.75rem;
+}
+
+.admin-header .notification-item:hover {
+    background: rgba(5, 32, 62, 0.02);
+}
+
+.admin-header .notification-item.unread {
+    background: rgba(13, 110, 253, 0.05);
+    border-left: 3px solid #0d6efd;
+}
+
+.admin-header .notification-item .notification-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 1rem;
+}
+
+.admin-header .view-all-link {
+    color: #0d6efd;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.875rem;
+    transition: color 0.2s;
 }
 
 @media (max-width: 991.98px) {
@@ -779,333 +1017,29 @@ body {
     }
 
 
-    /* Admin Header Styles */
+
+
+    /* Admin Header Mobile Overrides */
     .admin-header {
-        position: fixed;
-        top: 0;
-        left: var(--sidebar-width, 280px);
-        right: 0;
-        height: 80px;
-        background: rgba(255, 255, 255, 0.98);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        z-index: 999;
-        padding: 0 2.5rem;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        border-bottom: 1px solid rgba(14, 41, 69, 0.08);
-        /* Brand Navy Border */
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .admin-header .welcome-text {
-        font-size: 1.375rem;
-        font-weight: 700;
-        color: #0e2945;
-        margin: 0;
-        letter-spacing: -0.01em;
-    }
-
-    .admin-header .search-bar input {
-        width: 100%;
-        padding: 0.75rem 1.25rem 0.75rem 3rem;
-        border: 1.5px solid rgba(14, 41, 69, 0.1);
-        border-radius: 8px;
-        /* Standardized radius */
-        font-size: 0.9375rem;
-        transition: all 0.2s;
-        background: #f8fafc;
-    }
-
-    .admin-header .search-bar input:focus {
-        outline: none;
-        border-color: #0e2945;
-        background: white;
-    }
-
-    .admin-header .notification-btn {
-        position: relative;
-        width: 44px;
-        height: 44px;
-        border-radius: 8px;
-        /* Unified with buttons */
-        border: none;
-        background: #f8fafc;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: all 0.2s;
-        color: #495057;
-    }
-
-    .admin-header .notification-btn:hover {
-        background: #0e2945;
-        color: #ffffff;
-    }
-
-    .admin-header .user-avatar {
-        width: 44px;
-        height: 44px;
-        border-radius: 8px;
-        /* Consistent premium look */
-        background: #0e2945;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-weight: 700;
-        cursor: pointer;
-        transition: all 0.2s;
+        left: 0;
+        padding: 0 1.5rem;
     }
 
     .admin-header .sidebar-toggle {
+        display: flex;
+    }
+
+    .admin-header .search-bar {
         display: none;
-        width: 44px;
-        height: 44px;
-        border: none;
-        background: rgba(5, 32, 62, 0.05);
-        border-radius: 10px;
-        cursor: pointer;
-        align-items: center;
-        justify-content: center;
-        color: #495057;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .admin-header .sidebar-toggle:hover {
-        background: rgba(5, 32, 62, 0.1);
-        color: #05203e;
-    }
-
-    @media (max-width: 991.98px) {
-        .admin-header {
-            left: 0;
-            padding: 0 1.5rem;
-        }
-
-        .admin-header .sidebar-toggle {
-            display: flex;
-        }
-
-        .admin-header .search-bar {
-            display: none;
-        }
-
-        .admin-header .header-left {
-            flex: 1;
-            margin-left: 1rem;
-        }
-
-        .admin-header .welcome-text {
-            font-size: 1.125rem;
-        }
-    }
-
-    @media (max-width: 767.98px) {
-        .admin-header {
-            padding: 0 1rem;
-            height: 70px;
-        }
-
-        .admin-header .welcome-text {
-            font-size: 1rem;
-        }
-
-        .admin-header .date-text {
-            font-size: 0.75rem;
-        }
-    }
-
-    /* Notification Dropdown Styles */
-    .admin-header .notification-wrapper {
-        position: relative;
-    }
-
-    .admin-header .notification-dropdown {
-        position: absolute;
-        top: calc(100% + 10px);
-        right: 0;
-        width: 380px;
-        max-height: 500px;
-        background: white;
-        border-radius: 12px;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-        z-index: 1000;
-        display: none;
-        flex-direction: column;
-        overflow: hidden;
-        border: 1px solid rgba(5, 32, 62, 0.1);
-    }
-
-    .admin-header .notification-dropdown.active {
-        display: flex;
-    }
-
-    .admin-header .notification-header {
-        padding: 1rem 1.25rem;
-        border-bottom: 1px solid rgba(5, 32, 62, 0.1);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background: rgba(5, 32, 62, 0.02);
-    }
-
-    .admin-header .notification-header h6 {
-        margin: 0;
-        font-weight: 700;
-        color: #212529;
-        font-size: 1rem;
-    }
-
-    .admin-header .notification-header-actions {
-        display: flex;
-        align-items: center;
-        gap: 0.35rem;
-    }
-
-    .admin-header .btn-mark-all {
-        border: none;
-        background: rgba(13, 110, 253, 0.1);
-        color: #0d6efd;
-        padding: 0.35rem 0.75rem;
-        border-radius: 30px;
-        font-size: 0.8rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: background 0.2s, color 0.2s;
-    }
-
-    .admin-header .btn-mark-all:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-    }
-
-    .admin-header .btn-mark-all:hover:not(:disabled) {
-        background: #0d6efd;
-        color: #fff;
-    }
-
-    .admin-header .btn-close-notifications {
-        background: none;
-        border: none;
-        color: #6c757d;
-        cursor: pointer;
-        padding: 0.25rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: color 0.2s;
-    }
-
-    .admin-header .btn-close-notifications:hover {
-        color: #212529;
-    }
-
-    .admin-header .notification-list {
-        max-height: 400px;
-        overflow-y: auto;
+    .admin-header .header-left {
         flex: 1;
+        margin-left: 1rem;
     }
 
-    .admin-header .notification-loading,
-    .admin-header .notification-empty {
-        padding: 2rem;
-        text-align: center;
-        color: #6c757d;
-    }
-
-    .admin-header .notification-item {
-        padding: 1rem 1.25rem;
-        border-bottom: 1px solid rgba(5, 32, 62, 0.05);
-        cursor: pointer;
-        transition: background 0.2s;
-        display: flex;
-        gap: 0.75rem;
-    }
-
-    .admin-header .notification-item:hover {
-        background: rgba(5, 32, 62, 0.02);
-    }
-
-    .admin-header .notification-item.unread {
-        background: rgba(13, 110, 253, 0.05);
-        border-left: 3px solid #0d6efd;
-    }
-
-    .admin-header .notification-item .notification-icon {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-        font-size: 1rem;
-    }
-
-    .admin-header .notification-item .notification-icon.order {
-        background: rgba(13, 110, 253, 0.1);
-        color: #0d6efd;
-    }
-
-    .admin-header .notification-item .notification-icon.transfer {
-        background: rgba(25, 135, 84, 0.1);
-        color: #198754;
-    }
-
-    .admin-header .notification-item .notification-icon.shipment {
-        background: rgba(13, 202, 240, 0.1);
-        color: #0dcaf0;
-    }
-
-    .admin-header .notification-item .notification-icon.ticket {
-        background: rgba(255, 193, 7, 0.1);
-        color: #ffc107;
-    }
-
-    .admin-header .notification-item .notification-content {
-        flex: 1;
-        min-width: 0;
-    }
-
-    .admin-header .notification-item .notification-title {
-        font-weight: 600;
-        color: #212529;
-        margin-bottom: 0.25rem;
-        font-size: 0.9375rem;
-    }
-
-    .admin-header .notification-item .notification-message {
-        color: #6c757d;
-        font-size: 0.875rem;
-        margin-bottom: 0.25rem;
-        line-height: 1.4;
-    }
-
-    .admin-header .notification-item .notification-time {
-        color: #adb5bd;
-        font-size: 0.75rem;
-    }
-
-    .admin-header .notification-footer {
-        padding: 0.75rem 1.25rem;
-        border-top: 1px solid rgba(5, 32, 62, 0.1);
-        text-align: center;
-        background: rgba(5, 32, 62, 0.02);
-    }
-
-    .admin-header .view-all-link {
-        color: #0d6efd;
-        text-decoration: none;
-        font-weight: 600;
-        font-size: 0.875rem;
-        transition: color 0.2s;
-    }
-
-    .admin-header .view-all-link:hover {
-        color: #05203e;
+    .admin-header .welcome-text {
+        font-size: 1.125rem;
     }
 
     @media (max-width: 767.98px) {
