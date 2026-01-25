@@ -73,24 +73,61 @@ foreach ($tables as $table) {
 
     echo "   -> Processing '$table': ";
     
-    // Execution Loop
-    $offset = 0;
+    // Execution Loop: Quote-aware statement extraction
+    $len = strlen($sqlContent);
+    $inSingleQuote = false;
+    $inDoubleQuote = false;
+    $escaped = false;
+    $start = 0;
+    
+    // Efficiency: Find the first occurrence of the pattern to jump there
+    $offset = strpos($sqlContent, $pattern);
+    if ($offset === false) {
+        echo "No inserts found.\n";
+        continue;
+    }
+
     $batches = 0;
     $errs = 0;
     
-    while (($start = strpos($sqlContent, $pattern, $offset)) !== false) {
-        $end = strpos($sqlContent, ";", $start);
-        if ($end === false) break;
+    for ($i = $offset; $i < $len; $i++) {
+        $c = $sqlContent[$i];
         
-        $sql = substr($sqlContent, $start, $end - $start + 1);
-        try {
-            $pdo->exec($sql);
-            $batches++;
-        } catch (Exception $e) {
-            echo "\n      [SQL Error] " . $e->getMessage() . "\n";
-            $errs++;
+        if ($escaped) {
+            $escaped = false;
+            continue;
         }
-        $offset = $end + 1;
+        
+        if ($c === "\\") {
+            $escaped = true;
+            continue;
+        }
+        
+        if ($c === "'" && !$inDoubleQuote) {
+            $inSingleQuote = !$inSingleQuote;
+        } elseif ($c === '"' && !$inSingleQuote) {
+            $inDoubleQuote = !$inDoubleQuote;
+        } elseif ($c === ';' && !$inSingleQuote && !$inDoubleQuote) {
+            // Found a real statement terminator!
+            $sql = substr($sqlContent, $offset, $i - $offset + 1);
+            
+            // Only execute if it matches our table pattern
+            if (strpos($sql, $pattern) === 0) {
+                try {
+                    $pdo->exec($sql);
+                    $batches++;
+                } catch (Exception $e) {
+                    echo "\n      [SQL Error] " . $e->getMessage() . "\n";
+                    $errs++;
+                }
+            }
+            
+            // Move to the next potential statement
+            $nextOffset = strpos($sqlContent, $pattern, $i + 1);
+            if ($nextOffset === false) break;
+            $i = $nextOffset - 1; // -1 because the loop does $i++
+            $offset = $nextOffset;
+        }
     }
     
     echo "Imported $batches batches. ($errs skipped)\n";
