@@ -17,21 +17,6 @@ if (session_status() === PHP_SESSION_NONE) {
 $db = new Database();
 $conn = $db->getConnection();
 
-// Helper function to get first product image (same as homepage)
-function getProductImage($product) {
-    if (!empty($product['images'])) {
-        $images = json_decode($product['images'], true);
-        if (!empty($images) && is_array($images)) {
-            $imagePath = str_replace('\\/', '/', $images[0]);
-            if (strpos($imagePath, '/') === false && strpos($imagePath, 'assets') === false) {
-                $imagePath = 'assets/images/products/' . $imagePath;
-            }
-            return BASE_URL . '/' . $imagePath;
-        }
-    }
-    return BASE_URL . '/assets/images/placeholder-product.jpg';
-}
-
 // Get filters from URL
 $category = isset($_GET['category']) && is_numeric($_GET['category']) ? intval($_GET['category']) : null;
 $search = isset($_GET['search']) && trim($_GET['search']) !== '' ? trim($_GET['search']) : null;

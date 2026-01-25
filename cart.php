@@ -63,14 +63,8 @@ foreach ($cartItems as &$item) {
     $subtotal += $itemTotal;
     $itemCount += $item['quantity'];
     
-    // Get product image using helper if available, otherwise fallback
-    if (function_exists('getProductImage')) {
-        $item['image_url'] = getProductImage($item);
-    } else {
-        $images = json_decode($item['images'] ?? '[]', true);
-        $imagePath = !empty($images) ? $images[0] : 'assets/images/placeholder-product.jpg';
-        $item['image_url'] = BASE_URL . '/' . $imagePath;
-    }
+    // Get product image using centralized helper
+    $item['image_url'] = getProductImage($item);
 }
 
 // VAT Rate

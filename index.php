@@ -19,26 +19,6 @@ if (session_status() === PHP_SESSION_NONE) {
 $db = new Database();
 $conn = $db->getConnection();
 
-// Helper function to get first product image
-function getProductImage($product) {
-    if (!empty($product['images'])) {
-        $images = json_decode($product['images'], true);
-        if (!empty($images) && is_array($images)) {
-            // Remove escaped slashes
-            $imagePath = str_replace('\\/', '/', $images[0]);
-            
-            // Check if path already includes directory or is just filename
-            if (strpos($imagePath, '/') === false && strpos($imagePath, 'assets') === false) {
-                // Just a filename, prepend the products directory
-                $imagePath = 'assets/images/products/' . $imagePath;
-            }
-            
-            return BASE_URL . '/' . $imagePath;
-        }
-    }
-    return BASE_URL . '/assets/images/placeholder-product.jpg';
-}
-
 // Get featured/new products (latest 12 products)
 $featuredProducts = [];
 try {
