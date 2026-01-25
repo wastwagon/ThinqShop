@@ -13,8 +13,6 @@ services:
       - DB_NAME=thinjupz_db
       - DB_USER=thinquser
       - DB_PASS=thinqpass
-    volumes:
-      - .:/var/www/html
     depends_on:
       - mysql
     networks:
