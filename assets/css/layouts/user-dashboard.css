@@ -193,22 +193,24 @@ body {
     border-color: #dc2626;
 }
 
-/* Clean Flat User Header */
+/* Clean Flat User Header - Premium Floating */
 .user-header {
     position: fixed;
-    top: 0;
-    left: var(--sidebar-width);
-    right: 0;
+    top: 1rem;
+    left: calc(var(--sidebar-width) + 1rem);
+    right: 1.5rem;
     height: var(--header-height);
     background: var(--white);
     /* NO backdrop-filter */
-    border-bottom: var(--border-light);
+    border: var(--border-light);
+    border-radius: 12px;
     z-index: 999;
-    padding: 0 2.5rem;
+    padding: 0 1.5rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
     transition: var(--transition);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
 }
 
 .user-header .header-left {
@@ -603,7 +605,7 @@ body {
 /* Premium Main Content */
 .user-main-content {
     margin-left: var(--sidebar-width);
-    margin-top: var(--header-height);
+    margin-top: calc(var(--header-height) + 1.5rem);
     padding: 2.5rem;
     min-height: calc(100vh - var(--header-height));
     transition: var(--transition);
@@ -884,6 +886,19 @@ body {
         padding: 0 1.5rem;
     }
 
+    /* Admin Header Mobile Overrides - Reusing same logic for User Header if needed or explicit overwrite */
+    .user-header {
+        position: fixed;
+        width: 100%;
+        left: 0;
+        right: 0;
+        top: 0;
+        border-radius: 0;
+        border: none;
+        border-bottom: 1px solid rgba(14, 41, 69, 0.08);
+        padding: 0 1.5rem;
+    }
+
     .user-header .sidebar-toggle {
         display: flex;
     }
@@ -1142,8 +1157,10 @@ body {
         /* Extra room for mobile nav */
     }
 }
+
 /* Robust Desktop Hiding for Mobile Menu */
 @media (min-width: 992px) {
+
     .mobile-bottom-menu,
     .mobile-menu-backdrop,
     .mobile-menu-container {
