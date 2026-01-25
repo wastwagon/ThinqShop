@@ -474,6 +474,20 @@
     }
 }
 
+@media (min-width: 1200px) {
+    .product-grid {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 20px;
+    }
+}
+
+@media (min-width: 1350px) {
+    .product-grid {
+        grid-template-columns: repeat(6, 1fr);
+        gap: 20px;
+    }
+}
+
 /* Product Card Override/Enhancement */
 .product-card {
     background: #fff;
