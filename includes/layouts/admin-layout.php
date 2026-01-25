@@ -56,12 +56,12 @@ if (isset($pageContent) && is_string($pageContent) && file_exists($pageContent))
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <?php endif; ?>
     
-    <!-- Admin Dashboard Styles -->
+    <!-- Admin Dashboard Styles (Consolidated) -->
     <?php
-    $adminCssFile = __DIR__ . '/../../assets/css/admin-dashboard.css';
+    $adminCssFile = __DIR__ . '/../../assets/css/main-final.css';
     $adminCssVersion = file_exists($adminCssFile) ? md5_file($adminCssFile) : time();
     ?>
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/layouts/admin-dashboard.css?v=<?php echo time(); ?>&rev=<?php echo substr($adminCssVersion, 0, 8); ?>">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/main-final.css?v=<?php echo $adminCssVersion; ?>">
     
     <!-- Global Modal Fix CSS - Must be after Bootstrap and dashboard CSS -->
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/modal-fix.css?v=<?php echo time(); ?>">

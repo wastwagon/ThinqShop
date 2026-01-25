@@ -745,21 +745,26 @@ body {
     margin: 0;
 }
 
+/* Clean Flat Logout Button (Premium Pill) */
 .admin-sidebar .logout-btn {
     width: 100%;
-    padding: 0.75rem;
-    background: #dc3545;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-weight: 500;
+    padding: 10px 24px;
+    background: #ffffff;
+    color: var(--primary-color);
+    /* Dark Text */
+    border: 1px solid var(--danger-color);
+    /* Red Outline */
+    border-radius: 30px;
+    /* Pill Shape */
+    font-weight: 600;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    transition: all 0.2s;
+    transition: all 0.3s ease;
     text-decoration: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
 /* Admin Header Styles - Global Desktop Scope */
