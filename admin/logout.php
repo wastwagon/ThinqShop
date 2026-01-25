@@ -1,0 +1,33 @@
+<?php
+/**
+ * Logout Page
+ * ThinQShopping Platform
+ */
+
+require_once __DIR__ . '/../config/constants.php';
+require_once __DIR__ . '/../includes/functions.php';
+
+// Start session
+if (session_status() === PHP_SESSION_NONE) {
+    session_name(SESSION_NAME);
+    session_start();
+}
+
+// Destroy session
+$_SESSION = array();
+
+// Delete session cookie
+if (ini_get("session.use_cookies")) {
+    $params = session_get_cookie_params();
+    setcookie(session_name(), '', time() - 42000,
+        $params["path"], $params["domain"],
+        $params["secure"], $params["httponly"]
+    );
+}
+
+// Destroy session
+session_destroy();
+
+// Redirect to homepage
+redirect('/', 'You have been logged out successfully.', 'success');
+
