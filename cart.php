@@ -113,7 +113,7 @@ include __DIR__ . '/includes/header.php';
                             <div class="cart-item__content">
                                 <div class="cart-item__info">
                                     <a href="<?php echo BASE_URL; ?>/product-detail.php?slug=<?php echo $item['slug']; ?>" class="cart-item__name">
-                                        <?php echo htmlspecialchars($item['name']); ?>
+                                        <?php echo htmlspecialchars($item['name'] ?? ''); ?>
                                     </a>
                                     <?php if ($item['variant_type'] && $item['variant_value']): ?>
                                         <div class="cart-item__variant text-uppercase">

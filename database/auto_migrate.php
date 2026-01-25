@@ -142,9 +142,17 @@ foreach ($tablesInDump as $table) {
 
     echo "[Auto-Migrate] Importing data for '$table'...\n";
     
+    // Determine the INSERT syntax used for this table
+    // Try explicit backticks first: INSERT INTO `table`
+    $searchPattern = "INSERT INTO `$table`";
+    if (strpos($sqlContent, $searchPattern) === false) {
+        // Fallback to no backticks: INSERT INTO table
+        $searchPattern = "INSERT INTO $table";
+    }
+    
     // Find all inserts for this table
     $offset = 0;
-    while (($insertStart = strpos($sqlContent, "INSERT INTO `$table`", $offset)) !== false) {
+    while (($insertStart = strpos($sqlContent, $searchPattern, $offset)) !== false) {
         $insertEnd = strpos($sqlContent, ";", $insertStart);
         if ($insertEnd === false) break;
         
