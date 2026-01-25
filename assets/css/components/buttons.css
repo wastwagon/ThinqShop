@@ -33,68 +33,63 @@
 
 /* Primary Button */
 .btn--primary {
-    background: var(--color-primary);
-    color: var(--color-white);
+    background: transparent;
+    color: var(--color-primary);
+    padding-left: 0;
+    padding-right: 0;
+    box-shadow: none;
+    font-weight: 700;
 }
 
-/* .btn--primary:hover:not(:disabled) {
-    background: var(--color-primary-light);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-} */
+/* Removed hover effects previously */
 
 /* Secondary Button */
 .btn--secondary {
-    background: var(--color-white);
+    background: transparent;
     color: var(--color-primary);
-    border: var(--border-width-medium) solid var(--color-primary);
+    border: none;
+    padding-left: 0;
+    padding-right: 0;
 }
-
-/* .btn--secondary:hover:not(:disabled) {
-    background: var(--color-gray-50);
-} */
 
 /* Success Button */
 .btn--success {
-    background: var(--color-success);
-    color: var(--color-white);
+    background: transparent;
+    color: var(--color-success);
+    padding-left: 0;
+    padding-right: 0;
+    box-shadow: none;
+    font-weight: 700;
 }
-
-/* .btn--success:hover:not(:disabled) {
-    background: var(--color-success-dark);
-} */
 
 /* Danger Button */
 .btn--danger {
-    background: var(--color-danger);
-    color: var(--color-white);
+    background: transparent;
+    color: var(--color-danger);
+    padding-left: 0;
+    padding-right: 0;
+    box-shadow: none;
+    font-weight: 700;
 }
-
-/* .btn--danger:hover:not(:disabled) {
-    background: var(--color-danger-dark);
-} */
 
 /* Warning Button */
 .btn--warning {
-    background: var(--color-warning);
-    color: var(--color-white);
+    background: transparent;
+    color: var(--color-warning);
+    padding-left: 0;
+    padding-right: 0;
+    box-shadow: none;
+    font-weight: 700;
 }
-
-/* .btn--warning:hover:not(:disabled) {
-    background: var(--color-warning-dark);
-} */
 
 /* Ghost Button */
 .btn--ghost {
     background: transparent;
     color: var(--color-primary);
-    border: var(--border-width-thin) solid var(--color-gray-200);
+    border: none;
+    padding-left: 0;
+    padding-right: 0;
 }
-
-/* .btn--ghost:hover:not(:disabled) {
-    background: var(--color-gray-50);
-    border-color: var(--color-gray-300);
-} */
 
 /* ===== BUTTON SIZES ===== */
 

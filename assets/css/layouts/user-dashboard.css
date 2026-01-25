@@ -169,12 +169,14 @@ body {
     margin: 0;
 }
 
+/* Clean Flat Logout Button */
 .user-sidebar .logout-btn {
     width: 100%;
-    padding: 10px;
-    background: rgba(220, 38, 38, 0.15);
-    color: #fecaca;
-    border: 1px solid rgba(220, 38, 38, 0.2);
+    padding: 0.8rem 1rem;
+    margin-top: 1rem;
+    color: var(--danger-color);
+    background: transparent;
+    border: none;
     border-radius: 8px;
     font-weight: 600;
     font-size: 0.85rem;
