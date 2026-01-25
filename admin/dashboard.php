@@ -217,10 +217,6 @@ ob_start();
 <div class="container-fluid">
         <div class="page-title-section">
             <h1 class="page-title">Overview</h1>
-            <a href="#" class="download-report-btn" onclick="downloadReport()">
-                <i class="fas fa-download"></i>
-                <span>Download Report</span>
-            </a>
         </div>
 
         <!-- Metrics Cards -->
