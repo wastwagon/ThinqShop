@@ -1068,57 +1068,7 @@ body {
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
 }
 
-/* Premium Mobile Bottom Menu - Shared across Site */
-.mobile-bottom-menu {
-    position: fixed !important;
-    bottom: 20px !important;
-    left: 20px !important;
-    right: 20px !important;
-    background: rgba(14, 41, 69, 0.95) !important;
-    backdrop-filter: blur(15px) !important;
-    -webkit-backdrop-filter: blur(15px) !important;
-    border-radius: 24px !important;
-    padding: 10px 15px !important;
-    box-shadow: 0 15px 35px rgba(14, 41, 69, 0.25) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    display: flex !important;
-    justify-content: space-around !important;
-    height: auto !important;
-    z-index: 2000 !important;
-}
-
-.mobile-menu-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    color: rgba(255, 255, 255, 0.5) !important;
-    text-decoration: none !important;
-    transition: all 0.2s ease;
-    flex: 1;
-}
-
-.mobile-menu-item.active {
-    color: #ffffff !important;
-}
-
-.menu-item-icon-wrapper {
-    width: 38px;
-    height: 38px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.1rem;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.mobile-menu-item.active .menu-item-icon-wrapper {
-    background: #ffffff !important;
-    color: #0e2945 !important;
-    transform: translateY(-8px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-}
+/* Conflicting mobile styles removed to favor native navigation.css styles */
 
 .menu-item-label {
     font-size: 10px;

@@ -1762,7 +1762,7 @@ body {
     }
 }
 
-/* ===== MOBILE BOTTOM MENU ===== */
+/* ===== MOBILE BOTTOM MENU (NATIVE APP STYLE) ===== */
 .mobile-bottom-menu {
     position: fixed;
     bottom: 0;
@@ -1770,8 +1770,10 @@ body {
     right: 0;
     z-index: var(--z-index-sticky);
     display: block;
+    background: #ffffff;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
     padding-bottom: env(safe-area-inset-bottom);
-    pointer-events: none;
+    border-top: 1px solid var(--color-gray-200);
 }
 
 @media (min-width: 992px) {
@@ -1781,29 +1783,22 @@ body {
 }
 
 .mobile-menu-backdrop {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: var(--color-primary) !important;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    display: none;
+    /* No backdrop needed for native bar */
 }
 
 .mobile-menu-container {
-    position: relative;
     max-width: 100%;
-    margin: 0 auto;
-    padding: var(--spacing-sm) var(--spacing-xs);
-    padding-bottom: calc(var(--spacing-sm) + env(safe-area-inset-bottom));
+    margin: 0;
+    padding: 0;
 }
 
 .mobile-menu-items {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    gap: var(--spacing-xs);
-    pointer-events: auto;
+    height: 60px;
+    /* Fixed height for consistency */
 }
 
 .mobile-menu-item {
@@ -1812,28 +1807,24 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: var(--spacing-xs) var(--spacing-sm);
-    color: var(--color-white);
-    opacity: 1;
+    color: var(--color-gray-500);
+    /* Inactive color */
     text-decoration: none;
-    border-radius: var(--border-radius-lg);
-    transition: var(--transition-base);
     flex: 1;
-    min-width: 0;
+    height: 100%;
+    transition: var(--transition-base);
     -webkit-tap-highlight-color: transparent;
 }
 
+.mobile-menu-item:active {
+    background-color: rgba(0, 0, 0, 0.03);
+}
+
 .menu-item-icon-wrapper {
-    position: relative;
-    width: 44px;
-    height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: var(--border-radius-md);
-    background: transparent;
-    transition: var(--transition-base);
-    margin-bottom: var(--spacing-xs);
+    width: auto;
+    height: auto;
+    background: transparent !important;
+    margin-bottom: 2px;
 }
 
 .mobile-menu-item i {
@@ -1842,40 +1833,30 @@ body {
 }
 
 .menu-item-label {
-    font-size: var(--font-size-xs);
-    font-weight: var(--font-weight-medium);
+    font-size: 0.7rem;
+    /* Smaller text */
+    font-weight: 500;
     transition: var(--transition-base);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 100%;
+    letter-spacing: 0.2px;
 }
 
 .menu-item-indicator {
-    position: absolute;
-    top: -2px;
-    left: 50%;
-    transform: translateX(-50%) scaleX(0);
-    width: 24px;
-    height: 3px;
-    background: var(--color-white);
-    border-radius: 0 0 var(--border-radius-sm) var(--border-radius-sm);
-    transition: var(--transition-base);
-    opacity: 0;
+    display: none;
+    /* Removed for cleaner native look */
 }
 
 .mobile-menu-item.active {
-    color: var(--color-white);
+    color: var(--color-primary);
+    /* Active color */
 }
 
-.mobile-menu-item.active .menu-item-icon-wrapper {
-    background: rgba(255, 255, 255, 0.15);
+.mobile-menu-item.active i {
     transform: translateY(-2px);
 }
 
-.mobile-menu-item.active .menu-item-indicator {
-    transform: translateX(-50%) scaleX(1);
-    opacity: 1;
+.mobile-menu-item.active .menu-item-icon-wrapper {
+    background: transparent !important;
+    transform: none;
 }
 
 @media (max-width: 991.98px) {
@@ -1990,15 +1971,16 @@ body {
         display: none !important;
     }
 }
+
 /* Robust Desktop Hiding for Mobile Menu */
 @media (min-width: 992px) {
+
     .mobile-bottom-menu,
     .mobile-menu-backdrop,
     .mobile-menu-container {
         display: none !important;
     }
-}
-/**
+}/**
  * Quick View Components Styles
  * BEM Methodology & Global Tokens
  */
@@ -6282,57 +6264,7 @@ body {
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
 }
 
-/* Premium Mobile Bottom Menu - Shared across Site */
-.mobile-bottom-menu {
-    position: fixed !important;
-    bottom: 20px !important;
-    left: 20px !important;
-    right: 20px !important;
-    background: rgba(14, 41, 69, 0.95) !important;
-    backdrop-filter: blur(15px) !important;
-    -webkit-backdrop-filter: blur(15px) !important;
-    border-radius: 24px !important;
-    padding: 10px 15px !important;
-    box-shadow: 0 15px 35px rgba(14, 41, 69, 0.25) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    display: flex !important;
-    justify-content: space-around !important;
-    height: auto !important;
-    z-index: 2000 !important;
-}
-
-.mobile-menu-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    color: rgba(255, 255, 255, 0.5) !important;
-    text-decoration: none !important;
-    transition: all 0.2s ease;
-    flex: 1;
-}
-
-.mobile-menu-item.active {
-    color: #ffffff !important;
-}
-
-.menu-item-icon-wrapper {
-    width: 38px;
-    height: 38px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.1rem;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.mobile-menu-item.active .menu-item-icon-wrapper {
-    background: #ffffff !important;
-    color: #0e2945 !important;
-    transform: translateY(-8px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-}
+/* Conflicting mobile styles removed to favor native navigation.css styles */
 
 .menu-item-label {
     font-size: 10px;

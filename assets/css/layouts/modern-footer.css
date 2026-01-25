@@ -2,15 +2,20 @@
    World Class Footer Styles
    =================================== */
 
-.bh-footer {
-    background-color: #0f172a;
-    /* Slate 900 */
-    color: #cbd5e1;
-    /* Slate 300 */
-    font-size: 0.95rem;
-    padding-top: 70px;
-    padding-bottom: 30px;
-    font-family: 'Inter', sans-serif;
+@media (max-width: 991px) {
+    .bh-footer {
+        display: none !important;
+    }
+}
+
+@media (min-width: 992px) {
+    .bh-footer {
+        background-color: #0f172a;
+        color: #cbd5e1;
+        padding-top: 4rem;
+        position: relative;
+        overflow: hidden;
+    }
 }
 
 .bh-footer a {
@@ -280,8 +285,10 @@
         text-align: center !important;
     }
 }
+
 /* Robust Desktop Hiding for Mobile Menu and Mobile Footer Hiding */
 @media (min-width: 992px) {
+
     .mobile-bottom-menu,
     .mobile-menu-backdrop,
     .mobile-menu-container,
@@ -291,6 +298,7 @@
 }
 
 @media (max-width: 991.98px) {
+
     .bh-footer,
     .premium-footer {
         display: none !important;
