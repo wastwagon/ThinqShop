@@ -39,7 +39,6 @@ RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html
 
 # Apache configuration to handle .htaccess/rewrites
-RUN sed -ri -e 's!/var/www/html!/var/www/html!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/!/var/www/html!g' /etc/apache2/apache2.conf
 
 EXPOSE 80
