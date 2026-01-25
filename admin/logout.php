@@ -29,4 +29,5 @@ if (ini_get("session.use_cookies")) {
 session_destroy();
 
 // Redirect to admin login
-redirect('/admin/login.php', 'You have been logged out successfully.', 'success');
+// Redirect to unified login
+redirect('/login.php', 'You have been logged out successfully.', 'success');
