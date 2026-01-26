@@ -4,6 +4,10 @@
  * ThinQShopping Platform
  */
 
+// Enable error reporting for debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+// Enable error reporting for debugging (removed)
 require_once __DIR__ . '/../../includes/auth-check.php';
 require_once __DIR__ . '/../../config/database.php';
 require_once __DIR__ . '/../../includes/functions.php';
@@ -28,7 +32,7 @@ if (!$request) {
 }
 
 // Get items
-$stmt = $conn->prepare("SELECT * FROM procurement_items WHERE request_id = ?");
+$stmt = $conn->prepare("SELECT * FROM procurement_request_items WHERE request_id = ?");
 $stmt->execute([$requestId]);
 $requestItems = $stmt->fetchAll();
 

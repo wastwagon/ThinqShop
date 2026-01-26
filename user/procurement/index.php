@@ -116,7 +116,7 @@ ob_start();
                             <span class="status-indicator-proc <?php echo $statusClass; ?>">
                                 <?php echo str_replace('_', ' ', strtoupper($request['status'])); ?>
                             </span>
-                            <a href="<?php echo BASE_URL; ?>/user/procurement/view.php?id=<?php echo $request['id']; ?>" class="btn btn-outline-primary rounded-pill px-4 fw-800 x-small d-none d-md-inline-block">
+                            <a href="<?php echo BASE_URL; ?>/user/procurement/view.php?id=<?php echo $request['id']; ?>" class="audit-btn-mobile">
                                 AUDIT
                             </a>
                         </div>

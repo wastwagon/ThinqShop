@@ -103,7 +103,7 @@ ob_start();
                             <span class="status-indicator-ship <?php echo $statusClass; ?>">
                                 <?php echo str_replace('_', ' ', strtoupper($shipment['status'])); ?>
                             </span>
-                            <a href="<?php echo BASE_URL; ?>/public/track-parcel.php?tracking=<?php echo urlencode($shipment['tracking_number']); ?>" class="btn btn-outline-primary btn--sm rounded-pill">
+                            <a href="<?php echo BASE_URL; ?>/public/track-parcel.php?tracking=<?php echo urlencode($shipment['tracking_number']); ?>" class="audit-btn-mobile">
                                 TRACK
                             </a>
                         </div>

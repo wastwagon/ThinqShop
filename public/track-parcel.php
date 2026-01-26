@@ -111,9 +111,7 @@ include __DIR__ . '/../includes/header.php';
     <div class="row justify-content-center">
         <div class="col-lg-10">
             <div class="card">
-                <div class="card-header bg-primary text-white">
-                    <h4 class="mb-0">Parcel Tracking</h4>
-                </div>
+
                 <div class="card-body">
                     <div class="text-center mb-4">
                         <h5 class="mb-2">Tracking Number</h5>

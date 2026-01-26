@@ -171,11 +171,37 @@
 
     /* Prevent Welcome Text from Crowding Header */
     .welcome-text {
-        white-space: nowrap !important;
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
-        max-width: 160px !important;
+        white-space: normal !important;
+        overflow: visible !important;
+        text-overflow: clip !important;
+        max-width: none !important;
         font-size: 15px !important;
+        line-height: 1.3 !important;
+    }
+
+    /* Allow header to grow height for wrapped text */
+    .user-header {
+        height: auto !important;
+        min-height: 70px;
+        padding-top: 5px !important;
+        padding-bottom: 5px !important;
+    }
+
+    /* Hide redundant page title on mobile to save space */
+    .page-title-section .page-title {
+        display: none !important;
+    }
+
+    /* Adjust title section when title is hidden */
+    .page-title-section {
+        justify-content: flex-end !important;
+        border-bottom: none !important;
+        padding-bottom: 0 !important;
+        margin-bottom: 1rem !important;
+    }
+
+    .page-title-section::after {
+        display: none !important;
     }
 
     /* Product Grid Crowding Fix */
@@ -194,5 +220,115 @@
     .product-price {
         font-size: 15px !important;
         font-weight: 800 !important;
+    }
+
+    /* ============================================
+       MOBILE INTERFACE REFINEMENTS (ROUND 2)
+       ============================================ */
+
+    /* 1. Force Notification Badge Visibility */
+    .notification-badge {
+        background-color: #dc2626 !important;
+        /* Vivid Red */
+        color: #ffffff !important;
+        border: 2px solid #ffffff !important;
+        z-index: 2002 !important;
+        min-width: 18px !important;
+        height: 18px !important;
+        font-size: 10px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        position: absolute !important;
+        top: 0 !important;
+        right: 0 !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+    /* 2. Compact "New Request" Button (User Preference) */
+    .page-title-section .btn-premium,
+    .btn-premium.btn-primary {
+        width: auto !important;
+        display: inline-flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        margin-top: 5px !important;
+        /* Reduced margin */
+        padding: 6px 16px !important;
+        /* Significantly reduced padding */
+        font-size: 13px !important;
+        /* Smaller text */
+        font-weight: 700 !important;
+        border-radius: 20px !important;
+        /* Match audit button roundness */
+        box-shadow: none !important;
+        /* Remove heavy shadow */
+        order: 2 !important;
+        height: auto !important;
+        min-height: 0 !important;
+    }
+
+    /* Ensure page title section justifies correctly for inline button */
+    .page-title-section {
+        justify-content: flex-end !important;
+        align-items: center !important;
+        flex-direction: row !important;
+        /* Keep it row */
+        padding-bottom: 0 !important;
+        margin-bottom: 0.5rem !important;
+    }
+
+    /* 3. Compact "Audit" Button */
+    .audit-btn-mobile {
+        padding: 4px 12px !important;
+        font-size: 11px !important;
+        /* Match status text size */
+        font-weight: 700 !important;
+        border-radius: 20px !important;
+        background: transparent !important;
+        border: 1px solid var(--primary-color) !important;
+        color: var(--primary-color) !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.5px !important;
+        min-height: 0 !important;
+        /* Override global 48px touch target for this specific inline action */
+        height: auto !important;
+        box-shadow: none !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    /* Hover state removal for touch devices */
+    .audit-btn-mobile:hover,
+    .audit-btn-mobile:active {
+        background: rgba(14, 41, 69, 0.05) !important;
+        color: var(--primary-color) !important;
+        transform: none !important;
+    }
+
+    /* Ensure icons in audit button are small */
+    .audit-btn-mobile i {
+        font-size: 10px !important;
+        margin-right: 4px !important;
+    }
+
+    /* ============================================
+       MOBILE SIDEBAR LOGO REFINEMENT
+       ============================================ */
+    .user-sidebar .logo-section {
+        padding: 1.5rem 1.5rem 1rem 1.5rem !important;
+        /* Reduced top/bottom padding */
+        text-align: left !important;
+        /* Left Align Logo */
+    }
+
+    .user-sidebar .logo img {
+        height: 32px !important;
+        /* REDUCED FROM 48PX */
+        width: auto !important;
+        filter: none !important;
+        /* Restore original color */
     }
 }
