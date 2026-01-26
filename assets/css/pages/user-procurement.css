@@ -109,8 +109,90 @@
     width: 44px;
 }
 
+/* Premium Button Styles */
+.btn-premium {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white !important;
+    border: none;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(14, 41, 69, 0.15);
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-premium:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(14, 41, 69, 0.25);
+    color: white !important;
+}
+
+.audit-btn-mobile {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    background: transparent;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    font-weight: 700;
+    font-size: 0.75rem;
+    border-radius: 6px;
+    text-decoration: none !important;
+    transition: all 0.2s ease;
+    letter-spacing: 0.5px;
+}
+
+.audit-btn-mobile:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
 @media (max-width: 767.98px) {
     .procurement-card-premium {
         padding: 1.25rem;
+    }
+
+    /* Mobile FAB for New Request */
+    .page-title-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .page-title-section .btn-premium {
+        position: fixed;
+        bottom: 2rem;
+        right: 1.5rem;
+        z-index: 1000;
+        border-radius: 50px;
+        width: 56px;
+        height: 56px;
+        padding: 0;
+        box-shadow: 0 4px 12px rgba(14, 41, 69, 0.3);
+        font-size: 0;
+        /* Hide text */
+    }
+
+    .page-title-section .btn-premium i {
+        font-size: 1.25rem;
+        margin: 0 !important;
+        /* Remove margin from icon */
+    }
+
+    /* Make the FAB really pop */
+    .page-title-section .btn-premium::after {
+        content: '+';
+        font-size: 1.75rem;
+        font-weight: 300;
+        display: none;
+        /* Already has icon */
     }
 }

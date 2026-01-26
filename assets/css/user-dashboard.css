@@ -22,6 +22,12 @@
     --border-radius: 8px;
     --border-radius-lg: 12px;
     --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Status Colors */
+    --danger-color: #dc3545;
+    --success-color: #10b981;
+    --warning-color: #f59e0b;
+    --info-color: #3b82f6;
 }
 
 * {
