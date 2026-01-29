@@ -3,7 +3,7 @@
 
 # Enable Rewrite Engine
 RewriteEngine On
-RewriteBase /ThinQShopping/
+RewriteBase /
 
 # Force HTTPS (uncomment when SSL is configured)
 # RewriteCond %{HTTPS} off

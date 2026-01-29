@@ -26,7 +26,7 @@
     
     <!-- Custom CSS -->
     <?php 
-    $cssFile = __DIR__ . '/assets/css/main.css';
+    $cssFile = dirname(__DIR__) . '/assets/css/main.css';
     $cssVersion = file_exists($cssFile) ? md5_file($cssFile) : time();
     ?>
     <link rel="stylesheet" href="<?php echo asset('assets/css/main.css'); ?>?v=<?php echo time(); ?>&rev=<?php echo substr($cssVersion, 0, 8); ?>">

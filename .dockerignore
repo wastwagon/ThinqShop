@@ -1,9 +1,8 @@
-vendor/
+Copies/
 .git/
 .env
-.env.*
-*.md
-docker-compose.yml
-Dockerfile
-README.md
-Deploying.md
+vendor/
+node_modules/
+*.zip
+*.sql
+*.tar.gz
