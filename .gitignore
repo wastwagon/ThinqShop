@@ -42,3 +42,4 @@ backup_*.sql
 
 # Ignore large backup copies
 Copies/
+docker-compose.override.yml
