@@ -303,25 +303,61 @@
 /* Mobile Tweaks */
 @media (max-width: 576px) {
     .hero-title {
-        font-size: 2rem;
+        font-size: 1.5rem !important;
+        /* Smaller title */
+        margin-bottom: 0.5rem !important;
+    }
+
+    .hero-subtitle {
+        font-size: 0.95rem !important;
+        /* Smaller subtitle */
+        margin-bottom: 1rem !important;
+    }
+
+    .btn-hero {
+        padding: 8px 20px !important;
+        /* Move compact button */
+        font-size: 0.85rem !important;
     }
 
     .hero-content {
-        padding: 20px;
+        padding: 15px !important;
         margin-left: 0;
         text-align: center;
         width: 100%;
     }
 
     .hero-button-wrapper {
-        /* Centering button on mobile */
         display: flex;
         justify-content: center;
     }
 
     .hero-overlay {
-        background: rgba(0, 0, 0, 0.5);
-        /* Simpler overlay for mobile */
+        background: rgba(0, 0, 0, 0.6);
+    }
+
+    /* Reposition/Scale Arrows to avoid text overlap */
+    .hero-swiper .swiper-button-next,
+    .hero-swiper .swiper-button-prev {
+        width: 32px !important;
+        height: 32px !important;
+        background: rgba(255, 255, 255, 0.1) !important;
+        top: auto !important;
+        bottom: 15px !important;
+        /* Move to bottom to clear text */
+    }
+
+    .hero-swiper .swiper-button-prev {
+        left: 20px !important;
+    }
+
+    .hero-swiper .swiper-button-next {
+        right: 20px !important;
+    }
+
+    .hero-swiper .swiper-button-next:after,
+    .hero-swiper .swiper-button-prev:after {
+        font-size: 0.9rem !important;
     }
 }
 
@@ -442,6 +478,17 @@
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
+}
+
+@media (max-width: 576px) {
+    .deal-banner-title {
+        font-size: 1.25rem !important;
+        /* Smaller Flash Deals title */
+    }
+
+    .deal-banner-subtitle {
+        font-size: 0.9rem !important;
+    }
 }
 
 .deal-banner-subtitle {

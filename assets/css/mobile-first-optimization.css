@@ -42,22 +42,22 @@
     .h1,
     .shop-title,
     .welcome-text {
-        font-size: 18px !important;
+        font-size: 16px !important;
         font-weight: 700 !important;
         letter-spacing: -0.01em !important;
-        margin-bottom: 0.75rem !important;
+        margin-bottom: 0.5rem !important;
     }
 
     h2,
     .h2 {
-        font-size: 16px !important;
+        font-size: 14px !important;
         font-weight: 700 !important;
-        margin-bottom: 0.5rem !important;
+        margin-bottom: 0.4rem !important;
     }
 
     h3,
     .h3 {
-        font-size: 14px !important;
+        font-size: 13px !important;
         font-weight: 600 !important;
     }
 
@@ -155,9 +155,11 @@
     .sidebar-toggle,
     .nav-link,
     .page-link {
-        min-height: var(--touch-target) !important;
-        font-size: 15px !important;
-        border-radius: 12px !important;
+        min-height: 40px !important;
+        /* Reduced from 48px to be more compact on small screens */
+        padding: 6px 12px !important;
+        font-size: 14px !important;
+        border-radius: 10px !important;
         display: inline-flex !important;
         align-items: center !important;
     }
