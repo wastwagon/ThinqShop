@@ -13,6 +13,14 @@ services:
       - DB_NAME=thinjupz_db
       - DB_USER=thinquser
       - DB_PASS=thinqpass
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.thinq-web.rule=Host(`thinqshopping.app`) || Host(`www.thinqshopping.app`)"
+      - "traefik.http.services.thinq-web.loadbalancer.server.port=80"
+      - "caddy_0=thinqshopping.app"
+      - "caddy_0.reverse_proxy={{upstreams}}"
+      - "caddy_1=www.thinqshopping.app"
+      - "caddy_1.reverse_proxy={{upstreams}}"
     env_file:
       - .env
     depends_on:
