@@ -347,16 +347,28 @@
         z-index: 9999 !important;
         background: #ffffff !important;
         border-top: 1px solid #e2e8f0 !important;
-        /* Force safe area inset for modern iPhones */
-        padding-bottom: env(safe-area-inset-bottom, 20px) !important;
+        /* Force safe area inset PLUS additional buffer for iPhone home indicator */
+        padding-bottom: calc(env(safe-area-inset-bottom, 20px) + 15px) !important;
         height: auto !important;
         display: block !important;
+        box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.08) !important;
     }
 
     .mobile-menu-items {
-        padding-top: 5px !important;
-        padding-bottom: 5px !important;
-        height: 65px !important;
-        /* Adjusted height */
+        padding-top: 8px !important;
+        padding-bottom: 8px !important;
+        height: 75px !important;
+        /* Increased height for better label breathing room */
+        display: flex !important;
+        justify-content: space-around !important;
+        align-items: center !important;
+    }
+
+    .menu-item-label {
+        font-size: 11px !important;
+        font-weight: 600 !important;
+        text-transform: none !important;
+        /* Prevent FORCE UPPERCASE that causes overlap */
+        margin-top: 4px !important;
     }
 }

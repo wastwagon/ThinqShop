@@ -35,13 +35,11 @@
     ?>
     <link rel="stylesheet" href="<?php echo asset('assets/css/main-final.css'); ?>?v=<?php echo $cssVersion; ?>">
     
-    <!-- Temporary: Header Styles (Legacy) - REMOVED to fix conflicts -->
-    <!-- <link rel="stylesheet" href="<?php echo asset('assets/css/premium-header.css'); ?>?v=<?php echo time(); ?>"> -->
-
-    <!-- NEW: World Class Header & Hero Styles -->
+    <!-- Premium UX Design System & Mobile Optimization -->
+    <link rel="stylesheet" href="<?php echo asset('assets/css/mobile-clean.css'); ?>?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="<?php echo asset('assets/css/premium-ux.css'); ?>?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="<?php echo asset('assets/css/mobile-first-optimization.css'); ?>?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="<?php echo asset('assets/css/pages/home-hero.css'); ?>?v=<?php echo time(); ?>">
-    
-    <!-- NEW: Modern Footer Styles -->
     <link rel="stylesheet" href="<?php echo asset('assets/css/layouts/modern-footer.css'); ?>?v=<?php echo time(); ?>">
     
     <?php if (isset($additionalCSS) && is_array($additionalCSS)): ?>
