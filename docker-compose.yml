@@ -19,6 +19,7 @@ services:
       - mysql
     networks:
       - thinqshopping_network
+      - coolify
 
   # MySQL Database
   mysql:
@@ -59,6 +60,8 @@ services:
 networks:
   thinqshopping_network:
     driver: bridge
+  coolify:
+    external: true
 
 volumes:
   mysql_data:
