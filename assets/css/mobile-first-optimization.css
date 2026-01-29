@@ -345,15 +345,16 @@
         z-index: 9999 !important;
         background: #ffffff !important;
         border-top: 1px solid #e2e8f0 !important;
+        /* Force safe area inset for modern iPhones */
         padding-bottom: env(safe-area-inset-bottom, 20px) !important;
-        /* Force safe area */
         height: auto !important;
         display: block !important;
     }
 
     .mobile-menu-items {
+        padding-top: 5px !important;
         padding-bottom: 5px !important;
-        height: 60px !important;
-        /* Fixed height for menu items area */
+        height: 65px !important;
+        /* Adjusted height */
     }
 }

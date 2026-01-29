@@ -35,7 +35,7 @@ $mobileMenuIncluded = true;
                 <div class="menu-item-icon-wrapper">
                     <i class="fas fa-box"></i>
                 </div>
-                <span class="menu-item-label">Procurement</span>
+                <span class="menu-item-label">Procure</span>
                 <div class="menu-item-indicator"></div>
             </a>
         </div>
