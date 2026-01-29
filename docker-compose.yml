@@ -15,7 +15,9 @@ services:
       - DB_PASS=thinqpass
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.thinq-web.rule=Host(`thinqshopping.app`) || Host(`www.thinqshopping.app`)"
+      # Overriding the specific broken routers found in logs
+      - "traefik.http.routers.http-0-lsosss448cg4o84kgsksw0o8-web.rule=Host(`thinqshopping.app`)"
+      - "traefik.http.routers.http-1-lsosss448cg4o84kgsksw0o8-web.rule=Host(`www.thinqshopping.app`)"
       - "traefik.http.services.thinq-web.loadbalancer.server.port=80"
       - "caddy_0=thinqshopping.app"
       - "caddy_0.reverse_proxy={{upstreams}}"
