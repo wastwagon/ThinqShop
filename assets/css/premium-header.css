@@ -36,9 +36,12 @@
     top: 0 !important;
     left: 0 !important;
     right: 0 !important;
-    z-index: 1000 !important;
+    z-index: 1020 !important;
+    /* Boost z-index */
     box-shadow: none !important;
-    transition: transform 0.3s ease;
+    /* transition: transform 0.3s ease; REMOVE TRANSITION */
+    transform: none !important;
+    /* PREVENT TRANSFORM */
 }
 
 .header-container {

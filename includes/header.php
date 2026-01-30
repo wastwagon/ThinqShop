@@ -46,6 +46,7 @@
     
     <!-- Modern Component System (BEM) -->
     <link rel="stylesheet" href="<?php echo asset('assets/css/core/variables.css'); ?>?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="<?php echo asset('assets/css/components/forms.css'); ?>?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="<?php echo asset('assets/css/components/buttons.css'); ?>?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="<?php echo asset('assets/css/components/cards.css'); ?>?v=<?php echo time(); ?>">
     
