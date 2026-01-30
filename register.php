@@ -339,7 +339,7 @@ include __DIR__ . '/includes/header.php';
                 </div>
                 
                 <!-- Submit Button -->
-                <button type="submit" class="btn btn--primary btn--block">
+                <button type="submit" class="btn btn--primary btn--block btn--compact">
                     <span>Create Account</span>
                     <i class="fas fa-arrow-right"></i>
                 </button>

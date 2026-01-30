@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input type="email" class="form-input" id="email" name="email" placeholder="Enter your email" required autofocus>
                 </div>
                 
-                <button type="submit" class="btn btn--primary btn--block">
+                <button type="submit" class="btn btn--primary btn--block btn--compact">
                     <span>Send Reset Link</span>
                     <i class="fas fa-paper-plane"></i>
                 </button>

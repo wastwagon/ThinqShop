@@ -48,23 +48,23 @@
     color: #ffffff;
     /* White Text */
     border: none;
-    box-shadow: 0 4px 14px rgba(14, 41, 69, 0.25);
-    /* Soft colored glow */
+    box-shadow: 0 4px 10px rgba(14, 41, 69, 0.15);
+    /* Softer, more professional glow */
 }
 
 .btn--primary:hover {
     background: var(--color-primary);
     /* Keep same as default */
     transform: none;
-    box-shadow: 0 4px 14px rgba(14, 41, 69, 0.25);
-    /* Keep same as default */
+    box-shadow: 0 4px 12px rgba(14, 41, 69, 0.2);
+    /* Slight increase on hover */
 }
 
 .btn--primary:active {
     background: var(--color-primary);
     /* Keep same as default */
     transform: none;
-    box-shadow: 0 4px 14px rgba(14, 41, 69, 0.25);
+    box-shadow: 0 2px 8px rgba(14, 41, 69, 0.15);
 }
 
 /* Secondary Button - Clean Ghost/Outline */
@@ -133,6 +133,15 @@
 /* Full Width Button */
 .btn--block {
     width: 100%;
+}
+
+/* Compact Button Variation */
+.btn--compact {
+    min-height: 40px;
+    /* Reduced from 48px */
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    /* Slightly smaller for cleaner look */
 }
 
 /* ===== ICON BUTTONS ===== */
