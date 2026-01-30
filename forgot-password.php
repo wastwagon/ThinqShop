@@ -15,6 +15,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 $pageTitle = 'Forgot Password - ' . APP_NAME;
+$additionalCSS = ['assets/css/pages/auth.css'];
 include __DIR__ . '/includes/header.php';
 
 $successMsg = '';

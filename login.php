@@ -115,6 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $pageTitle = 'Login - ' . APP_NAME;
+$additionalCSS = ['assets/css/pages/auth.css'];
 include __DIR__ . '/includes/header.php';
 ?>
 
