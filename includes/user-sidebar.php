@@ -78,11 +78,6 @@ $userInitials = strtoupper(substr($userName, 0, 1));
             <span>Overview</span>
         </a>
         
-        <a href="<?php echo BASE_URL; ?>/shop.php" 
-           class="menu-item <?php echo (strpos($currentPath, '/shop') !== false || $currentPage === 'shop.php') ? 'active' : ''; ?>">
-            <i class="fas fa-store"></i>
-            <span>Shop</span>
-        </a>
         
         <a href="<?php echo BASE_URL; ?>/user/orders/" 
            class="menu-item <?php echo (strpos($currentPath, '/orders') !== false) ? 'active' : ''; ?>">
@@ -90,17 +85,7 @@ $userInitials = strtoupper(substr($userName, 0, 1));
             <span>My Orders</span>
         </a>
         
-        <a href="<?php echo BASE_URL; ?>/user/wishlist.php" 
-           class="menu-item <?php echo ($currentPage === 'wishlist.php' || strpos($currentPath, '/wishlist') !== false) ? 'active' : ''; ?>">
-            <i class="fas fa-heart"></i>
-            <span>My Wishlist</span>
-        </a>
         
-        <a href="<?php echo BASE_URL; ?>/user/transfers/" 
-           class="menu-item <?php echo (strpos($currentPath, '/transfers') !== false) ? 'active' : ''; ?>">
-            <i class="fas fa-exchange-alt"></i>
-            <span>Money Transfers</span>
-        </a>
         
         <a href="<?php echo BASE_URL; ?>/user/shipments/" 
            class="menu-item <?php echo (strpos($currentPath, '/shipments') !== false) ? 'active' : ''; ?>">
@@ -108,11 +93,6 @@ $userInitials = strtoupper(substr($userName, 0, 1));
             <span>My Shipments</span>
         </a>
         
-        <a href="<?php echo BASE_URL; ?>/user/procurement/" 
-           class="menu-item <?php echo (strpos($currentPath, '/procurement') !== false) ? 'active' : ''; ?>">
-            <i class="fas fa-box"></i>
-            <span>Procurement</span>
-        </a>
         
         <a href="<?php echo BASE_URL; ?>/user/wallet.php" 
            class="menu-item <?php echo ($currentPage === 'wallet.php') ? 'active' : ''; ?>">
@@ -120,11 +100,6 @@ $userInitials = strtoupper(substr($userName, 0, 1));
             <span>My Wallet</span>
         </a>
         
-        <a href="<?php echo BASE_URL; ?>/user/tickets/" 
-           class="menu-item <?php echo (strpos($currentPath, '/tickets') !== false) ? 'active' : ''; ?>">
-            <i class="fas fa-ticket-alt"></i>
-            <span>Support Tickets</span>
-        </a>
         
         <a href="<?php echo BASE_URL; ?>/user/profile.php" 
            class="menu-item <?php echo ($currentPage === 'profile.php') ? 'active' : ''; ?>">
