@@ -193,8 +193,10 @@
 /* Action Buttons */
 .action-buttons {
     display: flex;
-    flex-direction: column;
-    gap: var(--spacing-md);
+    flex-direction: row;
+    /* Side-by-side on mobile */
+    gap: var(--spacing-sm);
+    /* Smaller gap */
     margin-bottom: var(--spacing-xl);
 }
 
@@ -345,21 +347,24 @@
 .btn-add-to-cart-premium {
     background: linear-gradient(135deg, var(--color-primary, #0e2945) 0%, #2a4d70 100%);
     color: #fff !important;
-    padding: 16px 24px;
-    font-size: 1rem;
-    font-weight: 800;
+    padding: 10px 16px;
+    /* Compact padding */
+    font-size: 0.85rem;
+    /* Smaller font - cute */
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 1.5px;
+    letter-spacing: 0.5px;
     border: none;
-    border-radius: 6px;
-    /* Boxy but refined */
+    border-radius: 50px;
+    /* Pill shape for 'cute' factor */
     box-shadow: 0 4px 6px rgba(14, 41, 69, 0.15);
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
-    width: 100%;
+    gap: 8px;
+    flex: 1;
+    /* Share width */
     cursor: pointer;
     position: relative;
     overflow: hidden;
@@ -390,15 +395,20 @@
 .btn-buy-now-premium {
     background-color: transparent;
     color: var(--color-primary, #0e2945) !important;
-    padding: 16px 24px;
-    font-size: 1rem;
-    font-weight: 800;
+    padding: 10px 16px;
+    /* Compact padding */
+    font-size: 0.85rem;
+    /* Smaller font */
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 1.5px;
-    border: 2px solid var(--color-primary, #0e2945);
-    border-radius: 6px;
+    letter-spacing: 0.5px;
+    border: 1px solid var(--color-primary, #0e2945);
+    /* Thin border */
+    border-radius: 50px;
+    /* Pill shape */
     transition: all 0.3s ease;
-    width: 100%;
+    flex: 1;
+    /* Share width */
     cursor: pointer;
     display: flex;
     align-items: center;

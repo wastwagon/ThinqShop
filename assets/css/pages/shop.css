@@ -134,7 +134,7 @@
 
 .filter-chip.active {
     background: #0f172a;
-    color: #fff;
+    color: #fff !important;
     border-color: #0f172a;
     box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.2);
 }
