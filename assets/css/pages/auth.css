@@ -4,14 +4,18 @@
  */
 
 .auth-page-wrapper {
-    min-height: calc(100vh - 200px);
+    min-height: 100vh;
+    /* Full viewport height */
     display: flex;
     align-items: center;
+    /* Center vertically */
     justify-content: center;
-    padding: var(--spacing-xl) var(--spacing-lg);
-    background: linear-gradient(135deg, var(--color-gray-50) 0%, var(--color-gray-100) 100%);
+    /* Top padding accounts for sticky header (~110px) + spacing */
+    padding: 140px var(--spacing-lg) var(--spacing-xl);
+    background: linear-gradient(135deg, var(--color-gray-50) 0%, var(--color-white) 100%);
+    /* Cleaner gradient */
     position: relative;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 .auth-container {
@@ -182,7 +186,10 @@
 /* Mobile Optimizations */
 @media (max-width: 767px) {
     .auth-page-wrapper {
-        padding: var(--spacing-lg) var(--spacing-md);
+        /* On mobile, header is smaller but still sticky */
+        padding: 120px var(--spacing-md) var(--spacing-lg);
+        align-items: flex-start;
+        /* Prevent centering cut-off on small screens */
     }
 
     .auth-card {
