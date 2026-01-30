@@ -6,7 +6,7 @@ if (isset($mobileMenuIncluded)) {
 $mobileMenuIncluded = true;
 ?>
 <!-- Premium Bottom Mobile Menu (Fixed) -->
-<nav class="mobile-bottom-menu d-lg-none fixed-bottom">
+<nav class="mobile-bottom-menu d-md-none fixed-bottom">
     <div class="mobile-menu-backdrop"></div>
     <div class="mobile-menu-container">
         <div class="mobile-menu-items">

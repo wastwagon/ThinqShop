@@ -30,22 +30,53 @@
         /* BETTER READABILITY */
         color: #1a1a1a !important;
         background-color: #f8fafc !important;
-        padding-top: calc(70px + env(safe-area-inset-top, 0)) !important;
+        padding-top: env(safe-area-inset-top, 20px) !important;
+        /* Reset padding for Sticky Header */
         /* Header Height Compensation */
         padding-bottom: calc(85px + env(safe-area-inset-bottom, 0)) !important;
         /* CLEAR BOTTOM NAV + HOME INDICATOR */
-        overflow-x: hidden;
+        overflow-x: hidden !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100vw !important;
+        position: relative;
+    }
+
+    /* Fix Layout Breaking Elements */
+    .categories-scroll,
+    .scroll-container {
+        width: 100% !important;
+        max-width: 100vw !important;
+        overflow-x: auto !important;
+        white-space: nowrap !important;
+        -webkit-overflow-scrolling: touch !important;
+        min-width: 0 !important;
+    }
+
+    .container,
+    .container-fluid {
+        min-width: 0 !important;
+        width: 100% !important;
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+    }
+
+    html {
+        overflow-x: hidden !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100vw !important;
     }
 
     /* Consistent Heading Hierarchy (De-crowded) */
     h1,
     .h1,
-    .shop-title,
-    .welcome-text {
-        font-size: 16px !important;
-        font-weight: 700 !important;
-        letter-spacing: -0.01em !important;
-        margin-bottom: 0.5rem !important;
+    .shop-title {
+        font-size: 1.5rem;
+        /* Allow relative sizing */
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        margin-bottom: 0.5rem;
     }
 
     h2,
@@ -155,13 +186,10 @@
     .sidebar-toggle,
     .nav-link,
     .page-link {
-        min-height: 40px !important;
-        /* Reduced from 48px to be more compact on small screens */
-        padding: 6px 12px !important;
-        font-size: 14px !important;
-        border-radius: 10px !important;
-        display: inline-flex !important;
-        align-items: center !important;
+        min-height: 40px;
+        padding: 6px 12px;
+        font-size: 14px;
+        border-radius: 10px;
     }
 
     .menu-item {
@@ -175,20 +203,24 @@
 
     /* Prevent Welcome Text from Crowding Header */
     .welcome-text {
-        white-space: normal !important;
-        overflow: visible !important;
-        text-overflow: clip !important;
-        max-width: none !important;
+        white-space: nowrap !important;
+        /* Prevent breadcrumb wrapping */
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        max-width: 70vw !important;
         font-size: 15px !important;
-        line-height: 1.3 !important;
+        line-height: normal !important;
+        margin-bottom: 0 !important;
+        /* Center better in flex */
     }
 
     /* Allow header to grow height for wrapped text */
     .user-header {
         height: auto !important;
         min-height: 70px;
-        padding-top: 5px !important;
-        padding-bottom: 5px !important;
+        padding-top: 12px !important;
+        /* De-crowd from top */
+        padding-bottom: 8px !important;
     }
 
     /* Hide redundant page title on mobile to save space */
@@ -370,5 +402,12 @@
         text-transform: none !important;
         /* Prevent FORCE UPPERCASE that causes overlap */
         margin-top: 4px !important;
+    }
+}
+
+/* FORCE HIDE BOTTOM MENU ON DESKTOP/TABLET (Added by Agent) */
+@media (min-width: 992px) {
+    .mobile-bottom-menu {
+        display: none !important;
     }
 }

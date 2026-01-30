@@ -387,8 +387,11 @@ document.addEventListener('DOMContentLoaded', function() {
             $subPage = 'Requests';
         }
         ?>
-        <h2 class="welcome-text fw-700 text-dark mb-0"><?php echo $pageName; ?> <span class="text-primary opacity-50 ms-2">/</span> <span class="text-muted small ms-2"><?php echo $subPage; ?></span></h2>
-        <p class="date-text text-uppercase letter-spacing-1 fw-700 x-small mt-1"><?php echo $currentDate; ?></p>
+        <h2 class="welcome-text fw-700 text-dark mb-0 d-flex align-items-center">
+            <?php echo $pageName; ?> 
+            <span class="text-primary opacity-50 mx-2" style="font-size: 0.8em;">/</span> 
+            <span class="text-muted small fw-500"><?php echo $subPage; ?></span>
+        </h2>
     </div>
     
     <div class="header-right">

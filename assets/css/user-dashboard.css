@@ -209,12 +209,13 @@ body {
     left: var(--sidebar-width);
     right: 0;
     height: var(--header-height);
+    padding: 12px 2.5rem 0 2.5rem;
+    /* Increased top padding */
     background: #ffffff !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
     border-bottom: var(--border-light);
     z-index: 999;
-    padding: 0 2.5rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -232,6 +233,8 @@ body {
     font-weight: 700;
     color: #1e293b;
     margin: 0;
+    display: flex;
+    align-items: center;
 }
 
 .user-header .date-text {

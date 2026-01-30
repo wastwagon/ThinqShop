@@ -732,7 +732,7 @@ h6 {
     border: 1px solid rgba(5, 32, 62, 0.08);
     /* NO box-shadow */
     /* NO gradient */
-    overflow: hidden;
+    /* overflow: hidden; Removed to allow badge to be visible */
 }
 
 /* Removed gradient hover effect */

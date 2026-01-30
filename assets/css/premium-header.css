@@ -28,20 +28,24 @@
     background: #ffffff !important;
     border-bottom: 1px solid #e5e7eb !important;
     padding: 0 !important;
-    position: fixed !important;
-    /* Changed from sticky */
+    position: -webkit-sticky !important;
+    /* Safari */
+    position: sticky !important;
+    /* Reverting to sticky for Top Bar support */
     width: 100% !important;
     top: 0 !important;
     left: 0 !important;
     right: 0 !important;
     z-index: 1000 !important;
     box-shadow: none !important;
+    transition: transform 0.3s ease;
 }
 
 .header-container {
     max-width: 1400px;
     margin: 0 auto;
     padding: 0 1.5rem;
+    /* Default padding */
 }
 
 /* ============================================
@@ -242,7 +246,8 @@
 
 @media (max-width: 767px) {
     .header-container {
-        padding: 0 1rem;
+        padding: 0 1.25rem;
+        /* Balanced padding for alignment checks (Logo/Cart) */
     }
 
     .header-top-row {
@@ -482,4 +487,29 @@
     .header-search {
         display: none !important;
     }
+
+    .header-actions,
+    .header-search {
+        display: none !important;
+    }
+}
+
+/* Custom Cart Badge Visibility */
+.cart-badge-custom {
+    position: absolute;
+    top: -5px;
+    right: -8px;
+    background-color: #ef4444;
+    /* Red */
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 700;
+    min-width: 16px;
+    height: 16px;
+    line-height: 16px;
+    border-radius: 50%;
+    text-align: center;
+    padding: 0 4px;
+    z-index: 10;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }

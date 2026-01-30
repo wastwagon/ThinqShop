@@ -187,7 +187,9 @@
     --z-index-modal: 1050;
     --z-index-popover: 1060;
     --z-index-tooltip: 1070;
-}/**
+}
+
+/**
  * CSS Reset & Base Styles
  * ThinQShopping Platform
  * Normalize browser defaults and set base styles
@@ -220,7 +222,6 @@ body {
     line-height: var(--line-height-normal);
     color: var(--color-gray-800);
     background-color: var(--color-gray-50);
-    overflow-x: hidden;
 }
 
 /* Typography */
@@ -347,8 +348,8 @@ html,
 body {
     width: 100%;
     max-width: 100vw;
-    overflow-x: hidden;
     position: relative;
+    overflow-x: visible !important;
 }
 
 @media (max-width: 991.98px) {
@@ -381,7 +382,9 @@ body {
     [class*="overflow"] {
         max-width: 100%;
     }
-}/**
+}
+
+/**
  * Utility Classes
  * ThinQShopping Platform
  * Reusable helper classes for common patterns
@@ -876,7 +879,9 @@ body {
     .show-desktop {
         display: none !important;
     }
-}/**
+}
+
+/**
  * Buttons Component
  * ThinQShopping Platform
  * All button styles in one place
@@ -1097,7 +1102,9 @@ body {
     background: var(--color-primary);
     color: var(--color-white);
     border-color: var(--color-primary);
-}/**
+}
+
+/**
  * Product Cards Component
  * ThinQShopping Platform
  * All product card styles in one place
@@ -1349,7 +1356,9 @@ body {
     padding-top: 100%;
     background: var(--color-gray-50);
     overflow: hidden;
-}/**
+}
+
+/**
  * Forms Component
  * ThinQShopping Platform
  * All form element styles
@@ -1524,7 +1533,9 @@ body {
 .form-file:hover {
     border-color: var(--color-primary);
     background: var(--color-gray-50);
-}/**
+}
+
+/**
  * Navigation Component
  * ThinQShopping Platform
  * Header, footer, breadcrumbs, and navigation styles
@@ -2000,7 +2011,9 @@ body {
     .mobile-menu-container {
         display: none !important;
     }
-}/**
+}
+
+/**
  * Quick View Components Styles
  * BEM Methodology & Global Tokens
  */
@@ -2099,7 +2112,9 @@ body {
 .product-rating .count {
     color: var(--color-gray-500);
     font-size: var(--font-size-sm);
-}/**
+}
+
+/**
  * Homepage Styles
  * ThinQShopping Platform
  * Specific styles for the homepage
@@ -2146,7 +2161,9 @@ body {
     .homepage-hero {
         padding: var(--spacing-3xl) var(--spacing-2xl);
     }
-}/* Shop Page Layout */
+}
+
+/* Shop Page Layout */
 .shop-page {
     background-color: #f8f9fa;
     min-height: 100vh;
@@ -2477,7 +2494,9 @@ body {
     background: #0f172a;
     color: #fff;
     border-color: #0f172a;
-}/**
+}
+
+/**
  * Product Detail Page Styles
  * ThinQShopping Platform
  * Specific styles for the product detail page
@@ -2899,7 +2918,9 @@ body {
         flex: 1;
         min-width: 200px;
     }
-}/**
+}
+
+/**
  * Auth Pages (Login & Register)
  * ThinQShopping Platform
  */
@@ -3153,7 +3174,9 @@ body {
     align-items: flex-start;
     gap: var(--spacing-sm);
     cursor: pointer;
-}/**
+}
+
+/**
  * Shopping Cart Page Styles - Premium Redesign
  * BEM Methodology
  */
@@ -3490,7 +3513,9 @@ body {
     .cart-item {
         position: relative;
     }
-}/**
+}
+
+/**
  * Checkout Page Styles - Premium Redesign
  * BEM Methodology
  */
@@ -3812,7 +3837,9 @@ body {
     gap: 8px;
     color: #94a3b8;
     font-size: 1.125rem;
-}/**
+}
+
+/**
  * About Us Page Styles
  * BEM Methodology & Global Tokens
  */
@@ -4019,7 +4046,9 @@ body {
         height: 120px;
         font-size: 60px;
     }
-}/**
+}
+
+/**
  * Admin Dashboard Styles - Premium Professional Design 2025
  * Inspired by modern admin templates (Star Admin, Corona Admin, etc.)
  * ThinQShopping Platform
@@ -5099,7 +5128,8 @@ body {
     }
 }
 
-/* Conflicting mobile styles removed to favor navigation.css *//**
+/* Conflicting mobile styles removed to favor navigation.css */
+/**
  * User Dashboard Styles - Premium Professional Design 2025
  * Inspired by modern admin templates (Star Admin, Corona Admin, etc.)
  * ThinQShopping Platform
@@ -6235,7 +6265,9 @@ body {
     .mobile-menu-container {
         display: none !important;
     }
-}/**
+}
+
+/**
  * Mobile-First Clean Design System
  * ThinQShopping - Apple App Store Compliant
  * NO SHADOWS | NO GRADIENTS | CLEAN & FLAT
@@ -6685,3 +6717,38 @@ body {
 }
 
 /* Conflicting mobile styles removed to favor navigation.css */
+
+/* ===== STICKY HEADER OVERRIDES ===== */
+.top-bar {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 1100 !important;
+    width: 100%;
+}
+
+.main-header {
+    position: sticky !important;
+    top: 26px !important;
+    /* Standard top-bar height */
+    z-index: 1090 !important;
+    width: 100%;
+    background-color: #fff !important;
+}
+
+@media (max-width: 1199.98px) {
+    .main-header {
+        top: 0 !important;
+    }
+
+    .top-bar {
+        position: relative !important;
+        /* Release sticky top-bar on mobile to save space */
+    }
+}
+
+/* Ensure no parent has overflow: hidden that breaks sticky */
+.main-wrapper,
+.page-content,
+#main-wrapper {
+    overflow: visible !important;
+}

@@ -117,11 +117,6 @@ include __DIR__ . '/includes/header.php';
                     <div class="swiper-slide" style="background-image: url('<?php echo $img; ?>');">
                         <div class="hero-overlay"></div>
                         <div class="hero-content">
-                            <?php if (!empty($product['discount_percent'])): ?>
-                                <span class="hero-discount-badge">
-                                    <i class="fas fa-fire me-1"></i> <?php echo $product['discount_percent']; ?>% OFF
-                                </span>
-                            <?php endif; ?>
                             <h2 class="hero-title"><?php echo htmlspecialchars($product['name']); ?></h2>
                             <p class="hero-subtitle">
                                 <?php 
@@ -129,11 +124,7 @@ include __DIR__ . '/includes/header.php';
                                     echo htmlspecialchars(substr(strip_tags($desc), 0, 100)) . '...'; 
                                 ?>
                             </p>
-                            <div class="hero-button-wrapper">
-                                <a href="<?php echo BASE_URL; ?>/product-detail.php?id=<?php echo $product['id']; ?>" class="btn-hero">
-                                    Shop Now <i class="fas fa-arrow-right ms-2"></i>
-                                </a>
-                            </div>
+                            <!-- CTA Removed as requested -->
                         </div>
                     </div>
                     <?php endforeach; 
@@ -144,9 +135,6 @@ include __DIR__ . '/includes/header.php';
                         <div class="hero-content text-center mx-auto">
                             <h2 class="hero-title">Discover Amazing Products</h2>
                             <p class="hero-subtitle">Quality items at unbeatable prices</p>
-                            <div class="hero-button-wrapper">
-                                <a href="<?php echo BASE_URL; ?>/shop.php" class="btn-hero">Shop Now</a>
-                            </div>
                         </div>
                     </div>
                     <?php endif; ?>

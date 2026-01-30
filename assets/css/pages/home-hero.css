@@ -652,6 +652,13 @@
     box-shadow: 0 8px 25px rgba(14, 41, 69, 0.4);
 }
 
+.modern-filter-chip.active {
+    background-color: var(--color-primary, #0e2945);
+    color: #ffffff !important;
+    border-color: var(--color-primary, #0e2945);
+    box-shadow: 0 4px 12px rgba(14, 41, 69, 0.15);
+}
+
 .hero-swiper .swiper-pagination-bullet {
     width: 10px;
     height: 10px;
@@ -683,7 +690,8 @@
 
 /* --- TOP BAR VISIBILITY & LAYOUT --- */
 .top-bar {
-    display: none !important;
+    display: block !important;
+    /* Changed from none to block */
     font-size: 0.85rem !important;
 }
 
@@ -747,8 +755,10 @@
 /* Custom Cart Badge Positioning */
 .cart-badge-custom {
     position: absolute;
-    top: -8px;
-    right: -8px;
+    top: -5px;
+    /* Reduced from -8px to prevent clipping */
+    right: -5px;
+    /* Reduced from -8px */
     background: linear-gradient(135deg, #ff4d4d 0%, #dc3545 100%);
     color: #fff;
     font-size: 0.7rem;

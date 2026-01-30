@@ -267,7 +267,7 @@
     border-top: 1px solid var(--color-gray-200);
 }
 
-@media (min-width: 992px) {
+@media (min-width: 768px) {
     .mobile-bottom-menu {
         display: none !important;
     }
@@ -460,14 +460,15 @@
     color: var(--color-gray-400);
 }
 
-@media (min-width: 992px) {
+@media (min-width: 768px) {
     .mobile-footer {
         display: none !important;
     }
 }
 
 /* Robust Desktop Hiding for Mobile Menu */
-@media (min-width: 992px) {
+/* Robust Desktop Hiding for Mobile Menu */
+@media (min-width: 768px) {
 
     .mobile-bottom-menu,
     .mobile-menu-backdrop,

@@ -187,7 +187,9 @@
     --z-index-modal: 1050;
     --z-index-popover: 1060;
     --z-index-tooltip: 1070;
-}/**
+}
+
+/**
  * CSS Reset & Base Styles
  * ThinQShopping Platform
  * Normalize browser defaults and set base styles
@@ -342,12 +344,28 @@ table {
     outline-offset: 2px;
 }
 
-/* Prevent horizontal scroll */
 html,
 body {
     max-width: 100%;
-    overflow-x: hidden;
-}/**
+    overflow-x: visible !important;
+    position: relative;
+}
+
+.top-bar {
+    position: sticky !important;
+    top: 0;
+    z-index: 1050 !important;
+}
+
+.main-header {
+    position: sticky !important;
+    top: 26px;
+    /* Offset by top-bar height */
+    z-index: 1040 !important;
+}
+
+
+/**
  * Utility Classes
  * ThinQShopping Platform
  * Reusable helper classes for common patterns
@@ -916,7 +934,9 @@ body {
     .show-desktop {
         display: none !important;
     }
-}/**
+}
+
+/**
  * Buttons Component
  * ThinQShopping Platform
  * All button styles in one place
@@ -1120,7 +1140,9 @@ body {
     background: var(--color-primary);
     color: var(--color-white);
     border-color: var(--color-primary);
-}/**
+}
+
+/**
  * Product Cards Component
  * ThinQShopping Platform
  * All product card styles in one place
@@ -1317,7 +1339,9 @@ body {
 
 .product-card--small .product-card__price {
     font-size: var(--font-size-base);
-}/**
+}
+
+/**
  * Forms Component
  * ThinQShopping Platform
  * All form element styles
@@ -1492,7 +1516,9 @@ body {
 .form-file:hover {
     border-color: var(--color-primary);
     background: var(--color-gray-50);
-}/**
+}
+
+/**
  * Navigation Component
  * ThinQShopping Platform
  * Header, footer, breadcrumbs, and navigation styles
@@ -1743,7 +1769,9 @@ body {
     .hero {
         padding: var(--spacing-3xl) var(--spacing-2xl);
     }
-}/**
+}
+
+/**
  * Homepage Styles
  * ThinQShopping Platform
  * Specific styles for the homepage
@@ -1790,7 +1818,9 @@ body {
     .homepage-hero {
         padding: var(--spacing-3xl) var(--spacing-2xl);
     }
-}/**
+}
+
+/**
  * Shop Page Styles
  * ThinQShopping Platform
  * Specific styles for the shop/product listing page
@@ -1906,7 +1936,9 @@ body {
     .products-container {
         padding: var(--spacing-xl) var(--spacing-2xl);
     }
-}/**
+}
+
+/**
  * Product Detail Page Styles
  * ThinQShopping Platform
  * Specific styles for the product detail page
@@ -2232,7 +2264,9 @@ body {
     .related-grid {
         grid-template-columns: repeat(6, 1fr);
     }
-}/**
+}
+
+/**
  * Compatibility Layer
  * Maps old class names to new BEM styles
  * This allows existing HTML to work with new CSS
@@ -2424,7 +2458,9 @@ body {
     .product-grid-modern {
         grid-template-columns: repeat(6, 1fr);
     }
-}/**
+}
+
+/**
  * Additional Compatibility Styles
  * Product card details that were missing
  */
