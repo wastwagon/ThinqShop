@@ -40,8 +40,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
             $errors[] = 'First name is required.';
         }
         
-        if (empty($phone) || !isValidPhone($phone)) {
-            $errors[] = 'Valid phone number is required.';
+        // Phone is optional, but validate format if provided
+        if (!empty($phone) && !isValidPhone($phone)) {
+            $errors[] = 'Please enter a valid phone number.';
         }
         
         // Handle profile image upload
@@ -244,6 +245,9 @@ ob_start();
             <a class="nav-link <?php echo $tab === 'security' ? 'active' : ''; ?>" href="?tab=security">
                 <i class="fas fa-shield-alt"></i> Security
             </a>
+            <a class="nav-link <?php echo $tab === 'account' ? 'active' : ''; ?>" href="?tab=account">
+                <i class="fas fa-user-slash"></i> Account
+            </a>
         </nav>
     </div>
 
@@ -268,8 +272,8 @@ ob_start();
                         <input type="email" class="form-control form-control-premium bg-light" value="<?php echo htmlspecialchars($user['email']); ?>" readonly>
                     </div>
                     <div class="col-12">
-                        <label class="form-label-premium">Phone Number</label>
-                        <input type="tel" name="phone" class="form-control form-control-premium" value="<?php echo htmlspecialchars($user['phone']); ?>" required>
+                        <label class="form-label-premium">Phone Number <span class="text-muted">(Optional)</span></label>
+                        <input type="tel" name="phone" class="form-control form-control-premium" value="<?php echo htmlspecialchars($user['phone'] ?? ''); ?>">
                     </div>
                     
                     <div class="col-12">
@@ -374,6 +378,39 @@ ob_start();
                     <button type="submit" class="btn btn-primary btn-premium">Update Password</button>
                 </div>
             </form>
+            
+        <?php elseif ($tab === 'account'): ?>
+            <h5 class="fw-bold text-dark mb-4">Account Management</h5>
+            
+            <div class="alert alert-danger border-0 rounded-4 p-4 shadow-sm">
+                <div class="d-flex gap-3 mb-3">
+                    <i class="fas fa-exclamation-triangle fa-2x text-danger"></i>
+                    <div>
+                        <h6 class="fw-bold mb-2">Delete Your Account</h6>
+                        <p class="small mb-0">
+                            Once you delete your account, there is no going back. This will permanently delete:
+                        </p>
+                    </div>
+                </div>
+                <ul class="small mb-3">
+                    <li>Your profile and personal information</li>
+                    <li>Order history and tracking data</li>
+                    <li>Wallet balance and transaction history</li>
+                    <li>Saved addresses and preferences</li>
+                    <li>Wishlist and cart items</li>
+                </ul>
+                <div class="bg-white rounded-3 p-3 mb-3">
+                    <p class="small mb-2"><strong>Grace Period:</strong></p>
+                    <p class="x-small text-muted mb-0">
+                        After requesting deletion, you'll have 30 days to cancel before your account is permanently deleted. 
+                        We'll send you an email with a cancellation link.
+                    </p>
+                </div>
+                <a href="<?php echo BASE_URL; ?>/user/delete-account.php" 
+                   class="btn btn-danger btn-sm rounded-pill px-4 fw-bold">
+                    <i class="fas fa-trash-alt me-2"></i>Delete My Account
+                </a>
+            </div>
         <?php endif; ?>
     </div>
 </div>

@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  # PHP + Apache Web Server
+  web:
+    build: .
+    container_name: thinqshopping_web
+    restart: always
+    command: sh -c "php /var/www/html/database/auto_migrate.php && apache2-foreground"
+    environment:
+      - APACHE_DOCUMENT_ROOT=/var/www/html
+      - DB_HOST=mysql
+      - DB_NAME=thinjupz_db
+      - DB_USER=thinquser
+      - DB_PASS=thinqpass
+    env_file:
+      - .env
+    depends_on:
+      - mysql
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+    networks:
+      - thinqshopping_network
+
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    container_name: thinqshopping_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: thinjupz_db
+      MYSQL_USER: thinquser
+      MYSQL_PASSWORD: thinqpass
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./thinjupz_db.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - thinqshopping_network
+
+  # phpMyAdmin for Database Management
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: thinqshopping_phpmyadmin
+    restart: always
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: root
+    depends_on:
+      - mysql
+    ports:
+      - "8081:80"
+    networks:
+      - thinqshopping_network
+
+  # Redis Cache (Optional - for future optimization)
+  redis:
+    image: redis:7-alpine
+    container_name: thinqshopping_redis
+    restart: always
+    networks:
+      - thinqshopping_network
+
+networks:
+  thinqshopping_network:
+    driver: bridge
+
+volumes:
+  mysql_data:

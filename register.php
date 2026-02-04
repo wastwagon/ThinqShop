@@ -49,11 +49,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors[] = 'Please enter a valid email address.';
         }
         
-        if (empty($phone) || !isValidPhone($phone)) {
+        // Phone is optional, but validate format if provided
+        if (!empty($phone) && !isValidPhone($phone)) {
             $errors[] = 'Please enter a valid Ghana phone number (e.g., +233XXXXXXXXX or 0XXXXXXXXX).';
         }
         
-        if (empty($whatsapp_number) || !isValidPhone($whatsapp_number)) {
+        // WhatsApp is optional, but validate format if provided
+        if (!empty($whatsapp_number) && !isValidPhone($whatsapp_number)) {
             $errors[] = 'Please enter a valid WhatsApp number (e.g., +233XXXXXXXXX or 0XXXXXXXXX).';
         }
         
@@ -89,12 +91,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $errors[] = 'This email is already registered.';
             }
             
-            // Check phone
-            $phone_formatted = formatPhone($phone);
-            $stmt = $conn->prepare("SELECT id FROM users WHERE phone = ?");
-            $stmt->execute([$phone_formatted]);
-            if ($stmt->fetch()) {
-                $errors[] = 'This phone number is already registered.';
+            // Check phone only if provided
+            if (!empty($phone)) {
+                $phone_formatted = formatPhone($phone);
+                $stmt = $conn->prepare("SELECT id FROM users WHERE phone = ?");
+                $stmt->execute([$phone_formatted]);
+                if ($stmt->fetch()) {
+                    $errors[] = 'This phone number is already registered.';
+                }
             }
             
             // Create user account
@@ -128,8 +132,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
                     $userId = $conn->lastInsertId();
                     
-                    // Format WhatsApp number
-                    $whatsapp_formatted = formatPhone($whatsapp_number);
+                    // Format WhatsApp number if provided
+                    $whatsapp_formatted = !empty($whatsapp_number) ? formatPhone($whatsapp_number) : null;
                     
                     // Create user profile
                     $stmt = $conn->prepare("
@@ -255,31 +259,29 @@ include __DIR__ . '/includes/header.php';
                 <!-- Phone Field -->
                 <div class="form-group">
                     <label for="phone" class="form-label">
-                        <i class="fas fa-phone"></i> Phone Number
+                        <i class="fas fa-phone"></i> Phone Number <span class="text-muted">(Optional)</span>
                     </label>
                     <input type="tel" 
                            class="form-input" 
                            id="phone" 
                            name="phone" 
                            placeholder="+233XXXXXXXXX or 0XXXXXXXXX"
-                           value="<?php echo htmlspecialchars($_POST['phone'] ?? ''); ?>" 
-                           required>
-                    <small class="strength-text">Ghana phone number format</small>
+                           value="<?php echo htmlspecialchars($_POST['phone'] ?? ''); ?>">
+                    <small class="strength-text">Ghana phone number format - Optional for registration</small>
                 </div>
                 
                 <!-- WhatsApp Field -->
                 <div class="form-group">
                     <label for="whatsapp_number" class="form-label">
-                        <i class="fab fa-whatsapp"></i> WhatsApp Number
+                        <i class="fab fa-whatsapp"></i> WhatsApp Number <span class="text-muted">(Optional)</span>
                     </label>
                     <input type="tel" 
                            class="form-input" 
                            id="whatsapp_number" 
                            name="whatsapp_number" 
                            placeholder="+233XXXXXXXXX or 0XXXXXXXXX"
-                           value="<?php echo htmlspecialchars($_POST['whatsapp_number'] ?? ''); ?>" 
-                           required>
-                    <small class="strength-text">Your WhatsApp number</small>
+                           value="<?php echo htmlspecialchars($_POST['whatsapp_number'] ?? ''); ?>">
+                    <small class="strength-text">Optional - We'll use this for order updates via WhatsApp</small>
                 </div>
                 
                 <!-- Password Field -->
