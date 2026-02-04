@@ -6,7 +6,7 @@ services:
     build: .
     container_name: thinqshopping_web
     restart: always
-    command: sh -c "php /var/www/html/database/auto_migrate.php && apache2-foreground"
+    command: sh -c "php /var/www/html/database/auto_migrate_enhanced.php && apache2-foreground"
     environment:
       - APACHE_DOCUMENT_ROOT=/var/www/html
       - DB_HOST=mysql
