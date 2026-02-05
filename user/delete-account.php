@@ -229,7 +229,7 @@ ob_start();
                 </div>
                 
                 <div class="d-flex gap-3">
-                    <button type="submit" class="btn btn-danger btn-lg px-5 fw-bold">
+                    <button type="submit" class="btn btn-danger btn-lg px-5 fw-bold text-white">
                         <i class="fas fa-trash-alt me-2"></i>Delete My Account
                     </button>
                     <a href="<?php echo BASE_URL; ?>/user/profile.php?tab=account" class="btn btn-outline-secondary btn-lg px-5">

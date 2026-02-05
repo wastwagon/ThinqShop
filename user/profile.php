@@ -407,7 +407,7 @@ ob_start();
                     </p>
                 </div>
                 <a href="<?php echo BASE_URL; ?>/user/delete-account.php" 
-                   class="btn btn-danger btn-sm rounded-pill px-4 fw-bold">
+                   class="btn btn-danger btn-sm rounded-pill px-4 fw-bold text-white">
                     <i class="fas fa-trash-alt me-2"></i>Delete My Account
                 </a>
             </div>
