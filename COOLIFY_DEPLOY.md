@@ -25,6 +25,12 @@ Script (run on VPS): use **`scripts/vps-fix-thinqshopping-app-only-paste.sh`** o
 
 ---
 
+## Gateway timeout right after deploy
+
+If the site returns **504 Gateway Timeout** for 1–2 minutes after a deploy, the web container is often still starting: it runs the DB migration and only then starts Apache. The repo’s **docker-compose** now makes the web service wait for **MySQL to be healthy** before starting, so the migration usually finishes quickly and Apache starts sooner. If you still see a short timeout, wait 1–2 minutes and reload.
+
+---
+
 ## What’s in this repo
 
 | File | Purpose |
