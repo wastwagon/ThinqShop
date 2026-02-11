@@ -140,3 +140,69 @@ If Coolify shows **Deployment failed: Command execution failed (exit code 255)**
    - Ensure `.dockerignore` excludes unneeded folders (e.g. `node_modules/`, `vendor/`, `.git/`). This repo’s `.dockerignore` already does that.
 
 **What to do:** In Coolify, open the **full deployment log**, scroll to the bottom, and look for the **last error or failed step** (e.g. “RUN composer install …” or “COPY . .”). That line (and the few above it) usually identifies the real cause. Then apply the fix above or adjust the Dockerfile/compose accordingly.
+
+---
+
+## "No available server" – check configuration on the VPS
+
+If the site shows **no available server**, Traefik is not finding a healthy backend for your domain. Run this **on the VPS** (SSH) to dump the current proxy and app configuration:
+
+```bash
+# From the repo (if you have it on the VPS)
+cd /path/to/ThinqShop
+chmod +x scripts/vps-diagnose-no-available-server.sh
+./scripts/vps-diagnose-no-available-server.sh
+```
+
+Or run without cloning (if the script is in the repo):
+
+```bash
+curl -sSL https://raw.githubusercontent.com/wastwagon/ThinqShop/main/scripts/vps-diagnose-no-available-server.sh | bash
+```
+
+The script prints (and saves to `./no-available-server-report/diagnostic-*.txt`):
+
+1. **Proxy container** – name, status, last 40 log lines (look for "no available server").
+2. **Coolify network** – whether it exists and which containers are on it (your web container **must** be on `coolify`).
+3. **Containers with Traefik enabled** – full Traefik labels (routers, rules, services, port).
+4. **Router rules** – detects empty `Host()` or wrong `PathPrefix`.
+5. **Service/loadbalancer port** – should be 80 for the web service.
+6. **Web container** – whether it is listening on port 80.
+
+Use the output to confirm: web container on **coolify** network, router rules `Host(\`thinqshopping.app\`)` and `Host(\`www.thinqshopping.app\`)`, and service port 80. If Coolify deployed with different container names, the script will still list them and their labels.
+
+---
+
+## Coolify overwrites our compose labels (confirmed)
+
+The diagnostic shows that the **running** web container has **broken** rules even though this repo’s `docker-compose.yml` has the correct ones:
+
+- **On the container:** `traefik.http.routers.http-0-lsosss448cg4o84kgsksw0o8-web.rule=Host(``) && PathPrefix(\`thinqshopping.app\`)`  
+- **What we need:** `Host(\`thinqshopping.app\`)` (no empty Host, no PathPrefix with domain).
+
+So **Coolify is generating and applying its own labels at deploy time** and overwriting the labels from the compose file. Fixing the compose is not enough; you need one of the two approaches below.
+
+### Option A: One-time fix on the VPS (recreate container with correct labels)
+
+On the VPS, install `jq` and run the fix script from this repo. It stops the ThinQ web container, recreates it with the same image/env/networks but with the two Traefik router rules corrected.
+
+```bash
+# On the VPS (as root)
+apt-get update && apt-get install -y jq
+# Copy the script from the repo, or download it, then:
+chmod +x scripts/vps-fix-thinq-traefik-labels.sh
+./scripts/vps-fix-thinq-traefik-labels.sh -y
+```
+
+After the next Coolify deploy, the labels will be wrong again, so either run the script again or use Option B.
+
+### Option B: Custom labels in Coolify (persistent)
+
+In Coolify, open the **ThinQShopping** application and look for **Custom labels**, **Docker labels**, **Advanced**, or **Traefik** settings. Add two labels that override the broken router rules (use the exact router names from the diagnostic):
+
+| Key | Value |
+|-----|--------|
+| `traefik.http.routers.http-0-lsosss448cg4o84kgsksw0o8-web.rule` | `Host(\`thinqshopping.app\`)` |
+| `traefik.http.routers.http-1-lsosss448cg4o84kgsksw0o8-web.rule` | `Host(\`www.thinqshopping.app\`)` |
+
+If Coolify merges custom labels after its generated ones, these will override the broken rules and the site will work after every deploy. If your Coolify version does not allow custom labels or still overwrites them, use Option A after each deploy or upgrade Coolify when the bug is fixed (e.g. [Coolify #6877](https://github.com/coollabsio/coolify/issues/6877)).
