@@ -1,39 +1,35 @@
-# Coolify deploy – fix “no available server”
+# Coolify deploy – thinqshopping.app
 
-Coolify has a bug that overwrites Traefik labels and causes **“no available server”** for thinqshopping.app. The app will deploy, but the site will not load until you apply the fix below.
+## Permanent fix (do once)
 
-## After each Coolify deploy (do one of these)
+**Use this so you can deploy frequently without running a script every time.**
 
-### Option 1: Run fix script on the VPS (recommended)
+→ See **[COOLIFY_PERMANENT_FIX.md](COOLIFY_PERMANENT_FIX.md)** and apply **Option 1 (Traefik dynamic config)**:
 
-SSH into your VPS and run:
+1. In Coolify: **Server** → **Proxy** → **Dynamic Configurations** → **Add**.
+2. Paste the YAML from **`coolify/traefik-thinqshopping-app.yaml`** (or from the doc).
+3. Save. Traefik will route thinqshopping.app and www.thinqshopping.app on every deploy.
 
-```bash
-apt-get update && apt-get install -y jq
-cd /root   # or where you have the repo
-# If you have the repo cloned, run:
-./scripts/vps-fix-thinq-traefik-labels.sh -y
-# Or paste the script from scripts/vps-fix-thinq-traefik-labels.sh and run it.
-```
+After that, you can commit, push, and deploy as usual; the site will stay up.
 
-Then open https://thinqshopping.app and https://www.thinqshopping.app to confirm.
+---
 
-### Option 2: Add custom labels in Coolify UI
+## If you haven’t set the permanent fix yet
 
-In Coolify → **ThinQShopping** app → find **Custom labels** / **Docker labels** / **Advanced** and add:
+After each Coolify deploy the site may show “no available server” until you either:
 
-| Key | Value |
-|-----|--------|
-| `traefik.http.routers.http-0-lsosss448cg4o84kgsksw0o8-web.rule` | `Host(\`thinqshopping.app\`)` |
-| `traefik.http.routers.http-1-lsosss448cg4o84kgsksw0o8-web.rule` | `Host(\`www.thinqshopping.app\`)` |
+- Apply the **permanent fix** above, or  
+- Run the **fix script** on the VPS (see [COOLIFY_PERMANENT_FIX.md](COOLIFY_PERMANENT_FIX.md) Option 3).
 
-Save and redeploy (or restart the proxy). If your Coolify version applies these labels, the site will work after every deploy.
+Script (run on VPS): use **`scripts/vps-fix-thinqshopping-app-only-paste.sh`** or the full paste block in COOLIFY_PERMANENT_FIX.md.
 
 ---
 
 ## What’s in this repo
 
-- **docker-compose.yml** – Contains correct Traefik labels; Coolify overwrites them at deploy time, so the fix above is still required.
-- **COOLIFY_TWO_SITES_FIX.md** – Full explanation of the Coolify/Traefik bug and both fix options.
-- **scripts/vps-fix-thinq-traefik-labels.sh** – Recreates the web container with correct labels (requires `jq` on the VPS).
-- **scripts/vps-diagnose-no-available-server.sh** – Run on the VPS to inspect proxy and container labels.
+| File | Purpose |
+|------|--------|
+| **COOLIFY_PERMANENT_FIX.md** | Permanent fix options (dynamic config, custom labels, script). |
+| **coolify/traefik-thinqshopping-app.yaml** | Traefik dynamic config to add in Coolify Proxy. |
+| **scripts/vps-fix-thinqshopping-app-only-paste.sh** | One-off fix script (HTTP + HTTPS) if you haven’t set the permanent fix. |
+| **docker-compose.yml** | Correct labels; Coolify overwrites them, so the permanent fix is still needed. |

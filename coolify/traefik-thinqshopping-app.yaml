@@ -1,0 +1,30 @@
+# Traefik dynamic config: permanent routing for thinqshopping.app
+# Add this in Coolify: Server → Proxy → Dynamic Configurations → Add new
+# Name: thinqshopping-app (or any name). Paste this YAML.
+# Uses the service "thinq-web" from the Docker provider (your ThinQ web container).
+http:
+  routers:
+    thinq-app-https:
+      rule: "Host(`thinqshopping.app`)"
+      entryPoints:
+        - https
+      service: thinq-web@docker
+      tls:
+        certResolver: letsencrypt
+    thinq-www-https:
+      rule: "Host(`www.thinqshopping.app`)"
+      entryPoints:
+        - https
+      service: thinq-web@docker
+      tls:
+        certResolver: letsencrypt
+    thinq-app-http:
+      rule: "Host(`thinqshopping.app`)"
+      entryPoints:
+        - http
+      service: thinq-web@docker
+    thinq-www-http:
+      rule: "Host(`www.thinqshopping.app`)"
+      entryPoints:
+        - http
+      service: thinq-web@docker
