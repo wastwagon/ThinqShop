@@ -118,3 +118,25 @@ This repo's `docker-compose.yml` already has the correct overrides for ThinQ. Fo
 - See [Coolify #6877](https://github.com/coollabsio/coolify/issues/6877) for a workaround (Traefik dynamic config or script after each deploy).
 
 After the proxy rules are correct, both sites should route properly. If timeouts continue, use the diagnostic and log-capture scripts for the app that still times out.
+
+---
+
+## Deployment build failed: exit code 255
+
+If Coolify shows **Deployment failed: Command execution failed (exit code 255)** during `docker compose build`, the exit code is generic (something went wrong), not a specific error. Common causes:
+
+1. **Out of memory (OOM)** on the VPS during build (PHP image + apt + composer can use a lot of RAM).  
+   - **Fix:** Add swap, or increase memory; in Coolify you can try building with fewer parallel jobs if available.  
+   - On the VPS: `free -h` and check if the build fails when memory is full.
+
+2. **Composer install failing** (network timeout, rate limit, or a dependency requiring a missing PHP extension).  
+   - **Fix:** In Coolify deployment logs, scroll to the **last lines** before the failure to see the actual error (e.g. composer message or a failed `RUN` step).  
+   - The Dockerfile uses `composer install --no-interaction --prefer-dist`; if you see a composer error, fix the dependency or add the required PHP extension in the Dockerfile.
+
+3. **Docker daemon or disk** (disk full, or Docker socket/daemon issue).  
+   - On the VPS: `df -h` and `docker system df`; clean with `docker system prune -a` if needed (removes unused images).
+
+4. **Build context too large** (e.g. huge `assets/` or `node_modules/` sent to the daemon).  
+   - Ensure `.dockerignore` excludes unneeded folders (e.g. `node_modules/`, `vendor/`, `.git/`). This repo’s `.dockerignore` already does that.
+
+**What to do:** In Coolify, open the **full deployment log**, scroll to the bottom, and look for the **last error or failed step** (e.g. “RUN composer install …” or “COPY . .”). That line (and the few above it) usually identifies the real cause. Then apply the fix above or adjust the Dockerfile/compose accordingly.

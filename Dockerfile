@@ -28,8 +28,8 @@ WORKDIR /var/www/html
 # Copy composer files first for caching
 COPY composer.json ./
 
-# Install dependencies
-RUN composer install --no-dev --optimize-autoloader --no-scripts
+# Install dependencies (--no-interaction avoids prompts; exit 255 often = OOM on small VPS)
+RUN composer install --no-dev --optimize-autoloader --no-scripts --no-interaction --prefer-dist
 
 # Copy application source
 COPY . .
