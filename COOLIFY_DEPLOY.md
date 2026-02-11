@@ -29,6 +29,8 @@ Script (run on VPS): use **`scripts/vps-fix-thinqshopping-app-only-paste.sh`** o
 
 If the site returns **504 Gateway Timeout** for 1–2 minutes after a deploy, the web container is often still starting: it runs the DB migration and only then starts Apache. The repo’s **docker-compose** now makes the web service wait for **MySQL to be healthy** before starting, so the migration usually finishes quickly and Apache starts sooner. If you still see a short timeout, wait 1–2 minutes and reload.
 
+**Verify config on the VPS:** run `bash scripts/vps-verify-no-gateway-timeout.sh` (from the repo or with `WEB_CONTAINER` / `MYSQL_CONTAINER` set if your names differ). It checks MySQL healthcheck, web listening on 80, and startup order.
+
 ---
 
 ## What’s in this repo
@@ -38,4 +40,5 @@ If the site returns **504 Gateway Timeout** for 1–2 minutes after a deploy, th
 | **COOLIFY_PERMANENT_FIX.md** | Permanent fix options (dynamic config, custom labels, script). |
 | **coolify/traefik-thinqshopping-app.yaml** | Traefik dynamic config to add in Coolify Proxy. |
 | **scripts/vps-fix-thinqshopping-app-only-paste.sh** | One-off fix script (HTTP + HTTPS) if you haven’t set the permanent fix. |
+| **scripts/vps-verify-no-gateway-timeout.sh** | Run on VPS to verify config (MySQL health, web listening, startup order). |
 | **docker-compose.yml** | Correct labels; Coolify overwrites them, so the permanent fix is still needed. |
